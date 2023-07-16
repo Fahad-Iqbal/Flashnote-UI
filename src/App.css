@@ -1,5 +1,461 @@
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* 1rem = 10px for all elements*/
+  font-size: 62.5%;
+  transition: all 0.5s ease;
+}
+
+html:not(:has(.darkmode input:checked)) {
+  --color-background: white;
+  --color-header-box-shadow: #001f2785;
+  --color-bullet: #001f27;
+  --color-hamburger-lines: #4d96a7;
+  --color-arrow: #00758e;
+  --color-hamburger-shadow: rgba(0, 0, 0, 0.226);
+  --color-sidenav-right-border: #cce1e6;
+  --user-name-text: #005f74;
+  --search-button-background: #f2f2f2;
+  --search-button-text: #6b6f70;
+  --primary-button-text: #f2f2f2;
+  --primary-button-background: #006981;
+  --secondary-button-shadow-top: #98c2cd71;
+  --secondary-button-shadow-bottom: #00698170;
+  --docs-links-text: #58696c;
+  --docs-selected-background: #b3d2d9;
+  --note-text-color: #00262f;
+  --footer-box-shadow: #0020275b;
+  --bullet-line: #d9d9d9;
+  --cloze-text: #0989a6;
+  --cloze-background: #c6cbe8;
+  --mobile-footer-icons: black;
+}
+
+html:has(.darkmode input:checked) {
+  --color-background: rgb(54, 66, 66);
+  --color-header-box-shadow: #6ccbe285;
+  --color-bullet: #97bcc5;
+  --color-hamburger-lines: #9ecfda;
+  --color-arrow: #b4d6dd;
+  --color-hamburger-shadow: rgba(199, 197, 197, 0.603);
+  --color-sidenav-right-border: #517b86;
+  --user-name-text: #97cbd6;
+  --search-button-background: #c4c4c4;
+  --search-button-text: #626363;
+  --primary-button-text: #f2f2f2;
+  --primary-button-background: #002e38;
+  --secondary-button-shadow-top: #98c2cd71;
+  --secondary-button-shadow-bottom: #7fbfce70;
+  --docs-links-text: #a8bfc4;
+  --docs-selected-background: #555f61;
+  --note-text-color: #c4c7c9;
+  --footer-box-shadow: #96d8ec57;
+  --bullet-line: #d9d9d9;
+  --cloze-text: #0989a6;
+  --cloze-background: #c6cbe8;
+  --mobile-footer-icons: rgb(255, 255, 255);
+  background-color: var(--color-background);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  height: 100vh;
+  /* color: var(--color-background); */
+  transition: all 0.5s linear;
+}
+
 main {
-  text-align: center;
-  vertical-align: center;
-  line-height: 100vh
+  display: flex;
+  background: var(--color-background);
+  width: 100%;
+  height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
+  transition: all 0.5s linear;
+  /* overflow-y: hidden; */
+}
+.document-area {
+  width: 100%;
+}
+
+/**---------------------------- Header Section ----------------------------*/
+.header {
+  display: flex;
+  padding: 0.2rem 2rem 0.2rem;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0.1rem 0.8rem 0 var(--color-header-box-shadow);
+  background-color: var(--color-background);
+  width: 100%;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  transition: all 0.5s linear;
+}
+
+/**------------------------------ Logo  ------------------------------*/
+.logo-container {
+  font-family: 'DM Serif Display', serif;
+  display: flex;
+  height: 4rem;
+  width: auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+.logo-icon {
+  width: auto;
+  height: 70%;
+  display: block;
+  object-fit: cover;
+  transform: translateY(0.2rem);
+}
+.logo-text-container {
+  padding-top: 0.4rem;
+  height: 100%;
+}
+.logo-text {
+  display: inline-block;
+  height: 100%;
+  font-size: 3rem;
+  font-weight: 400;
+  color: #001f27;
+}
+.logo-text span {
+  height: 95%;
+  display: inline-block;
+  border-bottom: 0.3rem #720000 solid;
+  color: #720000;
+}
+
+/**----------------------------- Log out button -----------------------------*/
+.log-out {
+  height: 50%;
+  border: 0.2rem solid var(--color-arrow);
+  border-radius: 0.8rem;
+  color: var(--color-arrow);
+  font-size: 1.4rem;
+  font-weight: 500;
+  background-color: transparent;
+  padding: 0.2rem 1rem;
+  align-self: center;
+  cursor: pointer;
+}
+/**-------------------------------- Side Nav + Hamburger--------------------------------*/
+
+/* Hamburger Menu */
+
+.hamburger {
+  left: 0;
+  z-index: 100;
+  position: absolute;
+  box-shadow: 0.1rem 0.1rem 0.2rem var(--color-hamburger-shadow),
+    -0.1rem -0.1rem 0.2rem var(--color-hamburger-shadow);
+  transform: translateX(4rem) rotate(0deg);
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.4rem;
+  top: 0.8rem;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.hamburger-checkbox:checked + .hamburger__center-line::before {
+  transform: rotate(45deg) translate(0.4rem, 0.43rem);
+}
+
+.hamburger-checkbox:checked + .hamburger__center-line::after {
+  transform: rotate(-45deg) translate(0.4rem, -0.43rem);
+}
+
+/* Side Nav */
+
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  width: 22%;
+  height: 100vh;
+  gap: 5rem;
+  z-index: 1;
+  transition: all 0.5s linear;
+  /* position: -webkit-sticky;
+  position: sticky;
+  top: 0; */
+  position: relative;
+}
+
+.side-nav__contents {
+  height: 100vh;
+  width: 100%;
+  margin-top: 6.5rem;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 2px solid var(--color-sidenav-right-border);
+  padding: 2rem;
+  flex-grow: 0;
+}
+
+.side-nav__contents--top {
+  flex-direction: column;
+  gap: 4rem;
+  flex-grow: 0;
+}
+
+/* ----------------- User Section ------------------------ */
+.user {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.user-name__user-icon__container {
+  align-items: center;
+  gap: 2rem;
+}
+.user-icon {
+  height: 2.2rem;
+  width: 2.2rem;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.user-name {
+  font-size: 1.6rem;
+  color: var(--user-name-text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.user-options-icon {
+  width: 1.6rem;
+  padding-right: 0rem;
+  cursor: pointer;
+}
+
+/* Search */
+
+.search {
+  width: 100%;
+}
+
+.search-button {
+  width: 100%;
+  height: 3.2rem;
+  padding: 0rem 1.2rem;
+  border: none;
+  align-items: center;
+  background-color: var(--search-button-background);
+  gap: 1rem;
+}
+
+.search-button p {
+  color: var(--search-button-text);
+  font-weight: 400;
+}
+
+.documents-section {
+  flex-direction: column;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.primary-button {
+  border: none;
+  background-color: var(--primary-button-background);
+  align-items: center;
+  gap: 1rem;
+  color: var(--primary-button-text);
+  padding: 1rem 1.6rem;
+  border-radius: 0.2rem;
+  font-size: 1.6rem;
+  font-weight: 400;
+  justify-content: start;
+  cursor: pointer;
+}
+
+/* Styling for primary buttons : Practice Flashcards and Create */
+
+.primary-button img {
+  width: 1.4rem;
+}
+
+.primary-button span {
+  text-decoration: underline;
+}
+
+.side-nav__contents,
+.side-nav__contents--top,
+.user,
+.user-name__user-icon__container,
+.search-button,
+.primary-button,
+.secondary-button,
+.docs,
+.documents-section,
+.docs--links,
+.docs-dropdown-button,
+.side-nav__contents--bottom {
+  display: flex;
+  width: 100%;
+  transition: all 0.5s linear;
+}
+
+/* Secondary Button Styling: All Documents */
+
+.secondary-button {
+  align-items: center;
+  padding: 0.8rem 1.6rem;
+  gap: 1rem;
+  background-color: var(--color-background);
+  border-radius: 0.2rem;
+  border: none;
+  box-shadow: -0.1rem -0.1rem 0.2rem var(--secondary-button-shadow-top),
+    0.1rem 0.1rem 0.2rem var(--secondary-button-shadow-bottom);
+  cursor: pointer;
+}
+
+.secondary-button img {
+  width: 1.2rem;
+}
+
+.secondary-button p {
+  color: var(--color-arrow);
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+/* Draft, Finished Styling */
+
+.docs-dropdown-section:has(input:not(checked)) > .docs {
+  display: none;
+}
+
+.docs-dropdown-section:has(input:checked) > .docs {
+  display: flex;
+}
+
+.docs-dropdown-button:has(input:checked) > img {
+  transform: rotate(90deg);
+  transition: all 0.1s ease-in-out;
+}
+
+.docs-dropdown-section {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.docs-dropdown-button {
+  position: relative;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1.6rem;
+  background-color: var(--color-background);
+  border-radius: 0.2rem;
+  border: none;
+  box-shadow: -0.1rem -0.1rem 0.2rem var(--secondary-button-shadow-top),
+    0.1rem 0.1rem 0.2rem var(--secondary-button-shadow-bottom);
+  cursor: pointer;
+}
+
+.docs-dropdown-button input {
+  visibility: hidden;
+  position: absolute;
+}
+
+.docs-dropdown-button img {
+  width: 0.8rem;
+  transition: all 0.1s ease-in-out;
+}
+
+.docs-dropdown-button p {
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--color-arrow);
+}
+
+.draft-finished-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1.5rem;
+  flex-shrink: 1;
+  height: 100%;
+}
+
+.docs {
+  flex-basis: 9rem;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+.docs--links {
+  margin-left: 2rem;
+  padding: 0.5rem;
+  gap: 1rem;
+}
+
+.docs--links img {
+  width: auto;
+  height: 1.7rem;
+  object-fit: cover;
+}
+
+.docs--links p {
+  color: var(--docs-links-text);
+  font-weight: 600;
+  font-size: 1.4rem;
+}
+
+.selected {
+  background-color: var(--docs-selected-background);
+}
+
+/* Create Button Styling in SideNav */
+.side-nav__contents--bottom {
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.darkmode {
+  height: 3.8rem;
+  position: relative;
+  z-index: 0;
+}
+
+.darkmode::after {
+  content: 'Dark Mode';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-arrow);
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.darkmode:has(input:checked)::after {
+  content: 'Light Mode';
+}
+
+.create {
+  justify-content: center;
+}
+
+.create img {
+  height: 1.3rem;
+  width: auto;
+  object-fit: cover;
 }
