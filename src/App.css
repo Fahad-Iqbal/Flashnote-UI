@@ -75,13 +75,15 @@ main {
   background: var(--color-background);
   width: 100%;
   height: 100vh;
-  max-width: 1400px;
   margin: 0 auto;
   transition: all 0.5s linear;
-  /* overflow-y: hidden; */
+  overflow-x: hidden;
 }
 .document-area {
   width: 100%;
+}
+.document {
+  position: relative;
 }
 
 /**---------------------------- Header Section ----------------------------*/
@@ -151,28 +153,21 @@ main {
 
 /* Hamburger Menu */
 
-.hamburger {
-  left: 0;
-  z-index: 100;
+.hamburger-button {
+  right: 1rem;
   position: absolute;
-  box-shadow: 0.1rem 0.1rem 0.2rem var(--color-hamburger-shadow),
-    -0.1rem -0.1rem 0.2rem var(--color-hamburger-shadow);
-  transform: translateX(4rem) rotate(0deg);
   width: 3rem;
   height: 3rem;
-  border-radius: 0.4rem;
-  top: 0.8rem;
+  top: 1rem;
   transition: all 0.5s ease-in-out;
   cursor: pointer;
   background-color: transparent;
-}
 
-.hamburger-checkbox:checked + .hamburger__center-line::before {
-  transform: rotate(45deg) translate(0.4rem, 0.43rem);
-}
-
-.hamburger-checkbox:checked + .hamburger__center-line::after {
-  transform: rotate(-45deg) translate(0.4rem, -0.43rem);
+  border: none;
+  display: flex;
+  align-items: center;
+  font-size: 3rem;
+  color: var(--color-hamburger-lines);
 }
 
 /* Side Nav */
@@ -188,16 +183,24 @@ main {
   /* position: -webkit-sticky;
   position: sticky;
   top: 0; */
+  overflow-x: hidden;
   position: relative;
+  border-right: 2px solid var(--color-sidenav-right-border);
+}
+
+.side-nav.close {
+  width: 0;
+}
+.side-nav * {
+  white-space: nowrap;
 }
 
 .side-nav__contents {
   height: 100vh;
   width: 100%;
-  margin-top: 6.5rem;
+  margin-top: 4rem;
   flex-direction: column;
   justify-content: space-between;
-  border-right: 2px solid var(--color-sidenav-right-border);
   padding: 2rem;
   flex-grow: 0;
 }
@@ -428,6 +431,7 @@ main {
   height: 3.8rem;
   position: relative;
   z-index: 0;
+  overflow: hidden;
 }
 
 .darkmode::after {
