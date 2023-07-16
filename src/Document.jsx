@@ -1,15 +1,31 @@
 import React from 'react';
 
-const Document = () => {
+const Document = ({ setIsSideNavOpen }) => {
   return (
     <div
+      className="document"
       style={{
         bottom: '0',
         height: '93vh',
-        overflow: 'scroll',
+        overflow: 'auto',
         borderBottom: '1px dashed black',
       }}
     >
+      <button
+        onClick={(e) => {
+          setIsSideNavOpen((current) => !current);
+        }}
+        style={{
+          transform: 'rotate(90deg) translate()',
+          position: 'absolute',
+          left: '0',
+          top: '50%',
+          zIndex: '100',
+          cursor: 'pointer',
+        }}
+      >
+        Open
+      </button>
       <p
         style={{
           fontSize: '5rem',

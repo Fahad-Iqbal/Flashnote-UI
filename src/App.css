@@ -9,7 +9,7 @@
 html {
   /* 1rem = 10px for all elements*/
   font-size: 62.5%;
-  transition: all 0.5s ease;
+  transition: color 0.5s ease;
 }
 
 html:not(:has(.darkmode input:checked)) {
@@ -75,13 +75,15 @@ main {
   background: var(--color-background);
   width: 100%;
   height: 100vh;
-  max-width: 1400px;
   margin: 0 auto;
   transition: all 0.5s linear;
-  /* overflow-y: hidden; */
+  overflow-x: hidden;
 }
 .document-area {
   width: 100%;
+}
+.document {
+  position: relative;
 }
 
 /**---------------------------- Header Section ----------------------------*/
@@ -151,28 +153,21 @@ main {
 
 /* Hamburger Menu */
 
-.hamburger {
-  left: 0;
-  z-index: 100;
+.hamburger-button {
+  right: 1rem;
   position: absolute;
-  box-shadow: 0.1rem 0.1rem 0.2rem var(--color-hamburger-shadow),
-    -0.1rem -0.1rem 0.2rem var(--color-hamburger-shadow);
-  transform: translateX(4rem) rotate(0deg);
   width: 3rem;
   height: 3rem;
-  border-radius: 0.4rem;
-  top: 0.8rem;
+  top: 1rem;
   transition: all 0.5s ease-in-out;
   cursor: pointer;
   background-color: transparent;
-}
 
-.hamburger-checkbox:checked + .hamburger__center-line::before {
-  transform: rotate(45deg) translate(0.4rem, 0.43rem);
-}
-
-.hamburger-checkbox:checked + .hamburger__center-line::after {
-  transform: rotate(-45deg) translate(0.4rem, -0.43rem);
+  border: none;
+  display: flex;
+  align-items: center;
+  font-size: 3rem;
+  color: var(--color-hamburger-lines);
 }
 
 /* Side Nav */
@@ -188,16 +183,24 @@ main {
   /* position: -webkit-sticky;
   position: sticky;
   top: 0; */
+  overflow-x: hidden;
   position: relative;
+  border-right: 2px solid var(--color-sidenav-right-border);
+}
+
+.side-nav.close {
+  width: 0;
+}
+.side-nav * {
+  white-space: nowrap;
 }
 
 .side-nav__contents {
   height: 100vh;
   width: 100%;
-  margin-top: 6.5rem;
+  margin-top: 4rem;
   flex-direction: column;
   justify-content: space-between;
-  border-right: 2px solid var(--color-sidenav-right-border);
   padding: 2rem;
   flex-grow: 0;
 }
@@ -303,7 +306,8 @@ main {
 .side-nav__contents--bottom {
   display: flex;
   width: 100%;
-  transition: all 0.5s linear;
+  transition: color 0.5s linear;
+  transition: background-color 0.5s linear;
 }
 
 /* Secondary Button Styling: All Documents */
@@ -428,6 +432,7 @@ main {
   height: 3.8rem;
   position: relative;
   z-index: 0;
+  overflow: hidden;
 }
 
 .darkmode::after {
@@ -458,4 +463,160 @@ main {
   height: 1.3rem;
   width: auto;
   object-fit: cover;
+}
+
+@media only screen and (min-width: 1051px) and (max-width: 1235px) {
+  .side-nav {
+    width: 25%;
+  }
+  .notes-section {
+    width: 75%;
+  }
+}
+
+@media only screen and (min-width: 1001px) and (max-width: 1050px) {
+  .side-nav {
+    width: 28%;
+  }
+  .notes-section {
+    width: 72%;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .header {
+    height: 4.5rem;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    justify-content: flex-end;
+  }
+  .log-out {
+    position: absolute;
+    display: none;
+  }
+
+  .logo-container {
+    margin-top: 0;
+    padding-top: 0;
+    align-self: start;
+    margin-right: 2rem;
+    transform: translateY(-0.5rem);
+  }
+
+  .logo-icon {
+    height: 2.4rem;
+  }
+  .logo-text {
+    font-size: 3rem;
+  }
+
+  .logo-text span {
+    height: 3.7rem;
+  }
+  .side-nav__contents {
+    border: none;
+    margin-top: 4.5rem;
+  }
+
+  .hamburger {
+    display: block;
+  }
+  .hamburger:has(.hamburger-checkbox:checked) + .side-nav {
+    left: 0;
+    transition: all 0.5s ease;
+  }
+  main:has(.hamburger-checkbox:checked) {
+    transition: all 0.4s ease-in-out;
+
+    background-color: rgba(0, 0, 0, 0.747);
+  }
+
+  main:has(.hamburger-checkbox:checked) > .footer-nav {
+    z-index: -1;
+  }
+
+  main:has(.hamburger-checkbox:checked) > .notes-section {
+    z-index: -2;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .footer-nav .primary-button {
+    justify-content: center;
+  }
+
+  .primary-button > svg,
+  .footer-nav .search .search-button > svg {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+
+  .side-nav {
+    width: 30rem;
+    background-color: var(--color-background);
+    position: fixed;
+    left: -100%;
+    transition: all 0.4s ease-in-out;
+    z-index: 1;
+    box-shadow: 0.1rem 0 0.3rem #005f7448;
+  }
+
+  .notes-section {
+    top: 5rem;
+    width: 100%;
+  }
+
+  .footer-nav {
+    display: flex;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .footer-nav .primary-button > p,
+  .footer-nav .search .search-button > p {
+    font-size: 1.2rem;
+  }
+
+  .primary-button > svg,
+  .footer-nav .search .search-button > svg {
+    height: 1.3rem;
+    width: 1.3rem;
+  }
+}
+
+@media only screen and (max-width: 550px) {
+  .primary-button > svg,
+  .footer-nav .search .search-button > svg {
+    height: 1.5rem;
+    width: 1.5rem;
+    color: var(--mobile-footer-icons);
+  }
+
+  .footer-nav .search .search-button > p,
+  .footer-nav .primary-button > p {
+    display: none;
+  }
+  .footer-nav .search .search-button,
+  .footer-nav .primary-button {
+    justify-content: center;
+    border: none;
+    background-color: transparent;
+  }
+
+  .logo-text {
+    display: none;
+  }
+  .logo-container {
+    align-items: center;
+    margin: 0;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .hamburger:has(.hamburger-checkbox:checked) {
+    transform: translateX(calc(100vw - 5rem)) rotate(360deg);
+  }
+  .side-nav {
+    width: 100%;
+  }
 }
