@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
+import './sidebar.css';
 
-const Navbar = ({ isSideNavOpen, setIsSideNavOpen }) => {
+const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   return (
     // <!-- Side Nav -->
-    <nav className={isSideNavOpen ? 'side-nav' : 'side-nav close'}>
+    <nav className={isSidebarOpen ? 'sidebar' : 'sidebar close'}>
       <button
-        onClick={() => setIsSideNavOpen(false)}
+        onClick={() => setIsSidebarOpen(false)}
         className="hamburger-button"
       >
         ✖
       </button>
 
       {/* <!-- Side Bar Contents --> */}
-      <div className="side-nav__contents">
+      <div className="sidebar__contents">
         {/* <!-- Top part of side bar --> */}
-        <div className="side-nav__contents--top">
+        <div className="sidebar__contents--top">
           {/* <!-- User Section --> */}
           <div className="user">
             <div className="user-name__user-icon__container">
@@ -170,7 +171,7 @@ const Navbar = ({ isSideNavOpen, setIsSideNavOpen }) => {
           </div>
         </div>
         {/* <!-- Bottom Part of side bar --> */}
-        <div className="side-nav__contents--bottom">
+        <div className="sidebar__contents--bottom">
           {/* <!-- Dark mode Checkbox --> */}
 
           <label className="docs-dropdown-button darkmode">
@@ -193,4 +194,4 @@ const Navbar = ({ isSideNavOpen, setIsSideNavOpen }) => {
   );
 };
 
-export default Navbar;
+export default Sidebar;

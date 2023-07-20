@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Document = ({ setIsSideNavOpen }) => {
+const Document = () => {
   return (
     <div
       className="document"
@@ -11,21 +11,6 @@ const Document = ({ setIsSideNavOpen }) => {
         borderBottom: '1px dashed black',
       }}
     >
-      <button
-        onClick={(e) => {
-          setIsSideNavOpen((current) => !current);
-        }}
-        style={{
-          transform: 'rotate(90deg) translate()',
-          position: 'absolute',
-          left: '0',
-          top: '50%',
-          zIndex: '100',
-          cursor: 'pointer',
-        }}
-      >
-        Open
-      </button>
       <p
         style={{
           fontSize: '5rem',

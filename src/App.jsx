@@ -2,23 +2,21 @@ import { useState } from 'react';
 import './App.css';
 import Document from './Document';
 import Header from './Header';
-import Navbar from './Navbar';
+import Sidebar from './Sidebar';
+import Sidebar2 from './Sidebar2';
 
 export default function App() {
-  const [isSideNavOpen, setIsSideNavOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   return (
     <main>
-      <Navbar
-        isSideNavOpen={isSideNavOpen}
-        setIsSideNavOpen={setIsSideNavOpen}
+      <Sidebar2
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
       />
 
-      <div className="document-area">
+      <div className="main-container">
         <Header />
-        <Document
-          isSideNavOpen={isSideNavOpen}
-          setIsSideNavOpen={setIsSideNavOpen}
-        />
+        <Document />
       </div>
     </main>
   );
