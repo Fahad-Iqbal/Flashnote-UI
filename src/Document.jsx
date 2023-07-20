@@ -8,7 +8,6 @@ const Document = () => {
         bottom: '0',
         height: '93vh',
         overflow: 'auto',
-        borderBottom: '1px dashed black',
       }}
     >
       <p
