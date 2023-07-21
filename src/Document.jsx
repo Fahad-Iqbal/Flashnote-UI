@@ -5,6 +5,9 @@ const Document = () => {
     <div
       className="document"
       style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         bottom: '0',
         height: '93vh',
         overflow: 'auto',
@@ -13,9 +16,6 @@ const Document = () => {
       <p
         style={{
           fontSize: '5rem',
-          textAlign: 'center',
-          verticalAlign: 'center',
-          padding: '30vh',
         }}
       >
         Document Area

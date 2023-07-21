@@ -178,15 +178,72 @@ button.btn img {
   border-radius: 0.24rem;
   transition: all 0.3s ease-in-out;
 }
+.hamburger-button__bottom,
+.hamburger-button__top {
+  height: 0.3rem;
+}
 
 .hamburger-button.close .hamburger-button__top {
-  transform: rotate(45deg) translate(18%, 0.5rem);
+  transform: rotate(45deg) translate(18%, 0.57rem);
 }
 .hamburger-button.close .hamburger-button__bottom {
-  transform: rotate(-45deg) translate(18%, -0.5rem);
+  transform: rotate(-45deg) translate(18%, -0.57rem);
 }
 .hamburger-button.close .hamburger-button__middle {
   opacity: 0;
+}
+
+/* Documents drop down for draft and finished documents */
+
+.docs-list-container {
+  height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.docs-list-container.open {
+  transition: all 0.3s ease-in-out;
+  border-bottom: 0.2rem solid var(--color-sidebar-right-border);
+  border-top: 0.3rem solid var(--color-sidebar-right-border);
+  border-radius: 0.5rem;
+}
+
+.docs-list-container ul {
+  padding: 0.5rem 0;
+}
+
+.doc-button {
+  display: flex;
+  width: 100%;
+  background-color: var(--color-background);
+  padding: 0.5rem;
+  margin-bottom: 0.2rem;
+  margin-left: 1rem;
+  gap: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s linear;
+}
+
+.doc-button:hover {
+  background-color: var(--docs-selected-background);
+  transform: translateX(0.5rem);
+}
+
+.doc-button img {
+  width: auto;
+  height: 1.7rem;
+  object-fit: cover;
+}
+
+.doc-button p {
+  color: var(--docs-links-text);
+  font-weight: 600;
+  font-size: 1.4rem;
+}
+
+.selected {
+  background-color: var(--docs-selected-background);
 }
 
 @media screen and (max-width: 1000px) {
@@ -202,7 +259,7 @@ button.btn img {
 
   main:not(:has(.sidebar.close)) .main-container {
     filter: blur(2px) brightness(0.3);
-    background-color: rgba(0, 0, 0, 0.514);
+    background-color: rgba(0, 0, 0, 0.753);
     pointer-events: none;
     transition: all 0.3s;
   }

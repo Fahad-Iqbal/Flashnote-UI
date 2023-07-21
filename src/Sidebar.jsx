@@ -1,7 +1,11 @@
-import OpenTab from './OpenTab';
+import { useState } from 'react';
+import DocsListContainer from './DocsListContainer';
 import HamburgerButton from './HamburgerButton';
+import './sidebar.css';
 
-const Sidebar2 = ({ isSidebarOpen, setIsSidebarOpen }) => {
+const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
+  const [isFinishedOpen, setIsFinishedOpen] = useState(false);
+  const [isDraftOpen, setIsDraftOpen] = useState(false);
   return (
     <aside className="sidebar-container">
       <HamburgerButton
@@ -52,20 +56,48 @@ const Sidebar2 = ({ isSidebarOpen, setIsSidebarOpen }) => {
             />
             <p>All Documents</p>
           </button>
-          <button className="draft btn secondary">
+          <button
+            className="draft btn secondary"
+            onClick={() => {
+              setIsDraftOpen((current) => !current);
+            }}
+          >
             <img
               src="https://res.cloudinary.com/drbpsxnln/image/upload/v1675047823/Vector_3_drymhl.svg"
               alt="Caret symbol"
+              style={
+                isDraftOpen
+                  ? {
+                      transform: 'rotate(90deg)',
+                      transition: 'all 0.2s linear',
+                    }
+                  : {}
+              }
             />
             <p>Draft</p>
           </button>
-          <button className="finished btn secondary">
+          <DocsListContainer isOpen={isDraftOpen} />
+          <button
+            className="finished btn secondary"
+            onClick={() => {
+              setIsFinishedOpen((current) => !current);
+            }}
+          >
             <img
               src="https://res.cloudinary.com/drbpsxnln/image/upload/v1675047823/Vector_3_drymhl.svg"
               alt="Caret symbol"
+              style={
+                isFinishedOpen
+                  ? {
+                      transform: 'rotate(90deg)',
+                      transition: 'all 0.2s linear',
+                    }
+                  : {}
+              }
             />
             <p>Finished</p>
           </button>
+          <DocsListContainer isOpen={isFinishedOpen} />
         </div>
         <div className="sidebar-bottom">
           <button
@@ -92,4 +124,4 @@ const Sidebar2 = ({ isSidebarOpen, setIsSidebarOpen }) => {
   // <!-- Side Nav -->
 };
 
-export default Sidebar2;
+export default Sidebar;

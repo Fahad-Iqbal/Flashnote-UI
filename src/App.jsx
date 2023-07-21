@@ -6,6 +6,7 @@ import Sidebar from './Sidebar';
 
 export default function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
   return (
     <main>
       <Sidebar
