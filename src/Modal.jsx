@@ -24,7 +24,6 @@ const Modal = ({ modalType, setFn }) => {
         style={{
           width: '70%',
           height: '80%',
-          backgroundColor: 'white',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
