@@ -4,6 +4,8 @@ import Document from './Document';
 import Header from './Header';
 import Sidebar from './Sidebar/Sidebar';
 import { draftDocs, finishedDocs } from './data.js';
+import Modal from './Modal';
+
 const draft = draftDocs;
 const finished = finishedDocs;
 
@@ -12,13 +14,44 @@ export default function App() {
   const [draftDocs, setDraftDocs] = useState(draft);
   const [finishedDocs, setFinishedDocs] = useState(finished);
   const [selectedDoc, setSelectedDoc] = useState(null);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(true);
   const [isAllDocsOpen, setIsAllDocsOpen] = useState(false);
   const [isPracticeOpen, setIsPracticeOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isUserOpen, setIsUserOpen] = useState(false);
+
+  const modals = [
+    { isModalOpen: isSearchOpen, modalType: 'Search', setFn: setIsSearchOpen },
+    {
+      isModalOpen: isAllDocsOpen,
+      modalType: 'All Documents',
+      setFn: setIsAllDocsOpen,
+    },
+    {
+      isModalOpen: isPracticeOpen,
+      modalType: 'Practice Flashcards',
+      setFn: setIsPracticeOpen,
+    },
+    {
+      isModalOpen: isCreateOpen,
+      modalType: 'Create Document',
+      setFn: setIsCreateOpen,
+    },
+    {
+      isModalOpen: isUserOpen,
+      modalType: 'User Options',
+      setFn: setIsUserOpen,
+    },
+  ];
 
   return (
     <main>
+      {modals.map((modal) => {
+        const { isModalOpen, modalType, setFn } = modal;
+        if (isModalOpen)
+          return <Modal key={modalType} modalType={modalType} setFn={setFn} />;
+      })}
+
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
