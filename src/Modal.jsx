@@ -30,11 +30,17 @@ const Modal = ({ modalType, setFn }) => {
           justifyContent: 'center',
           flexDirection: 'column',
           minWidth: '500px',
+          backgroundColor: 'var(--color-background)',
+          color: 'var(--note-text-color)',
+          borderRadius: '1rem',
         }}
       >
-        <h1>{modalType} Modal</h1>
+        <h1 style={{ fontSize: '4rem' }}>{modalType} Modal</h1>
         <br />
-        <h3>Click the button or click outside the modal to exit</h3>
+        <h3 style={{ fontSize: '2rem' }}>
+          Click the button or click outside the modal to exit
+        </h3>
+        <br />
         <br />
         <button
           className="btn"

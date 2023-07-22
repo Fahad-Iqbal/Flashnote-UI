@@ -14,7 +14,7 @@ export default function App() {
   const [draftDocs, setDraftDocs] = useState(draft);
   const [finishedDocs, setFinishedDocs] = useState(finished);
   const [selectedDoc, setSelectedDoc] = useState(null);
-  const [isSearchOpen, setIsSearchOpen] = useState(true);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAllDocsOpen, setIsAllDocsOpen] = useState(false);
   const [isPracticeOpen, setIsPracticeOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -59,6 +59,11 @@ export default function App() {
         finishedDocs={finishedDocs}
         selectedDoc={selectedDoc}
         setSelectedDoc={setSelectedDoc}
+        setIsSearchOpen={setIsSearchOpen}
+        setIsUserOpen={setIsUserOpen}
+        setIsPracticeOpen={setIsPracticeOpen}
+        setIsAllDocsOpen={setIsAllDocsOpen}
+        setIsCreateOpen={setIsCreateOpen}
       />
 
       <div className="main-container">

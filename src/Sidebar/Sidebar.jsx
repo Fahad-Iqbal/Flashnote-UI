@@ -10,6 +10,11 @@ const Sidebar = ({
   finishedDocs,
   selectedDoc,
   setSelectedDoc,
+  setIsSearchOpen,
+  setIsUserOpen,
+  setIsCreateOpen,
+  setIsPracticeOpen,
+  setIsAllDocsOpen,
 }) => {
   const [isFinishedOpen, setIsFinishedOpen] = useState(false);
   const [isDraftOpen, setIsDraftOpen] = useState(false);
@@ -22,7 +27,12 @@ const Sidebar = ({
 
       <nav className={isSidebarOpen ? 'sidebar' : 'sidebar close'}>
         <div className="sidebar-top">
-          <button className="user btn">
+          <button
+            className="user btn"
+            onClick={() => {
+              setIsUserOpen(true);
+            }}
+          >
             <div className="user-icon-name-container">
               <img
                 className="user-icon"
@@ -38,7 +48,12 @@ const Sidebar = ({
               style={{ height: '0.4rem' }}
             />
           </button>
-          <button className="search btn">
+          <button
+            className="search btn"
+            onClick={() => {
+              setIsSearchOpen(true);
+            }}
+          >
             <img
               src="https://res.cloudinary.com/drbpsxnln/image/upload/v1675048711/Vector_6_fpgans.svg"
               alt="Search Logo"
@@ -46,7 +61,12 @@ const Sidebar = ({
             />
             <p>Search</p>
           </button>
-          <button className="practice-flashcards btn primary">
+          <button
+            className="practice-flashcards btn primary"
+            onClick={() => {
+              setIsPracticeOpen(true);
+            }}
+          >
             <img
               src="https://res.cloudinary.com/drbpsxnln/image/upload/v1675047823/Vector_1_ibhk9b.svg"
               alt="Flashcards"
@@ -55,7 +75,12 @@ const Sidebar = ({
               Practice <span>F</span>lashcards
             </p>
           </button>
-          <button className="all btn secondary">
+          <button
+            className="all btn secondary"
+            onClick={() => {
+              setIsAllDocsOpen(true);
+            }}
+          >
             {' '}
             <img
               src="https://res.cloudinary.com/drbpsxnln/image/upload/v1675047823/Vector_2_yvljzo.svg"
@@ -125,7 +150,12 @@ const Sidebar = ({
           >
             <p>Dark Mode</p>
           </button>
-          <button className="create btn primary">
+          <button
+            className="create btn primary"
+            onClick={() => {
+              setIsCreateOpen(true);
+            }}
+          >
             <img
               src="https://res.cloudinary.com/drbpsxnln/image/upload/v1675047823/Vector_4_hzjlkw.svg"
               alt="Plus Icon"

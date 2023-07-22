@@ -16,6 +16,7 @@ const Document = ({ document }) => {
           fontSize: '5rem',
           textAlign: 'center',
           marginBottom: '10rem',
+          color: 'var(--note-text-color)',
         }}
       >
         {document ? document.title : 'Please select or create a new document'}
