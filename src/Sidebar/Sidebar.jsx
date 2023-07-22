@@ -3,7 +3,14 @@ import DocsListContainer from './DocsListContainer';
 import HamburgerButton from './HamburgerButton';
 import './sidebar.css';
 
-const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
+const Sidebar = ({
+  isSidebarOpen,
+  setIsSidebarOpen,
+  draftDocs,
+  finishedDocs,
+  selectedDoc,
+  setSelectedDoc,
+}) => {
   const [isFinishedOpen, setIsFinishedOpen] = useState(false);
   const [isDraftOpen, setIsDraftOpen] = useState(false);
   return (
@@ -76,7 +83,12 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
             />
             <p>Draft</p>
           </button>
-          <DocsListContainer isOpen={isDraftOpen} />
+          <DocsListContainer
+            isOpen={isDraftOpen}
+            documents={draftDocs}
+            selectedDoc={selectedDoc}
+            setSelectedDoc={setSelectedDoc}
+          />
           <button
             className="finished btn secondary"
             onClick={() => {
@@ -97,7 +109,12 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
             />
             <p>Finished</p>
           </button>
-          <DocsListContainer isOpen={isFinishedOpen} />
+          <DocsListContainer
+            isOpen={isFinishedOpen}
+            documents={finishedDocs}
+            selectedDoc={selectedDoc}
+            setSelectedDoc={setSelectedDoc}
+          />
         </div>
         <div className="sidebar-bottom">
           <button

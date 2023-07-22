@@ -1,7 +1,12 @@
 import { useRef } from 'react';
 import DocumentButton from './DocumentButton';
 
-const DocsListContainer = ({ isOpen }) => {
+const DocsListContainer = ({
+  isOpen,
+  documents,
+  selectedDoc,
+  setSelectedDoc,
+}) => {
   const list = useRef();
 
   const height = list?.current?.getBoundingClientRect()?.height;
@@ -11,21 +16,17 @@ const DocsListContainer = ({ isOpen }) => {
       style={isOpen ? { height: height } : {}}
     >
       <ul ref={list}>
-        <li>
-          <DocumentButton />
-        </li>
-        <li>
-          <DocumentButton />
-        </li>
-        <li>
-          <DocumentButton />
-        </li>
-        <li>
-          <DocumentButton />
-        </li>
-        <li>
-          <DocumentButton />
-        </li>
+        {documents.map((document) => {
+          return (
+            <li key={document.id}>
+              <DocumentButton
+                document={document}
+                selectedDoc={selectedDoc}
+                setSelectedDoc={setSelectedDoc}
+              />
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

@@ -68,7 +68,7 @@ button.btn img {
   font-weight: 400;
   justify-content: start;
   cursor: pointer;
-  transition: transform 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .primary span {
@@ -90,7 +90,7 @@ button.btn img {
   box-shadow: -0.1rem -0.1rem 0.2rem var(--secondary-button-shadow-top),
     0.1rem 0.1rem 0.2rem var(--secondary-button-shadow-bottom);
   cursor: pointer;
-  transition: transform 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .secondary img {
@@ -199,6 +199,7 @@ button.btn img {
   height: 0;
   overflow: hidden;
   transition: all 0.3s ease-in-out;
+  margin-bottom: -0.8rem;
 }
 
 .docs-list-container.open {
@@ -206,10 +207,7 @@ button.btn img {
   border-bottom: 0.2rem solid var(--color-sidebar-right-border);
   border-top: 0.3rem solid var(--color-sidebar-right-border);
   border-radius: 0.5rem;
-}
-
-.docs-list-container ul {
-  padding: 0.5rem 0;
+  margin-bottom: 0;
 }
 
 .doc-button {
@@ -223,6 +221,9 @@ button.btn img {
   border: none;
   cursor: pointer;
   transition: all 0.3s linear;
+}
+.doc-button:last-child {
+  padding-bottom: 1rem;
 }
 
 .doc-button:hover {

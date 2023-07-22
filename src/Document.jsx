@@ -1,6 +1,4 @@
-import React from 'react';
-
-const Document = () => {
+const Document = ({ document }) => {
   return (
     <div
       className="document"
@@ -16,9 +14,11 @@ const Document = () => {
       <p
         style={{
           fontSize: '5rem',
+          textAlign: 'center',
+          marginBottom: '10rem',
         }}
       >
-        Document Area
+        {document ? document.title : 'Please select or create a new document'}
       </p>
     </div>
   );
