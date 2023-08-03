@@ -1,5 +1,189 @@
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* 1rem = 10px for all elements*/
+  font-size: 62.5%;
+  /* transition: color 0.3s ease; */
+}
+
+html {
+  --color-background: white;
+  --color-header-box-shadow: #001f2785;
+  --color-bullet: #001f27;
+  --color-hamburger-lines: #4d96a7;
+  --color-arrow: #00758e;
+  --color-hamburger-shadow: rgba(0, 0, 0, 0.226);
+  --color-sidebar-right-border: #cce1e6;
+  --user-name-text: #005f74;
+  --search-button-background: #f2f2f2;
+  --search-button-text: #6b6f70;
+  --primary-button-text: #f2f2f2;
+  --primary-button-background: #006981;
+  --secondary-button-shadow-top: #98c2cd71;
+  --secondary-button-shadow-bottom: #00698170;
+  --docs-links-text: #58696c;
+  --docs-selected-background: #b3d2d9;
+  --note-text-color: #00262f;
+  --footer-box-shadow: #0020275b;
+  --bullet-line: #d9d9d9;
+  --cloze-text: #0989a6;
+  --cloze-background: #c6cbe8;
+  --mobile-footer-icons: black;
+  --open-tab-color: #720000;
+}
+
+html.darkmode {
+  --color-background: rgb(54, 66, 66);
+  --color-header-box-shadow: #6ccbe285;
+  --color-bullet: #97bcc5;
+  --color-hamburger-lines: #9ecfda;
+  --color-arrow: #b4d6dd;
+  --color-hamburger-shadow: rgba(199, 197, 197, 0.603);
+  --color-sidebar-right-border: #517b86;
+  --user-name-text: #97cbd6;
+  --search-button-background: #c4c4c4;
+  --search-button-text: #626363;
+  --primary-button-text: #f2f2f2;
+  --primary-button-background: #002e38;
+  --secondary-button-shadow-top: #98c2cd71;
+  --secondary-button-shadow-bottom: #7fbfce70;
+  --docs-links-text: #a8bfc4;
+  --docs-selected-background: #555f61;
+  --note-text-color: #c4c7c9;
+  --footer-box-shadow: #96d8ec57;
+  --bullet-line: #d9d9d9;
+  --cloze-text: #0989a6;
+  --cloze-background: #c6cbe8;
+  --mobile-footer-icons: rgb(255, 255, 255);
+  --open-tab-color: #dddddd;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  height: 100vh;
+  transition: all 0.3s linear;
+}
+
 main {
-  text-align: center;
-  vertical-align: center;
-  line-height: 100vh
+  display: flex;
+  background: var(--color-background);
+  width: 100%;
+  height: 100vh;
+  margin: 0 auto;
+  transition: all 0.3s linear;
+  overflow-x: hidden;
+}
+
+/**---------------------------- Header Section ----------------------------*/
+.header {
+  display: flex;
+  padding: 0.2rem 2rem 0.2rem;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0.1rem 0.1rem 0.4rem 0 var(--color-header-box-shadow);
+  background-color: var(--color-background);
+  width: 100%;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  transition: all 0.3s linear;
+  height: 7vh;
+}
+
+/**------------------------------ Logo  ------------------------------*/
+.logo-container {
+  margin-left: 4rem;
+  font-family: 'DM Serif Display', serif;
+  display: flex;
+  height: 7vh;
+  width: auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+.logo-icon {
+  width: auto;
+  height: 70%;
+  display: block;
+  object-fit: cover;
+}
+.logo-text-container {
+  height: 100%;
+}
+.logo-text {
+  display: inline-block;
+  height: 100%;
+  font-size: 5vh;
+  font-weight: 400;
+  color: #001f27;
+}
+.logo-text span {
+  line-height: 1;
+  color: #720000;
+  text-decoration: underline;
+  text-underline-position: below;
+  text-underline-offset: 0.5vh;
+}
+
+/**----------------------------- Log out button -----------------------------*/
+.log-out {
+  height: 3vh;
+  border: 0.1rem solid var(--color-arrow);
+  border-radius: 0.3rem;
+  color: var(--color-arrow);
+  font-size: 1.5vh;
+  font-weight: 500;
+  background-color: var(--color-background);
+  padding: 0.2rem 1rem;
+  align-self: center;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+
+.log-out:hover {
+  background-color: var(--color-arrow);
+  color: var(--color-background);
+}
+
+.main-container {
+  width: 100%;
+  transition: all 0.3s linear;
+}
+.document {
+  position: relative;
+  transition: all 0.3s linear;
+}
+
+@media only screen and (max-width: 1000px) {
+  .header {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    justify-content: flex-end;
+  }
+  .log-out {
+    position: absolute;
+    display: none;
+  }
+
+  .logo-container {
+    margin-top: 0;
+    padding-top: 0;
+    margin-right: 2rem;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .logo-text {
+    display: none;
+  }
+  .logo-container {
+    align-items: center;
+    margin: 0;
+  }
 }
