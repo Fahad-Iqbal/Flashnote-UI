@@ -2,6 +2,7 @@ import { useState } from 'react';
 import DocsListContainer from './DocsListContainer';
 import HamburgerButton from './HamburgerButton';
 import './sidebar.css';
+import {Link } from 'react-router-dom'
 
 const Sidebar = ({
   isSidebarOpen,
