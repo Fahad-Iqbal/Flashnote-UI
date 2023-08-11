@@ -32,6 +32,7 @@ const Login = ({ user, setUser }) => {
           localStorage.setItem('user', JSON.stringify(newUser));
         }}
       >
+        Note: No authorization set up yet
         <div className="logo-container">
           <img
             className="logo-icon"
@@ -70,7 +71,6 @@ const Login = ({ user, setUser }) => {
           placeholder="Email"
           variant="standard"
         />
-
         <TextField
           required
           inputProps={{ style: { fontSize: 16 } }}
@@ -83,7 +83,6 @@ const Login = ({ user, setUser }) => {
           placeholder="Password"
           variant="standard"
         />
-
         <Button type="submit" variant="contained">
           {inputs.isMember ? 'Sign In' : 'Sign Up'}
         </Button>

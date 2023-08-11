@@ -26,7 +26,7 @@ const Landing = ({ user }) => {
             </div>
           </div>
         </div>
-        <h1>Take your learning to extraordinary heights</h1>
+        <h1>Take Your Learning to Extraordinary Heights</h1>
         <p>
           FlashNote is a note-taking and flashcard app, designed to help you
           understand and master memory intensive subjects.{' '}
