@@ -8,7 +8,7 @@ const Login = ({ user, setUser }) => {
     name: '',
     email: '',
     password: '',
-    isMember: false,
+    isMember: true,
   });
 
   const handleChange = (e) => {

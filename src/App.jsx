@@ -18,7 +18,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home user={user} setUser={setUser} />} />
         <Route path="login" element={<Login user={user} setUser={setUser} />} />
-        <Route path="landing" user={user} element={<Landing />} />
+        <Route path="landing" element={<Landing user={user} />} />
       </Routes>
     </BrowserRouter>
   );

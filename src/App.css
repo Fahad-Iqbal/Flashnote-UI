@@ -185,7 +185,7 @@ main {
 }
 
 @media only screen and (max-width: 650px) {
-  .logo-text {
+  header .logo-text {
     display: none;
   }
   .logo-container {
