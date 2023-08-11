@@ -159,6 +159,12 @@ main {
   position: relative;
   transition: all 0.3s linear;
 }
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
 
 @media only screen and (max-width: 1000px) {
   .header {

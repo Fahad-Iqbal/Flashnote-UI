@@ -1,4 +1,4 @@
-const Header = () => {
+const Header = ({ setUser }) => {
   return (
     // <!-- Header section -->
     <header className="header">
@@ -16,7 +16,15 @@ const Header = () => {
         </div>
       </div>
       {/* <!-- Log Out Button --> */}
-      <button className="log-out">Log out</button>
+      <button
+        className="log-out"
+        onClick={() => {
+          setUser(null);
+          localStorage.removeItem('user');
+        }}
+      >
+        Log out
+      </button>
     </header>
   );
 };

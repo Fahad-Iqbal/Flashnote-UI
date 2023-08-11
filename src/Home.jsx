@@ -4,11 +4,12 @@ import Header from './Header';
 import Sidebar from './Sidebar/Sidebar';
 import { draftDocs, finishedDocs } from './data.js';
 import Modal from './Modal';
+import { Navigate } from 'react-router-dom';
 
 const draft = draftDocs;
 const finished = finishedDocs;
 
-const Home = () => {
+const Home = ({ user, setUser }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [draftDocs, setDraftDocs] = useState(draft);
   const [finishedDocs, setFinishedDocs] = useState(finished);
@@ -43,6 +44,7 @@ const Home = () => {
     },
   ];
 
+  if (!user) return <Navigate to={'/landing'} />;
   return (
     <main>
       {modals.map((modal) => {
@@ -52,6 +54,7 @@ const Home = () => {
       })}
 
       <Sidebar
+        user={user}
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
         draftDocs={draftDocs}
@@ -66,7 +69,7 @@ const Home = () => {
       />
 
       <div className="main-container">
-        <Header />
+        <Header setUser={setUser} />
         <Document document={selectedDoc} />
       </div>
     </main>
