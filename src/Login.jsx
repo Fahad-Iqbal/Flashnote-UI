@@ -132,7 +132,13 @@ const Wrapper = styled.div`
     border-radius: 0.2rem;
     font-size: 1.6rem;
     margin-top: 2rem;
+    background-color: var(--primary-button-background);
+
+    &:hover {
+      background-color: var(--primary-button-background);
+    }
   }
+
   p {
     font-size: 1.5rem;
   }
@@ -142,7 +148,8 @@ const Wrapper = styled.div`
     cursor: pointer;
     font-size: 1.5rem;
     margin-left: 0.5rem;
-    color: blue;
+    color: var(--primary-button-background);
+    text-decoration: underline;
   }
   @media (max-width: 650px) {
     .logo-text {
