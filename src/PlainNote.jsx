@@ -23,7 +23,6 @@ const PlainNote = () => {
           e.preventDefault();
         }
         setContent(`${e.target.innerText}`);
-        console.log(e.target.innerText);
       }}
       className="plain-note"
     ></div>
