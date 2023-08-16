@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import DocumentTitle from './DocumentTitle';
 import Note from './Note';
-import SpeedDialTest from './SpeedDialTest';
+import SpeedDialTest from './SpeedDialPlain';
 const Document = ({ document }) => {
   const { id, title, content } = document || {
     id: 0,
@@ -12,10 +12,13 @@ const Document = ({ document }) => {
       <DocumentTitle title={title} />
       <ul>
         <li>
-          <Note />
+          <Note type={'section-heading'} />
         </li>
         <li>
-          <Note />
+          <Note type={'plain'} />
+        </li>
+        <li>
+          <Note type={'plain'} />
         </li>
       </ul>
     </Wrapper>

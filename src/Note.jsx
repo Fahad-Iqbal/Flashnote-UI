@@ -1,15 +1,23 @@
 import React, { forwardRef, useRef } from 'react';
 import PlainNote from './PlainNote';
 import styled from 'styled-components';
-import SpeedDialTest from './SpeedDialTest';
+import SpeedDialPlain from './SpeedDialPlain';
 
-const Note = () => {
-  return (
-    <Wrapper>
-      <PlainNote />
-      <SpeedDialTest />
-    </Wrapper>
-  );
+const Note = ({ type }) => {
+  if (type === 'plain')
+    return (
+      <Wrapper>
+        <PlainNote />
+        <SpeedDialPlain />
+      </Wrapper>
+    );
+  if (type === 'plain')
+    return (
+      <Wrapper>
+        <PlainNote />
+        <SpeedDialPlain />
+      </Wrapper>
+    );
 };
 
 const Wrapper = styled.div`
@@ -39,7 +47,7 @@ const Wrapper = styled.div`
   }
 
   &:hover .css-1x3g5n7-MuiButtonBase-root-MuiFab-root-MuiSpeedDial-fab,
-  &:active .css-1x3g5n7-MuiButtonBase-root-MuiFab-root-MuiSpeedDial-fab {
+  &:focus .css-1x3g5n7-MuiButtonBase-root-MuiFab-root-MuiSpeedDial-fab {
     opacity: 1;
     transform: translateY(0) !important;
     /* pointer-events: all; */
