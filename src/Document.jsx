@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import DocumentTitle from './DocumentTitle';
 import Note from './Note';
-
+import SpeedDialTest from './SpeedDialTest';
 const Document = ({ document }) => {
   const { id, title, content } = document || {
     id: 0,
