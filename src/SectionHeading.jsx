@@ -1,8 +1,7 @@
-import { SliderValueLabel } from '@mui/material';
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
-const PlainNote = () => {
-  const [content, setContent] = useState('hello');
+const SectionHeading = () => {
+  const [content, setContent] = useState('Section-Heading');
   const input = useRef('');
   useEffect(() => {
     input.current.innerText = content;
@@ -23,9 +22,9 @@ const PlainNote = () => {
         }
         setContent(`${e.target.innerText}`);
       }}
-      className="plain-note"
+      className="section-heading"
     ></div>
   );
 };
 
-export default PlainNote;
+export default SectionHeading;

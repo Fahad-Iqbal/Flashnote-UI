@@ -5,8 +5,6 @@ import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 
-import PrintIcon from '@mui/icons-material/Print';
-import ShareIcon from '@mui/icons-material/Share';
 import {
   Delete,
   KeyboardArrowDown,
@@ -16,7 +14,6 @@ import {
   WebAsset,
   WebAssetOff,
 } from '@mui/icons-material';
-import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
@@ -57,7 +54,7 @@ const theme = createTheme({
   },
 });
 
-export default function SpeedDialTest() {
+export default function SpeedDialTest({ type }) {
   const [enabled, setEnabled] = useState(true);
   return (
     <ThemeProvider theme={theme}>
@@ -73,22 +70,24 @@ export default function SpeedDialTest() {
             tooltipTitle={action.name}
           />
         ))}
-        <SpeedDialAction
-          key={
-            enabled
-              ? 'Disable Flashcards From This Note'
-              : 'Enable Flashcards From This Note'
-          }
-          icon={enabled ? <WebAssetOff /> : <WebAsset />}
-          tooltipTitle={
-            enabled
-              ? 'Disable Flashcards From This Note'
-              : 'Enable Flashcards From This Note'
-          }
-          onClick={() => {
-            setEnabled((prev) => !prev);
-          }}
-        />
+        {type !== 'section-heading' && (
+          <SpeedDialAction
+            key={
+              enabled
+                ? 'Disable Flashcards From This Note'
+                : 'Enable Flashcards From This Note'
+            }
+            icon={enabled ? <WebAssetOff /> : <WebAsset />}
+            tooltipTitle={
+              enabled
+                ? 'Disable Flashcards From This Note'
+                : 'Enable Flashcards From This Note'
+            }
+            onClick={() => {
+              setEnabled((prev) => !prev);
+            }}
+          />
+        )}
       </StyledSpeedDial>
     </ThemeProvider>
   );

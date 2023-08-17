@@ -36,6 +36,7 @@ html {
   --cloze-background: #c6cbe8;
   --mobile-footer-icons: black;
   --open-tab-color: #720000;
+  --highlight-color: #72000017;
 }
 
 html.darkmode {
@@ -62,6 +63,7 @@ html.darkmode {
   --cloze-background: #c6cbe8;
   --mobile-footer-icons: rgb(255, 255, 255);
   --open-tab-color: #dddddd;
+  --highlight-color: #98c2cd71;
 }
 
 body {

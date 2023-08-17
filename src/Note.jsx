@@ -2,6 +2,7 @@ import React, { forwardRef, useRef } from 'react';
 import PlainNote from './PlainNote';
 import styled from 'styled-components';
 import SpeedDialPlain from './SpeedDialPlain';
+import SectionHeading from './SectionHeading';
 
 const Note = ({ type }) => {
   if (type === 'plain')
@@ -11,11 +12,11 @@ const Note = ({ type }) => {
         <SpeedDialPlain />
       </Wrapper>
     );
-  if (type === 'plain')
+  if (type === 'section-heading')
     return (
-      <Wrapper>
-        <PlainNote />
-        <SpeedDialPlain />
+      <Wrapper style={{ marginLeft: '1rem' }}>
+        <SectionHeading />
+        <SpeedDialPlain type={type} />
       </Wrapper>
     );
 };
@@ -30,11 +31,25 @@ const Wrapper = styled.div`
   box-shadow: 1px 1px 3px var(--footer-box-shadow);
   color: var(--note-text-color);
   overflow: hidden;
+  border-radius: 0.2rem;
   div:focus {
     outline: none;
   }
   .plain-note {
+    padding-top: 1rem;
     margin-right: 5rem;
+  }
+
+  &:has(.section-heading) {
+    background-color: var(--highlight-color);
+  }
+  .section-heading {
+    width: 100%;
+    height: 100%;
+    padding-top: 0.5rem;
+    font-size: 2.5rem;
+    font-weight: 600;
+    letter-spacing: 1px;
   }
   .css-1x3g5n7-MuiButtonBase-root-MuiFab-root-MuiSpeedDial-fab {
     width: 4rem;
