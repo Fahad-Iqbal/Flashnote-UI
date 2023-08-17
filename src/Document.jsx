@@ -1,13 +1,14 @@
 import { styled } from 'styled-components';
 import DocumentTitle from './DocumentTitle';
 import Note from './Note';
-import SpeedDialTest from './SpeedDialPlain';
 const Document = ({ document }) => {
   const { id, title, content } = document || {
     id: 0,
     title: 'Biology',
     content: {
       heading: 'Structure and function of the cell',
+      front: 'Where is the DNA stored in eukaryotic cells',
+      back: 'DNA is stored inside the nucleus in eukaryotic cells',
     },
   };
   return (
@@ -22,6 +23,16 @@ const Document = ({ document }) => {
         </li>
         <li>
           <Note type={'plain'} content={'note 2'} />
+        </li>
+        <li>
+          <Note id={1} type={'basic'} content={content} />
+        </li>
+        <li>
+          <Note
+            id={2}
+            type={'reversible'}
+            content={{ ...content, front: 'front', back: 'back' }}
+          />
         </li>
       </ul>
     </Wrapper>

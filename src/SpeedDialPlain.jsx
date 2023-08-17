@@ -29,7 +29,7 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 }));
 
 const actions = [
-  { icon: <Delete color="error" />, name: 'Remove' },
+  { icon: <Delete sx={{ color: '#720000' }} />, name: 'Remove' },
   { icon: <KeyboardDoubleArrowDown />, name: 'Insert Note Below' },
   { icon: <KeyboardDoubleArrowUp />, name: 'Insert Note Above' },
   { icon: <KeyboardArrowDown />, name: 'Move Down' },
@@ -54,7 +54,7 @@ const theme = createTheme({
   },
 });
 
-export default function SpeedDialTest({ type }) {
+export default function SpeedDialPlain({ type }) {
   const [enabled, setEnabled] = useState(true);
   return (
     <ThemeProvider theme={theme}>
@@ -70,7 +70,7 @@ export default function SpeedDialTest({ type }) {
             tooltipTitle={action.name}
           />
         ))}
-        {type !== 'section-heading' && (
+        {type !== 'section-heading' && type !== 'plain' && (
           <SpeedDialAction
             key={
               enabled
