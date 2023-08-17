@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
-const SectionHeading = () => {
-  const [content, setContent] = useState('Section-Heading');
+const SectionHeading = ({ heading }) => {
+  const [content, setContent] = useState(heading || '');
   const input = useRef('');
   useEffect(() => {
     input.current.innerText = content;

@@ -4,18 +4,18 @@ import styled from 'styled-components';
 import SpeedDialPlain from './SpeedDialPlain';
 import SectionHeading from './SectionHeading';
 
-const Note = ({ type }) => {
+const Note = ({ type, content }) => {
   if (type === 'plain')
     return (
       <Wrapper>
-        <PlainNote />
+        <PlainNote content={content}/>
         <SpeedDialPlain />
       </Wrapper>
     );
   if (type === 'section-heading')
     return (
       <Wrapper style={{ marginLeft: '1rem' }}>
-        <SectionHeading />
+        <SectionHeading heading={content.heading} />
         <SpeedDialPlain type={type} />
       </Wrapper>
     );

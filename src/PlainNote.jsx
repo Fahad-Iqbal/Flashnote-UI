@@ -1,8 +1,8 @@
 import { SliderValueLabel } from '@mui/material';
 import React, { useState, useRef, useEffect } from 'react';
 
-const PlainNote = () => {
-  const [content, setContent] = useState('hello');
+const PlainNote = ({ content: noteContent }) => {
+  const [content, setContent] = useState(noteContent || '');
   const input = useRef('');
   useEffect(() => {
     input.current.innerText = content;

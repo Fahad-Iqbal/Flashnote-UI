@@ -6,19 +6,22 @@ const Document = ({ document }) => {
   const { id, title, content } = document || {
     id: 0,
     title: 'Biology',
+    content: {
+      heading: 'Structure and function of the cell',
+    },
   };
   return (
     <Wrapper>
       <DocumentTitle title={title} />
       <ul>
         <li>
-          <Note type={'section-heading'} />
+          <Note type={'section-heading'} content={content} />
         </li>
         <li>
-          <Note type={'plain'} />
+          <Note type={'plain'} content={'note 1'} />
         </li>
         <li>
-          <Note type={'plain'} />
+          <Note type={'plain'} content={'note 2'} />
         </li>
       </ul>
     </Wrapper>
