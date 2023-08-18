@@ -2,20 +2,12 @@ import { styled } from 'styled-components';
 import DocumentTitle from './DocumentTitle';
 import Note from './Note';
 const Document = ({ document }) => {
-  const { id, title, content } = document || {
-    id: 0,
-    title: 'Biology',
-    content: {
-      heading: 'Structure and function of the cell',
-      front: 'Where is the DNA stored in eukaryotic cells',
-      back: 'DNA is stored inside the nucleus in eukaryotic cells',
-    },
-  };
+  const { id, title, notes } = document;
   return (
     <Wrapper>
       <DocumentTitle title={title} />
       <ul>
-        <li>
+        {/* <li>
           <Note type={'section-heading'} content={content} />
         </li>
         <li>
@@ -34,6 +26,20 @@ const Document = ({ document }) => {
             content={{ ...content, front: 'front', back: 'back' }}
           />
         </li>
+        <li>
+          <Note type={'list'} content={'note 2'} />
+        </li>
+        <li>
+          <Note type={'cloze'} content={'note 2'} />
+        </li> */}
+        {notes.map((note, index) => {
+          const { type, content } = note;
+          return (
+            <li key={index}>
+              <Note id={index} type={type} content={content} />
+            </li>
+          );
+        })}
       </ul>
     </Wrapper>
   );

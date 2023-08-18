@@ -3,9 +3,7 @@ import { useEffect, useState } from 'react';
 
 const BasicCardNote = ({ id, type, content }) => {
   const [frontContent, setFrontContent] = useState(content?.front || '');
-  // const frontInput = useRef('');
   const [backContent, setBackContent] = useState(content?.back || '');
-  // const backInput = document.getElementById(`back${id}`);
   useEffect(() => {
     const frontInput = document.getElementById('front' + id);
 
@@ -46,11 +44,11 @@ const BasicCardNote = ({ id, type, content }) => {
       ></div>
       <div className="icon">
         {type === 'basic' ? (
-          <ArrowForward />
+          <ArrowForward className="arrow" />
         ) : (
           <>
-            <ArrowBack style={{ marginRight: '-0.7rem' }} />
-            <ArrowForward style={{ marginLeft: '-0.7rem' }} />
+            <ArrowBack className="arrow" style={{ marginRight: '-0.7rem' }} />
+            <ArrowForward className="arrow" style={{ marginLeft: '-0.7rem' }} />
           </>
         )}
       </div>

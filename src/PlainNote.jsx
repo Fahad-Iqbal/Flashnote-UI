@@ -1,15 +1,14 @@
-import { SliderValueLabel } from '@mui/material';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const PlainNote = ({ content: noteContent }) => {
+const PlainNote = ({ id, type, content: noteContent }) => {
   const [content, setContent] = useState(noteContent || '');
-  const input = useRef('');
   useEffect(() => {
-    input.current.innerText = content;
+    const input = document.getElementById(`${type}-${id}`);
+    input.innerText = content;
   }, [content]);
   return (
     <div
-      ref={input}
+      id={`${type}-${id}`}
       contentEditable={true}
       onKeyDown={(e) => {
         if (e.key === 'Enter') e.preventDefault();
@@ -21,9 +20,9 @@ const PlainNote = ({ content: noteContent }) => {
         if (e.clipboardData.items[0].type !== 'text/plain') {
           e.preventDefault();
         }
-        setContent(`${e.target.innerText}`);
+        setContent(e.target.innerText);
       }}
-      className="plain-note"
+      className={type}
     ></div>
   );
 };

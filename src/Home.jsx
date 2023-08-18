@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Document from './Document';
 import Header from './Header';
 import Sidebar from './Sidebar/Sidebar';
-import { draftDocs, finishedDocs } from './data.js';
+import { docs, draftDocs, finishedDocs } from './data.js';
 import Modal from './Modal';
 import { Navigate } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ const Home = ({ user, setUser }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [draftDocs, setDraftDocs] = useState(draft);
   const [finishedDocs, setFinishedDocs] = useState(finished);
-  const [selectedDoc, setSelectedDoc] = useState(null);
+  const [selectedDoc, setSelectedDoc] = useState(docs[0]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAllDocsOpen, setIsAllDocsOpen] = useState(false);
   const [isPracticeOpen, setIsPracticeOpen] = useState(false);

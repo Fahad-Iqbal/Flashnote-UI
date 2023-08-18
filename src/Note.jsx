@@ -4,12 +4,14 @@ import styled from 'styled-components';
 import SpeedDialPlain from './SpeedDialPlain';
 import SectionHeading from './SectionHeading';
 import BasicCardNote from './BasicCardNote';
+import ListCardNote from './ListCardNote';
+import ClozeDeletionNote from './ClozeDeletionNote';
 
 const Note = ({ id, type, content }) => {
   if (type === 'plain')
     return (
       <Wrapper>
-        <PlainNote content={content} />
+        <PlainNote id={id} type={type} content={content} />
         <SpeedDialPlain type={type} />
       </Wrapper>
     );
@@ -24,6 +26,20 @@ const Note = ({ id, type, content }) => {
     return (
       <Wrapper>
         <BasicCardNote id={id} type={type} content={content} />
+        <SpeedDialPlain type={type} />
+      </Wrapper>
+    );
+  if (type === 'cloze')
+    return (
+      <Wrapper>
+        <ClozeDeletionNote id={id} type={type} content={content} />
+        <SpeedDialPlain type={type} />
+      </Wrapper>
+    );
+  if (type === 'list')
+    return (
+      <Wrapper>
+        <ListCardNote id={id} type={type} content={content} />
         <SpeedDialPlain type={type} />
       </Wrapper>
     );
@@ -50,11 +66,15 @@ const Wrapper = styled.div`
   border-radius: 0.2rem;
   div:focus {
     outline: none;
+    /* outline: 1px solid var(--footer-box-shadow); */
+    box-shadow: 1px 1px 3px var(--footer-box-shadow);
   }
-  .plain-note {
+  .plain,
+  .cloze {
     padding-left: 1rem;
     padding-top: 1rem;
-    margin-right: 5rem;
+    padding-bottom: 1rem;
+    margin-right: 7rem;
   }
 
   &:has(.section-heading) {
@@ -88,12 +108,13 @@ const Wrapper = styled.div`
 
   .basic-note {
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
 
     .front-of-card,
     .back-of-card,
     .icon {
       padding-top: 1rem;
+      padding-bottom: 1rem;
     }
 
     .front-of-card,
@@ -130,11 +151,29 @@ const Wrapper = styled.div`
     .icon {
       display: flex;
     }
+  }
+  svg.arrow {
+    font-size: 2.6rem;
+    color: var(--color-arrow);
+  }
 
-    svg {
-      font-size: 2.6rem;
-      color: var(--color-arrow);
-    }
+  .list-front-container {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .list-item {
+    margin-left: 2rem;
+    margin-right: 7rem;
+    padding: 0.5rem 1rem;
+    position: relative;
+    z-index: 3;
+    border-left: 0.3rem solid var(--bullet-line);
+    font-size: 1.8rem;
+  }
+
+  ::marker {
+    color: transparent;
   }
 `;
 
