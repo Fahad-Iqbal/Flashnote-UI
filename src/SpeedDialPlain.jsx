@@ -57,7 +57,8 @@ const theme = createTheme({
 
 export default function SpeedDialPlain({ type, id }) {
   const [enabled, setEnabled] = useState(true);
-  const { selectedDoc, removeNote } = useGlobalContext();
+  const { selectedDoc, removeNote, moveNoteUp, moveNoteDown } =
+    useGlobalContext();
   return (
     <ThemeProvider theme={theme}>
       <StyledSpeedDial
@@ -70,6 +71,12 @@ export default function SpeedDialPlain({ type, id }) {
             onClick={() => {
               if (action.name === 'Remove') {
                 removeNote(selectedDoc.id, id);
+              }
+              if (action.name === 'Move Up') {
+                moveNoteUp(selectedDoc.id, id);
+              }
+              if (action.name === 'Move Down') {
+                moveNoteDown(selectedDoc.id, id);
               }
             }}
             disabled={selectedDoc.finished}

@@ -109,7 +109,7 @@ const AppContext = ({ children }) => {
         removeNote,
         toggleFinished,
         updateTitle,
-        moveNoteDown,
+        moveNoteUp,
         moveNoteDown,
       }}
     >

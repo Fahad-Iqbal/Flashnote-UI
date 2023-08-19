@@ -28,6 +28,40 @@ const reducer = (state, action) => {
 
     return { ...state, [documentId]: { ...state[documentId], title: title } };
   }
+  if (action.type === 'MOVE_NOTE_UP') {
+    const { documentId, noteId } = action.payload;
+    const noteIndex = state[documentId].notes.findIndex(
+      (note) => note.id === noteId
+    );
+    if (noteIndex === 0 || noteIndex === -1) return state;
+    const previousNote = state[documentId].notes[noteIndex - 1];
+    const currentNote = state[documentId].notes[noteIndex];
+    const newNotes = [...state[documentId].notes];
+    newNotes[noteIndex - 1] = currentNote;
+    newNotes[noteIndex] = previousNote;
+    return {
+      ...state,
+      [documentId]: { ...state[documentId], notes: newNotes },
+    };
+  }
+  if (action.type === 'MOVE_NOTE_DOWN') {
+    const { documentId, noteId } = action.payload;
+    const noteIndex = state[documentId].notes.findIndex(
+      (note) => note.id === noteId
+    );
+    if (noteIndex === state[documentId].notes.length - 1 || noteIndex === -1)
+      return state;
+    const nextNote = state[documentId].notes[noteIndex + 1];
+    const currentNote = state[documentId].notes[noteIndex];
+    const newNotes = [...state[documentId].notes];
+    newNotes[noteIndex + 1] = currentNote;
+    newNotes[noteIndex] = nextNote;
+
+    return {
+      ...state,
+      [documentId]: { ...state[documentId], notes: newNotes },
+    };
+  }
 
   throw new Error(`No matching "${action.type}" - action type`);
 };
