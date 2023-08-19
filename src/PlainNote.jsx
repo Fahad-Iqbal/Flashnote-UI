@@ -5,12 +5,12 @@ const PlainNote = ({ id, type, content: noteContent }) => {
   const [content, setContent] = useState(noteContent || '');
   const { selectedDoc } = useGlobalContext();
   useEffect(() => {
-    const input = document.getElementById(`${type}-${id}`);
+    const input = document.getElementById(id);
     input.innerText = content;
   }, [content]);
   return (
     <div
-      id={`${type}-${id}`}
+      id={id}
       contentEditable={!selectedDoc.finished}
       onKeyDown={(e) => {
         if (e.key === 'Enter') e.preventDefault();

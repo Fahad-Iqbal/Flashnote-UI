@@ -23,6 +23,12 @@ const reducer = (state, action) => {
     };
   }
 
+  if (action.type === 'UPDATE_TITLE') {
+    const { documentId, title } = action.payload;
+
+    return { ...state, [documentId]: { ...state[documentId], title: title } };
+  }
+
   throw new Error(`No matching "${action.type}" - action type`);
 };
 

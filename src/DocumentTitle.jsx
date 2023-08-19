@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useGlobalContext } from './context';
 
 const DocumentTitle = ({ title }) => {
-  const { selectedDoc, toggleFinished } = useGlobalContext();
+  const { selectedDoc, toggleFinished, updateTitle } = useGlobalContext();
   const { finished } = selectedDoc;
   const input = useRef('');
   return (
@@ -12,6 +12,21 @@ const DocumentTitle = ({ title }) => {
       <div>
         <h1
           contentEditable={!finished}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              if (e.target.innerText !== selectedDoc.title) {
+                updateTitle(selectedDoc.id, e.target.innerText);
+              }
+              const firstNote = document.getElementById(
+                selectedDoc.notes[0]?.id
+              );
+              if (firstNote) firstNote.focus();
+            }
+          }}
+          onBlur={(e) => {
+            updateTitle(selectedDoc.id, e.target.innerText);
+          }}
           onPaste={(e) => {
             if (e.clipboardData.items[0].type !== 'text/plain') {
               e.preventDefault();
@@ -53,6 +68,11 @@ const Wrapper = styled.section`
     color: var(--note-text-color);
   }
 
+  h1:focus {
+    outline: none;
+    /* outline: 1px solid var(--footer-box-shadow); */
+    box-shadow: 1px 1px 5px var(--footer-box-shadow);
+  }
   .css-m0g451-MuiTypography-root {
     font-size: 1.8rem;
     color: var(--note-text-color);

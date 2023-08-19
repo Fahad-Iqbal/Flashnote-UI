@@ -8,16 +8,14 @@ const ListCardNote = ({ id, type, content }) => {
   const [backContent, setBackContent] = useState(content?.back || []);
   const { selectedDoc } = useGlobalContext();
   useEffect(() => {
-    const frontInput = document.getElementById('front' + id);
+    const frontInput = document.getElementById(id);
     frontInput.innerText = frontContent;
-    // const backInput = document.getElementById('back' + id);
-    // backInput.innerText = backContent;
-  }, [frontContent, backContent]);
+  }, [frontContent]);
   return (
     <div className="list-note">
       <div className="list-front-container basic-note">
         <div
-          id={'front' + id}
+          id={id}
           className={
             frontContent ? 'front-of-card' : 'front-of-card empty-front'
           }
@@ -60,7 +58,11 @@ const ListCardNote = ({ id, type, content }) => {
             content?.back?.map((item, index) => {
               return (
                 <li key={index}>
-                  <PlainNote id={index} type={'list-item'} content={item} />
+                  <PlainNote
+                    id={`${id}${index}`}
+                    type={'list-item'}
+                    content={item}
+                  />
                 </li>
               );
             })

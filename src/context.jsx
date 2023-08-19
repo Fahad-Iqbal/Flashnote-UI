@@ -43,6 +43,18 @@ const AppContext = ({ children }) => {
     dispatch({ type: 'TOGGLE_FINISHED', payload: { documentId } });
   };
 
+  const updateTitle = (documentId, title) => {
+    dispatch({ type: 'UPDATE_TITLE', payload: { documentId, title } });
+  };
+
+  const moveNoteUp = (documentId, noteId) => {
+    dispatch({ type: 'MOVE_NOTE_UP', payload: { documentId, noteId } });
+  };
+
+  const moveNoteDown = (documentId, noteId) => {
+    dispatch({ type: 'MOVE_NOTE_DOWN', payload: { documentId, noteId } });
+  };
+
   // Sidebar state
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [draftDocs, setDraftDocs] = useState([]);
@@ -96,6 +108,9 @@ const AppContext = ({ children }) => {
         state,
         removeNote,
         toggleFinished,
+        updateTitle,
+        moveNoteDown,
+        moveNoteDown,
       }}
     >
       {children}

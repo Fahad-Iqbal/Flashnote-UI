@@ -29,7 +29,7 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
   };
 
   useEffect(() => {
-    const input = document.getElementById(`${type}-${id}`);
+    const input = document.getElementById(id);
     input.innerHTML = `${content}`;
   }, [content]);
 
@@ -71,7 +71,7 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
           className="remove-cloze"
           open={isSpanClicked}
           anchorEl={() => {
-            return document.getElementById(`${type}-${id}`);
+            return document.getElementById(id);
           }}
           onClose={() => {
             setIsSpanClicked(false);
@@ -115,7 +115,7 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
         </Popover>
       )}
       <div
-        id={`${type}-${id}`}
+        id={id}
         contentEditable={!selectedDoc.finished}
         onKeyDown={(e) => {
           if (e.key === 'Enter') e.preventDefault();
