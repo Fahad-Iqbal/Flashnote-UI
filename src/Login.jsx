@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { TextField, Button } from '@mui/material';
 import { Navigate } from 'react-router-dom';
+import { useGlobalContext } from './context';
 
-const Login = ({ user, setUser }) => {
+const Login = () => {
+  const { user, setUser } = useGlobalContext();
+
   const [inputs, setInputs] = useState({
     name: '',
     email: '',

@@ -1,31 +1,31 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import DocsListContainer from './DocsListContainer';
 import HamburgerButton from './HamburgerButton';
 import './sidebar.css';
 import { Link } from 'react-router-dom';
+import { useGlobalContext } from '../context';
 
-const Sidebar = ({
-  user,
-  isSidebarOpen,
-  setIsSidebarOpen,
-  draftDocs,
-  finishedDocs,
-  selectedDoc,
-  setSelectedDoc,
-  setIsSearchOpen,
-  setIsUserOpen,
-  setIsCreateOpen,
-  setIsPracticeOpen,
-  setIsAllDocsOpen,
-}) => {
+const Sidebar = () => {
   const [isFinishedOpen, setIsFinishedOpen] = useState(false);
   const [isDraftOpen, setIsDraftOpen] = useState(false);
 
+  const {
+    user,
+    isSidebarOpen,
+    draftDocs,
+    finishedDocs,
+
+    setIsSearchOpen,
+    setIsUserOpen,
+    setIsCreateOpen,
+    setIsPracticeOpen,
+    setIsAllDocsOpen,
+  } = useGlobalContext();
   return (
     <aside className="sidebar-container">
       <HamburgerButton
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
+      // isSidebarOpen={isSidebarOpen}
+      // setIsSidebarOpen={setIsSidebarOpen}
       />
 
       <nav className={isSidebarOpen ? 'sidebar' : 'sidebar close'}>
@@ -111,12 +111,7 @@ const Sidebar = ({
             />
             <p>Draft</p>
           </button>
-          <DocsListContainer
-            isOpen={isDraftOpen}
-            documents={draftDocs}
-            selectedDoc={selectedDoc}
-            setSelectedDoc={setSelectedDoc}
-          />
+          <DocsListContainer isOpen={isDraftOpen} documents={draftDocs} />
           <button
             className="finished btn secondary"
             onClick={() => {
@@ -137,12 +132,7 @@ const Sidebar = ({
             />
             <p>Finished</p>
           </button>
-          <DocsListContainer
-            isOpen={isFinishedOpen}
-            documents={finishedDocs}
-            selectedDoc={selectedDoc}
-            setSelectedDoc={setSelectedDoc}
-          />
+          <DocsListContainer isOpen={isFinishedOpen} documents={finishedDocs} />
         </div>
         <div className="sidebar-bottom">
           <button
@@ -178,4 +168,4 @@ const Sidebar = ({
   // <!-- Side Nav -->
 };
 
-export default Sidebar;
+export default React.memo(Sidebar);

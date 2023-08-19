@@ -1,4 +1,8 @@
-const Header = ({ setUser }) => {
+import React from 'react';
+import { useGlobalContext } from './context';
+
+const Header = () => {
+  const { setUser } = useGlobalContext();
   return (
     // <!-- Header section -->
     <header className="header">
@@ -29,4 +33,4 @@ const Header = ({ setUser }) => {
   );
 };
 
-export default Header;
+export default React.memo(Header);

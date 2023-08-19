@@ -39,4 +39,4 @@ const Wrapper = styled.section`
   }
 `;
 
-export default DocumentTitle;
+export default React.memo(DocumentTitle);

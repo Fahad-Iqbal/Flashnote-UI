@@ -1,24 +1,26 @@
-import { useState } from 'react';
 import Document from './Document';
 import Header from './Header';
 import Sidebar from './Sidebar/Sidebar';
-import { docs, draftDocs, finishedDocs } from './data.js';
 import Modal from './Modal';
 import { Navigate } from 'react-router-dom';
+import { useGlobalContext } from './context';
 
-const draft = draftDocs;
-const finished = finishedDocs;
-
-const Home = ({ user, setUser }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [draftDocs, setDraftDocs] = useState(draft);
-  const [finishedDocs, setFinishedDocs] = useState(finished);
-  const [selectedDoc, setSelectedDoc] = useState(docs[0]);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isAllDocsOpen, setIsAllDocsOpen] = useState(false);
-  const [isPracticeOpen, setIsPracticeOpen] = useState(false);
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [isUserOpen, setIsUserOpen] = useState(false);
+const Home = () => {
+  const {
+    user,
+    setUser,
+    selectedDoc,
+    isSearchOpen,
+    setIsSearchOpen,
+    isAllDocsOpen,
+    setIsAllDocsOpen,
+    isPracticeOpen,
+    setIsPracticeOpen,
+    isCreateOpen,
+    setIsCreateOpen,
+    isUserOpen,
+    setIsUserOpen,
+  } = useGlobalContext();
 
   const modals = [
     { isModalOpen: isSearchOpen, modalType: 'Search', setFn: setIsSearchOpen },
@@ -53,23 +55,10 @@ const Home = ({ user, setUser }) => {
           return <Modal key={modalType} modalType={modalType} setFn={setFn} />;
       })}
 
-      <Sidebar
-        user={user}
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
-        draftDocs={draftDocs}
-        finishedDocs={finishedDocs}
-        selectedDoc={selectedDoc}
-        setSelectedDoc={setSelectedDoc}
-        setIsSearchOpen={setIsSearchOpen}
-        setIsUserOpen={setIsUserOpen}
-        setIsPracticeOpen={setIsPracticeOpen}
-        setIsAllDocsOpen={setIsAllDocsOpen}
-        setIsCreateOpen={setIsCreateOpen}
-      />
+      <Sidebar />
 
       <div className="main-container">
-        <Header setUser={setUser} />
+        <Header />
         <Document document={selectedDoc} />
       </div>
     </main>
