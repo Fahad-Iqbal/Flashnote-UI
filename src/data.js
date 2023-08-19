@@ -42,10 +42,7 @@ export const docs = [
       },
       {
         type: 'cloze',
-        content: {
-          front: 'Nucleus:',
-          back: 'A double membrane organelle that stores the DNA in eukaryotic cells',
-        },
+        content: 'Fill in the <span>blank</span>',
       },
       {
         type: 'list',

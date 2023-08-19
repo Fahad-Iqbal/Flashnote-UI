@@ -67,7 +67,7 @@ const Wrapper = styled.div`
   div:focus {
     outline: none;
     /* outline: 1px solid var(--footer-box-shadow); */
-    box-shadow: 1px 1px 3px var(--footer-box-shadow);
+    box-shadow: 1px 1px 5px var(--footer-box-shadow);
   }
   .plain,
   .cloze {
@@ -83,8 +83,7 @@ const Wrapper = styled.div`
   .section-heading {
     width: 100%;
     height: 100%;
-    padding-top: 0.5rem;
-    padding-left: 0.5rem;
+    padding: 0.7rem;
     font-size: 2.5rem;
     font-weight: 600;
     letter-spacing: 1px;
@@ -94,7 +93,7 @@ const Wrapper = styled.div`
     height: 4rem;
     opacity: 0;
     transition: all 0.25s linear !important;
-    transform: translateY(3rem) !important;
+    transform: translateY(2.8rem) !important;
 
     /* pointer-events: none; */
   }
@@ -103,7 +102,7 @@ const Wrapper = styled.div`
   &:focus .css-1x3g5n7-MuiButtonBase-root-MuiFab-root-MuiSpeedDial-fab,
   .css-1x3g5n7-MuiButtonBase-root-MuiFab-root-MuiSpeedDial-fab:focus {
     opacity: 1;
-    transform: translateY(0) !important;
+    transform: translateY(-0.4rem) !important;
   }
 
   .basic-note {
@@ -152,6 +151,7 @@ const Wrapper = styled.div`
       display: flex;
     }
   }
+
   svg.arrow {
     font-size: 2.6rem;
     color: var(--color-arrow);
@@ -174,6 +174,14 @@ const Wrapper = styled.div`
 
   ::marker {
     color: transparent;
+  }
+  .cloze {
+    span {
+      background-color: var(--cloze-background);
+      color: var(--cloze-text);
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 `;
 

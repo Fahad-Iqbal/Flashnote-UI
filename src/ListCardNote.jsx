@@ -55,7 +55,6 @@ const ListCardNote = ({ id, type, content }) => {
               <PlainNote id={0} type={'list-item'} content="asdf" />
             </li>
           ) : (
-            // undefined
             content?.back?.map((item, index) => {
               return (
                 <li key={index}>

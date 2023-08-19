@@ -12,6 +12,10 @@ const PlainNote = ({ id, type, content: noteContent }) => {
       contentEditable={true}
       onKeyDown={(e) => {
         if (e.key === 'Enter') e.preventDefault();
+        if (e.key === 'ArrowDown') {
+          console.log(e);
+          e.target.nextElementSibling.focus();
+        }
       }}
       onBlur={(e) => {
         setContent(e.target.innerText);

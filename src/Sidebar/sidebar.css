@@ -75,10 +75,10 @@ button.btn img {
   border-bottom: 0.1rem solid var(--primary-button-text);
 }
 
-.primary:hover,
+/* .primary:hover,
 .secondary:hover {
   transform: translateX(3px);
-}
+} */
 
 .secondary {
   align-items: center;

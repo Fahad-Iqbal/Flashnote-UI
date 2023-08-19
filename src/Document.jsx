@@ -47,4 +47,7 @@ const Document = ({ document }) => {
 
 export default Document;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  height: 93vh;
+  overflow: auto;
+`;
