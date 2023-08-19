@@ -268,9 +268,9 @@ button.btn img {
 }
 
 @media screen and (max-width: 500px) {
-  .sidebar-container {
+  /* .sidebar-container {
     width: 100vw;
-  }
+  } */
 
   .sidebar {
     width: 100%;

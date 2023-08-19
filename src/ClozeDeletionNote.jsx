@@ -64,7 +64,7 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
           </Button>
         </Popover>
       )}
-      {isSpanClicked && anchorEl && (
+      {isSpanClicked && (
         <Popover
           className="remove-cloze"
           open={isSpanClicked}

@@ -6,6 +6,7 @@ import SectionHeading from './SectionHeading';
 import BasicCardNote from './BasicCardNote';
 import ListCardNote from './ListCardNote';
 import ClozeDeletionNote from './ClozeDeletionNote';
+import { Tooltip } from '@mui/material';
 
 const Note = ({ id, type, content }) => {
   if (type === 'plain')

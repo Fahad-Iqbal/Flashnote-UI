@@ -24,8 +24,15 @@ export const docs = [
         type: 'section-heading',
         content: { heading: 'Structure and function of the cell' },
       },
-      { type: 'plain', content: 'note1' },
-      { type: 'plain', content: 'note2' },
+      {
+        type: 'plain',
+        content: 'This is a plain note with no flashcards associated with it.',
+      },
+      {
+        type: 'plain',
+        content:
+          'Plain notes are useful for jotting down information that is good for reference, but not something that you need to remember.',
+      },
       {
         type: 'basic',
         content: {

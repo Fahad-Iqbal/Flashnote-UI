@@ -20,6 +20,7 @@ const Sidebar = ({
 }) => {
   const [isFinishedOpen, setIsFinishedOpen] = useState(false);
   const [isDraftOpen, setIsDraftOpen] = useState(false);
+
   return (
     <aside className="sidebar-container">
       <HamburgerButton
@@ -150,7 +151,11 @@ const Sidebar = ({
               document.querySelector('html').classList.toggle('darkmode')
             }
           >
-            <p>Dark Mode</p>
+            <p>
+              {document.querySelector('html').classList.contains('darkmode')
+                ? 'Light Mode'
+                : 'Dark Mode'}
+            </p>
           </button>
           <button
             className="create btn primary"
