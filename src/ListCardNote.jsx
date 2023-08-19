@@ -1,10 +1,12 @@
 import { ArrowBack, ArrowDownward, ArrowForward } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import PlainNote from './PlainNote';
+import { useGlobalContext } from './context';
 
 const ListCardNote = ({ id, type, content }) => {
   const [frontContent, setFrontContent] = useState(content?.front || '');
   const [backContent, setBackContent] = useState(content?.back || []);
+  const { selectedDoc } = useGlobalContext();
   useEffect(() => {
     const frontInput = document.getElementById('front' + id);
     frontInput.innerText = frontContent;
@@ -21,7 +23,7 @@ const ListCardNote = ({ id, type, content }) => {
           }
           // ref={frontInput}
 
-          contentEditable={true}
+          contentEditable={!selectedDoc.finished}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               e.preventDefault();

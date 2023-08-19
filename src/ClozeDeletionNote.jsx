@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Button, Popover } from '@mui/material';
+import { useGlobalContext } from './context';
 
 const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
   const [content, setContent] = useState(noteContent || '');
   const [isSelected, setIsSelected] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isSpanClicked, setIsSpanClicked] = useState(false);
+  const { selectedDoc } = useGlobalContext();
 
   const addSpanTags = (text) => {
     if (content.includes(text)) {
@@ -64,7 +66,7 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
           </Button>
         </Popover>
       )}
-      {isSpanClicked && (
+      {isSpanClicked && !selectedDoc.finished && (
         <Popover
           className="remove-cloze"
           open={isSpanClicked}
@@ -114,7 +116,7 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
       )}
       <div
         id={`${type}-${id}`}
-        contentEditable={true}
+        contentEditable={!selectedDoc.finished}
         onKeyDown={(e) => {
           if (e.key === 'Enter') e.preventDefault();
           if (e.key === 'ArrowDown') {

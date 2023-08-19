@@ -1,9 +1,11 @@
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
+import { useGlobalContext } from './context';
 
 const BasicCardNote = ({ id, type, content }) => {
   const [frontContent, setFrontContent] = useState(content?.front || '');
   const [backContent, setBackContent] = useState(content?.back || '');
+  const { selectedDoc } = useGlobalContext();
   useEffect(() => {
     const frontInput = document.getElementById('front' + id);
 
@@ -18,7 +20,7 @@ const BasicCardNote = ({ id, type, content }) => {
         id={'front' + id}
         className={frontContent ? 'front-of-card' : 'front-of-card empty-front'}
         // ref={frontInput}
-        contentEditable={true}
+        contentEditable={!selectedDoc.finished}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             e.preventDefault();
@@ -56,7 +58,7 @@ const BasicCardNote = ({ id, type, content }) => {
         id={'back' + id}
         className={backContent ? 'back-of-card' : 'back-of-card empty-back'}
         // ref={backInput}
-        contentEditable={true}
+        contentEditable={!selectedDoc.finished}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             e.preventDefault();

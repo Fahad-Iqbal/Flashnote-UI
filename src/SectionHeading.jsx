@@ -1,15 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
+import { useGlobalContext } from './context';
 
-const SectionHeading = ({ heading }) => {
+const SectionHeading = ({ id, heading }) => {
   const [content, setContent] = useState(heading || '');
-  const input = useRef('');
+  const { selectedDoc } = useGlobalContext();
+
   useEffect(() => {
-    input.current.innerText = content;
+    const input = document.getElementById(id);
+    input.innerText = content;
   }, [content]);
   return (
     <div
-      ref={input}
-      contentEditable={true}
+      id={id}
+      contentEditable={!selectedDoc.finished}
       onKeyDown={(e) => {
         if (e.key === 'Enter') e.preventDefault();
       }}

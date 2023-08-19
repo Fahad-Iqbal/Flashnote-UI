@@ -47,7 +47,7 @@ const Note = ({ id, type, content }) => {
   if (type === 'section-heading')
     return (
       <Wrapper style={{ marginLeft: '1rem' }}>
-        <SectionHeading heading={content} />
+        <SectionHeading id={id} heading={content} />
         <SpeedDialPlain id={id} type={type} />
       </Wrapper>
     );

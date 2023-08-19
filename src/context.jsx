@@ -17,6 +17,11 @@ const getUserFromLocalStorage = () => {
   if (user) return JSON.parse(user);
   else return null;
 };
+const getDocsFromLocalStorage = () => {
+  const documents = localStorage.getItem('documents');
+  if (documents) return JSON.parse(documents);
+  else return docs;
+};
 const defaultDocsState = docs;
 const AppContext = ({ children }) => {
   // User Information Context
@@ -27,7 +32,7 @@ const AppContext = ({ children }) => {
   }, []);
 
   // documents state
-  const [state, dispatch] = useReducer(reducer, defaultDocsState);
+  const [state, dispatch] = useReducer(reducer, getDocsFromLocalStorage());
 
   // document functions
   const removeNote = (documentId, noteId) => {

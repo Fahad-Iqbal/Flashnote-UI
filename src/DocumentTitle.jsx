@@ -10,7 +10,17 @@ const DocumentTitle = ({ title }) => {
   return (
     <Wrapper>
       <div>
-        <h1>{title}</h1>
+        <h1
+          contentEditable={!finished}
+          onPaste={(e) => {
+            if (e.clipboardData.items[0].type !== 'text/plain') {
+              e.preventDefault();
+            }
+            setFrontContent(`${e.target.innerText}`);
+          }}
+        >
+          {title}
+        </h1>
         <FormControlLabel
           control={
             <Checkbox

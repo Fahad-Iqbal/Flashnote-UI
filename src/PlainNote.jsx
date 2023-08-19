@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useGlobalContext } from './context';
 
 const PlainNote = ({ id, type, content: noteContent }) => {
   const [content, setContent] = useState(noteContent || '');
+  const { selectedDoc } = useGlobalContext();
   useEffect(() => {
     const input = document.getElementById(`${type}-${id}`);
     input.innerText = content;
@@ -9,7 +11,7 @@ const PlainNote = ({ id, type, content: noteContent }) => {
   return (
     <div
       id={`${type}-${id}`}
-      contentEditable={true}
+      contentEditable={!selectedDoc.finished}
       onKeyDown={(e) => {
         if (e.key === 'Enter') e.preventDefault();
         if (e.key === 'ArrowDown') {

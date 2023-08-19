@@ -72,6 +72,7 @@ export default function SpeedDialPlain({ type, id }) {
                 removeNote(selectedDoc.id, id);
               }
             }}
+            disabled={selectedDoc.finished}
             key={action.name}
             icon={action.icon}
             tooltipTitle={action.name}
