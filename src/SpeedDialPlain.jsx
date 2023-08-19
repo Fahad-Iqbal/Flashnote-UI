@@ -15,6 +15,7 @@ import {
   WebAssetOff,
 } from '@mui/icons-material';
 import { useState } from 'react';
+import { useGlobalContext } from './context';
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   position: 'absolute',
@@ -54,8 +55,9 @@ const theme = createTheme({
   },
 });
 
-export default function SpeedDialPlain({ type }) {
+export default function SpeedDialPlain({ type, id }) {
   const [enabled, setEnabled] = useState(true);
+  const { selectedDoc, removeNote } = useGlobalContext();
   return (
     <ThemeProvider theme={theme}>
       <StyledSpeedDial
@@ -65,6 +67,11 @@ export default function SpeedDialPlain({ type }) {
       >
         {actions.map((action) => (
           <SpeedDialAction
+            onClick={() => {
+              if (action.name === 'Remove') {
+                removeNote(selectedDoc.id, id);
+              }
+            }}
             key={action.name}
             icon={action.icon}
             tooltipTitle={action.name}

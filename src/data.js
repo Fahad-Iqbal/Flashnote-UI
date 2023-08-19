@@ -1,39 +1,29 @@
-export const draftDocs = [
-  { id: 1, title: 'Chemistry', content: '' },
-  { id: 2, title: 'Spanish 101', content: '' },
-  { id: 3, title: 'General Biology', content: '' },
-  { id: 4, title: 'Psychology 101', content: '' },
-  { id: 5, title: 'Anatomy', content: '' },
-];
+import { nanoid } from 'nanoid';
 
-export const finishedDocs = [
-  { id: 6, title: 'Calc 1', content: '' },
-  { id: 7, title: 'World Geography', content: '' },
-  { id: 8, title: 'Linear Algebra', content: '' },
-  { id: 9, title: 'Essay project', content: '' },
-  { id: 10, title: 'Final project ideas', content: '' },
-  { id: 11, title: 'Physics 1', content: '' },
-];
-
-export const docs = [
-  {
-    id: 1,
+export const docs = {
+  0: {
+    id: 0,
+    finished: false,
     title: 'Biology',
     notes: [
       {
+        id: nanoid(),
         type: 'section-heading',
-        content: { heading: 'Structure and function of the cell' },
+        content: 'Structure and function of the cell',
       },
       {
+        id: nanoid(),
         type: 'plain',
         content: 'This is a plain note with no flashcards associated with it.',
       },
       {
+        id: nanoid(),
         type: 'plain',
         content:
           'Plain notes are useful for jotting down information that is good for reference, but not something that you need to remember.',
       },
       {
+        id: nanoid(),
         type: 'basic',
         content: {
           front: 'Where is the DNA stored in eukaryotic cells?',
@@ -41,6 +31,7 @@ export const docs = [
         },
       },
       {
+        id: nanoid(),
         type: 'reversible',
         content: {
           front: 'Nucleus:',
@@ -48,10 +39,12 @@ export const docs = [
         },
       },
       {
+        id: nanoid(),
         type: 'cloze',
         content: 'Fill in the <span>blank</span>',
       },
       {
+        id: nanoid(),
         type: 'list',
         content: {
           front: 'How to tie a tie?',
@@ -60,4 +53,15 @@ export const docs = [
       },
     ],
   },
-];
+  1: { id: 1, finished: true, title: 'Chemistry', notes: [] },
+  2: { id: 2, finished: true, title: 'Spanish 101', notes: [] },
+  3: { id: 3, finished: true, title: 'General Biology', notes: [] },
+  4: { id: 4, finished: true, title: 'Psychology 101', notes: [] },
+  5: { id: 5, finished: true, title: 'Anatomy', notes: [] },
+  6: { id: 6, finished: false, title: 'Calc 1', notes: [] },
+  7: { id: 7, finished: false, title: 'World Geography', notes: [] },
+  8: { id: 8, finished: false, title: 'Linear Algebra', notes: [] },
+  9: { id: 9, finished: false, title: 'Essay project', notes: [] },
+  10: { id: 10, finished: false, title: 'Final project ideas', notes: [] },
+  11: { id: 11, finished: false, title: 'Physics 1', notes: [] },
+};

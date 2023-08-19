@@ -1,14 +1,28 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
+import { useGlobalContext } from './context';
 
 const DocumentTitle = ({ title }) => {
+  const { selectedDoc, toggleFinished } = useGlobalContext();
+  const { finished } = selectedDoc;
+  const input = useRef('');
   return (
     <Wrapper>
       <div>
         <h1>{title}</h1>
         <FormControlLabel
-          control={<Checkbox color="primary" size="small" />}
+          control={
+            <Checkbox
+              checked={finished}
+              inputRef={input}
+              onChange={() => {
+                toggleFinished(selectedDoc.id);
+              }}
+              color="primary"
+              size="small"
+            />
+          }
           label="Mark as finished"
         />
       </div>

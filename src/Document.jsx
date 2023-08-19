@@ -14,8 +14,8 @@ const Document = () => {
         {notes.map((note, index) => {
           const { type, content } = note;
           return (
-            <li key={index}>
-              <Note id={index} type={type} content={content} />
+            <li key={note.id}>
+              <Note id={note.id} type={type} content={content} />
             </li>
           );
         })}

@@ -13,42 +13,42 @@ const Note = ({ id, type, content }) => {
     return (
       <Wrapper>
         <PlainNote id={id} type={type} content={content} />
-        <SpeedDialPlain type={type} />
+        <SpeedDialPlain id={id} type={type} />
       </Wrapper>
     );
   if (type === 'basic')
     return (
       <Wrapper>
         <BasicCardNote id={id} type={type} content={content} />
-        <SpeedDialPlain type={type} />
+        <SpeedDialPlain id={id} type={type} />
       </Wrapper>
     );
   if (type === 'reversible')
     return (
       <Wrapper>
         <BasicCardNote id={id} type={type} content={content} />
-        <SpeedDialPlain type={type} />
+        <SpeedDialPlain id={id} type={type} />
       </Wrapper>
     );
   if (type === 'cloze')
     return (
       <Wrapper>
         <ClozeDeletionNote id={id} type={type} content={content} />
-        <SpeedDialPlain type={type} />
+        <SpeedDialPlain id={id} type={type} />
       </Wrapper>
     );
   if (type === 'list')
     return (
       <Wrapper>
         <ListCardNote id={id} type={type} content={content} />
-        <SpeedDialPlain type={type} />
+        <SpeedDialPlain id={id} type={type} />
       </Wrapper>
     );
   if (type === 'section-heading')
     return (
       <Wrapper style={{ marginLeft: '1rem' }}>
-        <SectionHeading heading={content.heading} />
-        <SpeedDialPlain type={type} />
+        <SectionHeading heading={content} />
+        <SpeedDialPlain id={id} type={type} />
       </Wrapper>
     );
 };
