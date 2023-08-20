@@ -25,7 +25,13 @@ const reducer = (state, action) => {
   if (action.type === 'UPDATE_TITLE') {
     const { documentId, title } = action.payload;
 
-    return { ...state, [documentId]: { ...state[documentId], title: title } };
+    return {
+      ...state,
+      [documentId]: {
+        ...state[documentId],
+        title: title ? title : 'Untitled Document',
+      },
+    };
   }
   if (action.type === 'MOVE_NOTE_UP') {
     const { documentId, noteId } = action.payload;
