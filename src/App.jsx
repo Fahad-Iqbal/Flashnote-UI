@@ -5,7 +5,6 @@ import Landing from './Landing';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 export default function App() {
-  // const [user, setUser] = useState(getUserFromLocalStorage());
   return (
     <BrowserRouter>
       <Routes>
