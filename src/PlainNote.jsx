@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useGlobalContext } from './context';
 
-const PlainNote = ({ id, type, content: noteContent }) => {
+const PlainNote = ({
+  id,
+  type,
+  content: noteContent,
+  index,
+  handleMoveUp,
+  handleMoveDown,
+}) => {
   const [content, setContent] = useState(noteContent || '');
-  const { selectedDoc } = useGlobalContext();
+  const { selectedDoc, moveNoteUp, moveNoteDown } = useGlobalContext();
   useEffect(() => {
     const input = document.getElementById(id);
     input.innerText = content;
@@ -14,9 +21,21 @@ const PlainNote = ({ id, type, content: noteContent }) => {
       contentEditable={!selectedDoc.finished}
       onKeyDown={(e) => {
         if (e.key === 'Enter') e.preventDefault();
+        if (e.key === 'ArrowUp') {
+          if (e.altKey) {
+            if (handleMoveUp) {
+              handleMoveUp(index);
+            }
+            moveNoteUp(selectedDoc.id, id);
+          }
+        }
         if (e.key === 'ArrowDown') {
-          console.log(e);
-          e.target.nextElementSibling.focus();
+          if (e.altKey) {
+            if (handleMoveDown) {
+              handleMoveDown(index);
+            }
+            moveNoteDown(selectedDoc.id, id);
+          }
         }
       }}
       onBlur={(e) => {

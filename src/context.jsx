@@ -65,6 +65,7 @@ const AppContext = ({ children }) => {
   const [isPracticeOpen, setIsPracticeOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isUserOpen, setIsUserOpen] = useState(false);
+  // const [focusedNoteId, setFocusedNoteId] = useState(null);
 
   useEffect(() => {
     const finished = [];

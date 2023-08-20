@@ -3,7 +3,7 @@ import { useGlobalContext } from './context';
 
 const SectionHeading = ({ id, heading }) => {
   const [content, setContent] = useState(heading || '');
-  const { selectedDoc } = useGlobalContext();
+  const { selectedDoc, moveNoteUp, moveNoteDown } = useGlobalContext();
 
   useEffect(() => {
     const input = document.getElementById(id);
@@ -15,6 +15,14 @@ const SectionHeading = ({ id, heading }) => {
       contentEditable={!selectedDoc.finished}
       onKeyDown={(e) => {
         if (e.key === 'Enter') e.preventDefault();
+        if (e.key === 'ArrowUp') {
+          if (e.altKey) {
+            moveNoteUp(selectedDoc.id, id);
+          }
+        }
+        if (e.key === 'ArrowDown') {
+          if (e.altKey) moveNoteDown(selectedDoc.id, id);
+        }
       }}
       onBlur={(e) => {
         setContent(e.target.innerText);

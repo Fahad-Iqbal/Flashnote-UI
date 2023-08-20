@@ -5,7 +5,7 @@ import { useGlobalContext } from './context';
 const BasicCardNote = ({ id, type, content }) => {
   const [frontContent, setFrontContent] = useState(content?.front || '');
   const [backContent, setBackContent] = useState(content?.back || '');
-  const { selectedDoc } = useGlobalContext();
+  const { selectedDoc, moveNoteDown, moveNoteUp } = useGlobalContext();
   useEffect(() => {
     const frontInput = document.getElementById('front' + id);
 
@@ -28,6 +28,14 @@ const BasicCardNote = ({ id, type, content }) => {
 
             e.target.nextElementSibling.nextElementSibling.focus();
             return;
+          }
+          if (e.key === 'ArrowUp') {
+            if (e.altKey) {
+              moveNoteUp(selectedDoc.id, id);
+            }
+          }
+          if (e.key === 'ArrowDown') {
+            if (e.altKey) moveNoteDown(selectedDoc.id, id);
           }
           e.target.classList.remove('empty-front');
         }}
@@ -64,6 +72,14 @@ const BasicCardNote = ({ id, type, content }) => {
             e.preventDefault();
             setBackContent(e.target.innerText);
             return;
+          }
+          if (e.key === 'ArrowUp') {
+            if (e.altKey) {
+              moveNoteUp(selectedDoc.id, id);
+            }
+          }
+          if (e.key === 'ArrowDown') {
+            if (e.altKey) moveNoteDown(selectedDoc.id, id);
           }
           e.target.classList.remove('empty-back');
         }}

@@ -7,7 +7,7 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
   const [isSelected, setIsSelected] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isSpanClicked, setIsSpanClicked] = useState(false);
-  const { selectedDoc } = useGlobalContext();
+  const { selectedDoc, moveNoteUp, moveNoteDown } = useGlobalContext();
 
   const addSpanTags = (text) => {
     if (content.includes(text)) {
@@ -121,6 +121,14 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
           if (e.key === 'Enter') e.preventDefault();
           if (e.key === 'ArrowDown') {
             e.target.nextElementSibling.focus();
+          }
+          if (e.key === 'ArrowUp') {
+            if (e.altKey) {
+              moveNoteUp(selectedDoc.id, id);
+            }
+          }
+          if (e.key === 'ArrowDown') {
+            if (e.altKey) moveNoteDown(selectedDoc.id, id);
           }
         }}
         onBlur={(e) => {
