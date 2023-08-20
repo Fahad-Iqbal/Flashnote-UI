@@ -3,12 +3,19 @@ import { useGlobalContext } from './context';
 
 const SectionHeading = ({ id, heading }) => {
   const [content, setContent] = useState(heading || '');
-  const { selectedDoc, moveNoteUp, moveNoteDown } = useGlobalContext();
+  const { selectedDoc, moveNoteUp, moveNoteDown, updateDocument } =
+    useGlobalContext();
 
   useEffect(() => {
     const input = document.getElementById(id);
     input.innerText = content;
+    updateDocument(selectedDoc.id, id, {
+      id: id,
+      type: 'section-heading',
+      content: content,
+    });
   }, [content]);
+
   return (
     <div
       id={id}

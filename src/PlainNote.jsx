@@ -8,6 +8,7 @@ const PlainNote = ({
   index,
   handleMoveUp,
   handleMoveDown,
+  handleUpdate,
 }) => {
   const [content, setContent] = useState(noteContent || '');
   const { selectedDoc, moveNoteUp, moveNoteDown } = useGlobalContext();
@@ -40,12 +41,14 @@ const PlainNote = ({
       }}
       onBlur={(e) => {
         setContent(e.target.innerText);
+        handleUpdate(index, e.target.innerText);
       }}
       onPaste={(e) => {
         if (e.clipboardData.items[0].type !== 'text/plain') {
           e.preventDefault();
         }
         setContent(e.target.innerText);
+        handleUpdate(index, e.target.innerText);
       }}
       className={type}
     ></div>

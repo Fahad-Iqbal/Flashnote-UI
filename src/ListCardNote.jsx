@@ -48,6 +48,12 @@ const ListCardNote = ({ id, type, content }) => {
       }, 90);
     }
   };
+
+  const handleUpdate = (index, noteContent) => {
+    const newList = [...backContent];
+    newList[index] = noteContent;
+    setBackContent(newList);
+  };
   return (
     <div className="list-note">
       <div className="list-front-container basic-note">
@@ -115,6 +121,7 @@ const ListCardNote = ({ id, type, content }) => {
                     content={item}
                     handleMoveUp={handleMoveUp}
                     handleMoveDown={handleMoveDown}
+                    handleUpdate={handleUpdate}
                   />
                 </li>
               );

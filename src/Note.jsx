@@ -9,13 +9,6 @@ import ClozeDeletionNote from './ClozeDeletionNote';
 import { useGlobalContext } from './context';
 
 const Note = ({ id, type, content }) => {
-  if (type === 'plain')
-    return (
-      <Wrapper>
-        <PlainNote id={id} type={type} content={content} />
-        <SpeedDialPlain id={id} type={type} />
-      </Wrapper>
-    );
   if (type === 'basic')
     return (
       <Wrapper>

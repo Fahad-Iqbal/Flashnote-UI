@@ -70,7 +70,7 @@ const reducer = (state, action) => {
     if (noteIndex === -1) return state;
     const newNotes = [...state[documentId].notes];
     newNotes[noteIndex] = noteContent;
-    console.log(noteContent);
+
     return {
       ...state,
       [documentId]: { ...state[documentId], notes: newNotes },

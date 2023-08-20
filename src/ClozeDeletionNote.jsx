@@ -7,7 +7,8 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
   const [isSelected, setIsSelected] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isSpanClicked, setIsSpanClicked] = useState(false);
-  const { selectedDoc, moveNoteUp, moveNoteDown } = useGlobalContext();
+  const { selectedDoc, moveNoteUp, moveNoteDown, updateDocument } =
+    useGlobalContext();
 
   const addSpanTags = (text) => {
     if (content.includes(text)) {
@@ -31,6 +32,12 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
   useEffect(() => {
     const input = document.getElementById(id);
     input.innerHTML = `${content}`;
+
+    updateDocument(selectedDoc.id, id, {
+      id: id,
+      type: 'cloze',
+      content: content,
+    });
   }, [content]);
 
   return (

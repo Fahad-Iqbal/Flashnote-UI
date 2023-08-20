@@ -13,12 +13,12 @@ export const docs = {
       },
       {
         id: nanoid(),
-        type: 'plain',
+        type: 'cloze',
         content: 'This is a plain note with no flashcards associated with it.',
       },
       {
         id: nanoid(),
-        type: 'plain',
+        type: 'cloze',
         content:
           'Plain notes are useful for jotting down information that is good for reference, but not something that you need to remember.',
       },

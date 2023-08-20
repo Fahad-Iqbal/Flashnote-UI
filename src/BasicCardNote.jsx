@@ -5,7 +5,8 @@ import { useGlobalContext } from './context';
 const BasicCardNote = ({ id, type, content }) => {
   const [frontContent, setFrontContent] = useState(content?.front || '');
   const [backContent, setBackContent] = useState(content?.back || '');
-  const { selectedDoc, moveNoteDown, moveNoteUp } = useGlobalContext();
+  const { selectedDoc, moveNoteDown, moveNoteUp, updateDocument } =
+    useGlobalContext();
   useEffect(() => {
     const frontInput = document.getElementById('front' + id);
 
@@ -13,6 +14,15 @@ const BasicCardNote = ({ id, type, content }) => {
     const backInput = document.getElementById('back' + id);
 
     backInput.innerText = backContent;
+
+    updateDocument(selectedDoc.id, id, {
+      id: id,
+      type: type,
+      content: {
+        front: frontContent,
+        back: backContent,
+      },
+    });
   }, [frontContent, backContent]);
   return (
     <div className="basic-note">
