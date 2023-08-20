@@ -1,12 +1,12 @@
 import React from 'react';
 import PlainNote from './PlainNote';
 import styled from 'styled-components';
-import SpeedDialPlain from './SpeedDialPlain';
+import SpeedDialPlain from '../SpeedDialPlain';
 import SectionHeading from './SectionHeading';
 import BasicCardNote from './BasicCardNote';
 import ListCardNote from './ListCardNote';
 import ClozeDeletionNote from './ClozeDeletionNote';
-import { useGlobalContext } from './context';
+import { useGlobalContext } from '../context';
 
 const Note = ({ id, type, content }) => {
   if (type === 'basic')

@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
-import DocumentTitle from './DocumentTitle';
-import Note from './Note';
+import DocumentTitle from './Notes/DocumentTitle';
+import Note from './Notes/Note';
 import { useGlobalContext } from './context';
 import React from 'react';
 const Document = () => {

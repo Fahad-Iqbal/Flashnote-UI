@@ -1,7 +1,7 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { useGlobalContext } from './context';
+import { useGlobalContext } from '../context';
 
 const DocumentTitle = ({ title }) => {
   const { selectedDoc, toggleFinished, updateTitle, focusOnNote } =

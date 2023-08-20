@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button, Popover } from '@mui/material';
-import { useGlobalContext } from './context';
+import { useGlobalContext } from '../context';
 
 const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
   const [content, setContent] = useState(noteContent || '');

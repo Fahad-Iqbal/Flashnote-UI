@@ -1,7 +1,7 @@
 import { ArrowBack, ArrowDownward, ArrowForward } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import PlainNote from './PlainNote';
-import { useGlobalContext } from './context';
+import { useGlobalContext } from '../context';
 
 const ListCardNote = ({ id, type, content }) => {
   const [frontContent, setFrontContent] = useState(content?.front || '');

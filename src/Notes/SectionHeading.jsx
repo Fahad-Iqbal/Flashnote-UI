@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useGlobalContext } from './context';
+import { useGlobalContext } from '../context';
 
 const SectionHeading = ({ id, heading }) => {
   const [content, setContent] = useState(heading || '');

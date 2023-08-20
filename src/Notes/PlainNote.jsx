@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useGlobalContext } from './context';
+import { useGlobalContext } from '../context';
 
 const PlainNote = ({
   id,

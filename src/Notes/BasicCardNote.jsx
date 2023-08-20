@@ -1,6 +1,6 @@
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
-import { useGlobalContext } from './context';
+import { useGlobalContext } from '../context';
 
 const BasicCardNote = ({ id, type, content }) => {
   const [frontContent, setFrontContent] = useState(content?.front || '');
