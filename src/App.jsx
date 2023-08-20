@@ -3,13 +3,6 @@ import Home from './Home';
 import Login from './Login';
 import Landing from './Landing';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { useState } from 'react';
-
-// const getUserFromLocalStorage = () => {
-//   const user = localStorage.getItem('user');
-//   if (user) return JSON.parse(user);
-//   else return null;
-// };
 
 export default function App() {
   // const [user, setUser] = useState(getUserFromLocalStorage());
