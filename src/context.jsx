@@ -22,7 +22,6 @@ const getDocsFromLocalStorage = () => {
   if (documents) return JSON.parse(documents);
   else return docs;
 };
-const defaultDocsState = docs;
 const AppContext = ({ children }) => {
   // User Information Context
 
@@ -60,6 +59,77 @@ const AppContext = ({ children }) => {
       type: 'UPDATE_DOCUMENT',
       payload: { documentId, noteId, noteContent },
     });
+  };
+
+  const focusOnNote = (noteId) => {
+    const note = selectedDoc.notes.find((note) => note.id === noteId);
+    if (!note) {
+      return;
+    }
+    if (note.type === 'basic' || note.type === 'reversible') {
+      document.getElementById(`front${noteId}`)?.focus();
+    } else if (
+      note.type === 'cloze' ||
+      note.type === 'list' ||
+      note.type === 'section-heading'
+    ) {
+      document.getElementById(noteId)?.focus();
+    }
+  };
+
+  const focusOnNextNote = (noteId) => {
+    const notes = selectedDoc.notes;
+    const index = notes.findIndex((note) => note.id === noteId);
+    if (index === notes.length - 1) {
+      return;
+    }
+    focusOnNote(notes[index + 1].id);
+  };
+
+  const focusOnPreviousNote = (noteId) => {
+    const notes = selectedDoc.notes;
+    const index = notes.findIndex((note) => note.id === noteId);
+    if (index === 0) {
+      return;
+    }
+    focusOnNote(notes[index - 1].id);
+  };
+
+  const isCaretAtEnd = () => {
+    const selection = window.getSelection();
+    const offset = selection.focusOffset;
+    selection.modify('move', 'forward', 'character');
+    if (offset === selection.focusOffset) return true;
+    else {
+      selection.modify('move', 'backward', 'character');
+      return false;
+    }
+  };
+
+  const isCaretAtBeginning = () => {
+    const selection = window.getSelection();
+    const offset = selection.focusOffset;
+    selection.modify('move', 'backward', 'character');
+    if (offset === selection.focusOffset) return true;
+    else {
+      selection.modify('move', 'forward', 'character');
+      return false;
+    }
+  };
+
+  const handleArrowUp = (noteId) => {
+    if (!isCaretAtBeginning()) {
+      return;
+    } else {
+      focusOnPreviousNote(noteId);
+    }
+  };
+  const handleArrowDown = (noteId) => {
+    if (!isCaretAtEnd()) {
+      return;
+    } else {
+      focusOnNextNote(noteId);
+    }
   };
 
   // Sidebar state
@@ -120,6 +190,13 @@ const AppContext = ({ children }) => {
         moveNoteUp,
         moveNoteDown,
         updateDocument,
+        focusOnNextNote,
+        focusOnPreviousNote,
+        focusOnNote,
+        handleArrowDown,
+        handleArrowUp,
+        isCaretAtBeginning,
+        isCaretAtEnd,
       }}
     >
       {children}

@@ -51,6 +51,14 @@ export const docs = {
           back: ['Step 1...', 'Step 2...', 'Step 3...'],
         },
       },
+      {
+        id: nanoid(),
+        type: 'list',
+        content: {
+          front: 'How to tie a tie?',
+          back: [],
+        },
+      },
     ],
   },
   1: { id: 1, finished: true, title: 'Chemistry', notes: [] },

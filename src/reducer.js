@@ -12,8 +12,7 @@ const reducer = (state, action) => {
 
   if (action.type === 'TOGGLE_FINISHED') {
     const { documentId } = action.payload;
-    console.log(documentId);
-    console.log(state[documentId].finished);
+
     return {
       ...state,
       [documentId]: {

@@ -5,8 +5,18 @@ import { useGlobalContext } from './context';
 const BasicCardNote = ({ id, type, content }) => {
   const [frontContent, setFrontContent] = useState(content?.front || '');
   const [backContent, setBackContent] = useState(content?.back || '');
-  const { selectedDoc, moveNoteDown, moveNoteUp, updateDocument } =
-    useGlobalContext();
+  const {
+    selectedDoc,
+    moveNoteDown,
+    moveNoteUp,
+    updateDocument,
+    focusOnPreviousNote,
+    focusOnNextNote,
+    handleArrowDown,
+    handleArrowUp,
+    isCaretAtEnd,
+    isCaretAtBeginning,
+  } = useGlobalContext();
   useEffect(() => {
     const frontInput = document.getElementById('front' + id);
 
@@ -25,24 +35,31 @@ const BasicCardNote = ({ id, type, content }) => {
     });
   }, [frontContent, backContent]);
   return (
-    <div className="basic-note">
+    <div className="basic-note" id="id">
       <div
         id={'front' + id}
         className={frontContent ? 'front-of-card' : 'front-of-card empty-front'}
         // ref={frontInput}
         contentEditable={!selectedDoc.finished}
         onKeyDown={(e) => {
-          if (e.key === 'Enter') {
+          if (
+            e.key === 'Enter' ||
+            (isCaretAtEnd() && e.key === 'ArrowDown') ||
+            (isCaretAtEnd() && e.key === 'ArrowRight')
+          ) {
             e.preventDefault();
             setFrontContent(e.target.innerText);
 
             e.target.nextElementSibling.nextElementSibling.focus();
             return;
           }
-          if (e.key === 'ArrowUp') {
+          if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
             if (e.altKey) {
               moveNoteUp(selectedDoc.id, id);
+            } else if (!e.altKey && !e.shiftKey) {
+              handleArrowUp(id);
             }
+            return;
           }
           if (e.key === 'ArrowDown') {
             if (e.altKey) moveNoteDown(selectedDoc.id, id);
@@ -83,18 +100,31 @@ const BasicCardNote = ({ id, type, content }) => {
             setBackContent(e.target.innerText);
             return;
           }
+          if (
+            isCaretAtBeginning() &&
+            (e.key === 'ArrowUp' || e.key === 'ArrowLeft')
+          ) {
+            e.target.previousElementSibling.previousElementSibling.focus();
+            return;
+          }
           if (e.key === 'ArrowUp') {
             if (e.altKey) {
               moveNoteUp(selectedDoc.id, id);
             }
+
+            return;
           }
-          if (e.key === 'ArrowDown') {
-            if (e.altKey) moveNoteDown(selectedDoc.id, id);
+
+          if (
+            e.key === 'ArrowDown' ||
+            (isCaretAtEnd() && e.key === 'ArrowRight')
+          ) {
+            if (e.altKey) {
+              moveNoteDown(selectedDoc.id, id);
+            } else if (!e.altKey && !e.shiftKey) handleArrowDown(id);
+            return;
           }
           e.target.classList.remove('empty-back');
-        }}
-        onBlurCapture={(e) => {
-          setBackContent(e.target.innerText);
         }}
         onBlur={(e) => {
           setBackContent(e.target.innerText);

@@ -61,7 +61,7 @@ const Wrapper = styled.div`
   div:focus {
     outline: none;
     /* outline: 1px solid var(--footer-box-shadow); */
-    box-shadow: 1px 1px 5px var(--footer-box-shadow);
+    box-shadow: 1px 1px 5px 4px var(--footer-box-shadow);
   }
   .plain,
   .cloze {

@@ -1,10 +1,17 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useGlobalContext } from './context';
 
 const SectionHeading = ({ id, heading }) => {
   const [content, setContent] = useState(heading || '');
-  const { selectedDoc, moveNoteUp, moveNoteDown, updateDocument } =
-    useGlobalContext();
+  const {
+    selectedDoc,
+    moveNoteUp,
+    moveNoteDown,
+    handleArrowDown,
+    handleArrowUp,
+    isCaretAtEnd,
+    updateDocument,
+  } = useGlobalContext();
 
   useEffect(() => {
     const input = document.getElementById(id);
@@ -22,13 +29,22 @@ const SectionHeading = ({ id, heading }) => {
       contentEditable={!selectedDoc.finished}
       onKeyDown={(e) => {
         if (e.key === 'Enter') e.preventDefault();
-        if (e.key === 'ArrowUp') {
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
           if (e.altKey) {
             moveNoteUp(selectedDoc.id, id);
+          } else if (!e.altKey && !e.shiftKey) {
+            handleArrowUp(id);
           }
+          return;
         }
-        if (e.key === 'ArrowDown') {
-          if (e.altKey) moveNoteDown(selectedDoc.id, id);
+        if (
+          e.key === 'ArrowDown' ||
+          (isCaretAtEnd() && e.key === 'ArrowRight')
+        ) {
+          if (e.altKey) {
+            moveNoteDown(selectedDoc.id, id);
+          } else if (!e.altKey && !e.shiftKey) handleArrowDown(id);
+          return;
         }
       }}
       onBlur={(e) => {

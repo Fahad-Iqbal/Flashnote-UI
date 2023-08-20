@@ -7,8 +7,16 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
   const [isSelected, setIsSelected] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isSpanClicked, setIsSpanClicked] = useState(false);
-  const { selectedDoc, moveNoteUp, moveNoteDown, updateDocument } =
-    useGlobalContext();
+  const {
+    selectedDoc,
+    moveNoteUp,
+    moveNoteDown,
+    updateDocument,
+    handleArrowUp,
+    handleArrowDown,
+    isCaretAtEnd,
+    isCaretAtBeginning,
+  } = useGlobalContext();
 
   const addSpanTags = (text) => {
     if (content.includes(text)) {
@@ -69,7 +77,7 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
               addSpanTags(window.getSelection().toString());
             }}
           >
-            Add a Cloze
+            Add a Cloze Deletion
           </Button>
         </Popover>
       )}
@@ -126,16 +134,23 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
         contentEditable={!selectedDoc.finished}
         onKeyDown={(e) => {
           if (e.key === 'Enter') e.preventDefault();
-          if (e.key === 'ArrowDown') {
-            e.target.nextElementSibling.focus();
-          }
-          if (e.key === 'ArrowUp') {
+
+          if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
             if (e.altKey) {
               moveNoteUp(selectedDoc.id, id);
+            } else if (!e.altKey && !e.shiftKey) {
+              handleArrowUp(id);
             }
+            return;
           }
-          if (e.key === 'ArrowDown') {
-            if (e.altKey) moveNoteDown(selectedDoc.id, id);
+          if (
+            e.key === 'ArrowDown' ||
+            (isCaretAtEnd() && e.key === 'ArrowRight')
+          ) {
+            if (e.altKey) {
+              moveNoteDown(selectedDoc.id, id);
+            } else if (!e.altKey && !e.shiftKey) handleArrowDown(id);
+            return;
           }
         }}
         onBlur={(e) => {

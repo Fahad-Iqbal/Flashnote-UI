@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import { useGlobalContext } from './context';
 
 const DocumentTitle = ({ title }) => {
-  const { selectedDoc, toggleFinished, updateTitle } = useGlobalContext();
+  const { selectedDoc, toggleFinished, updateTitle, focusOnNote } =
+    useGlobalContext();
   const { finished } = selectedDoc;
   const input = useRef('');
   return (
@@ -13,15 +14,14 @@ const DocumentTitle = ({ title }) => {
         <h1
           contentEditable={!finished}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' || e.key === 'ArrowDown') {
               e.preventDefault();
               if (e.target.innerText !== selectedDoc.title) {
                 updateTitle(selectedDoc.id, e.target.innerText);
               }
-              const firstNote = document.getElementById(
-                selectedDoc.notes[0]?.id
-              );
-              if (firstNote) firstNote.focus();
+              if (selectedDoc.notes.length) {
+                focusOnNote(selectedDoc.notes[0].id);
+              }
             }
           }}
           onBlur={(e) => {

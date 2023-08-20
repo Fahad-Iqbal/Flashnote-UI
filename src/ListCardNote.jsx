@@ -6,8 +6,14 @@ import { useGlobalContext } from './context';
 const ListCardNote = ({ id, type, content }) => {
   const [frontContent, setFrontContent] = useState(content?.front || '');
   const [backContent, setBackContent] = useState(content?.back || []);
-  const { selectedDoc, moveNoteUp, moveNoteDown, updateDocument } =
-    useGlobalContext();
+  const {
+    selectedDoc,
+    moveNoteUp,
+    moveNoteDown,
+    updateDocument,
+    handleArrowUp,
+    isCaretAtEnd,
+  } = useGlobalContext();
   useEffect(() => {
     const frontInput = document.getElementById(id);
     frontInput.innerText = frontContent;
@@ -72,15 +78,29 @@ const ListCardNote = ({ id, type, content }) => {
               document.getElementById(`${id}0`)?.focus();
               return;
             }
-            e.target.classList.remove('empty-front');
-            if (e.key === 'ArrowUp') {
+            if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
               if (e.altKey) {
                 moveNoteUp(selectedDoc.id, id);
+              } else if (!e.altKey && !e.shiftKey) {
+                handleArrowUp(id);
               }
+              return;
             }
             if (e.key === 'ArrowDown') {
-              if (e.altKey) moveNoteDown(selectedDoc.id, id);
+              if (e.altKey) {
+                moveNoteDown(selectedDoc.id, id);
+              }
             }
+
+            if (
+              isCaretAtEnd() &&
+              !e.altKey &&
+              !e.shiftKey &&
+              (e.key === 'ArrowDown' || e.key === 'ArrowRight')
+            ) {
+              document.getElementById(`${id}0`)?.focus();
+            }
+            e.target.classList.remove('empty-front');
           }}
           onBlur={(e) => {
             setFrontContent(e.target.innerText);
@@ -108,6 +128,10 @@ const ListCardNote = ({ id, type, content }) => {
                 index={0}
                 type={'list-item'}
                 content=""
+                handleMoveUp={handleMoveUp}
+                handleMoveDown={handleMoveDown}
+                handleUpdate={handleUpdate}
+                parentId={id}
               />
             </li>
           ) : (
@@ -122,6 +146,7 @@ const ListCardNote = ({ id, type, content }) => {
                     handleMoveUp={handleMoveUp}
                     handleMoveDown={handleMoveDown}
                     handleUpdate={handleUpdate}
+                    parentId={id}
                   />
                 </li>
               );

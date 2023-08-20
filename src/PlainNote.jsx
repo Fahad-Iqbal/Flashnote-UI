@@ -9,9 +9,11 @@ const PlainNote = ({
   handleMoveUp,
   handleMoveDown,
   handleUpdate,
+  parentId,
 }) => {
   const [content, setContent] = useState(noteContent || '');
-  const { selectedDoc, moveNoteUp, moveNoteDown } = useGlobalContext();
+  const { selectedDoc, isCaretAtBeginning, focusOnNextNote, isCaretAtEnd } =
+    useGlobalContext();
   useEffect(() => {
     const input = document.getElementById(id);
     input.innerText = content;
@@ -24,18 +26,32 @@ const PlainNote = ({
         if (e.key === 'Enter') e.preventDefault();
         if (e.key === 'ArrowUp') {
           if (e.altKey) {
-            if (handleMoveUp) {
-              handleMoveUp(index);
+            handleMoveUp(index);
+          } else if (!e.altKey && !e.shiftKey & isCaretAtBeginning()) {
+            const previousListItem = document.getElementById(
+              `${parentId}${index - 1}`
+            );
+            if (previousListItem) {
+              previousListItem.focus();
             }
-            moveNoteUp(selectedDoc.id, id);
+            if (index === 0) {
+              const parentNote = document.getElementById(parentId);
+              parentNote?.focus();
+            }
           }
         }
         if (e.key === 'ArrowDown') {
           if (e.altKey) {
-            if (handleMoveDown) {
-              handleMoveDown(index);
+            handleMoveDown(index);
+          } else if (!e.altKey && !e.shiftKey & isCaretAtEnd()) {
+            const nextListItem = document.getElementById(
+              `${parentId}${index + 1}`
+            );
+            if (nextListItem) {
+              nextListItem.focus();
+            } else {
+              focusOnNextNote(parentId);
             }
-            moveNoteDown(selectedDoc.id, id);
           }
         }
       }}
