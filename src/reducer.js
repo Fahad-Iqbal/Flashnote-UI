@@ -62,6 +62,20 @@ const reducer = (state, action) => {
       [documentId]: { ...state[documentId], notes: newNotes },
     };
   }
+  if (action.type === 'UPDATE_DOCUMENT') {
+    const { documentId, noteId, noteContent } = action.payload;
+    const noteIndex = state[documentId].notes.findIndex(
+      (note) => note.id === noteId
+    );
+    if (noteIndex === -1) return state;
+    const newNotes = [...state[documentId].notes];
+    newNotes[noteIndex] = noteContent;
+    console.log(noteContent);
+    return {
+      ...state,
+      [documentId]: { ...state[documentId], notes: newNotes },
+    };
+  }
 
   throw new Error(`No matching "${action.type}" - action type`);
 };

@@ -55,6 +55,13 @@ const AppContext = ({ children }) => {
     dispatch({ type: 'MOVE_NOTE_DOWN', payload: { documentId, noteId } });
   };
 
+  const updateDocument = (documentId, noteId, noteContent) => {
+    dispatch({
+      type: 'UPDATE_DOCUMENT',
+      payload: { documentId, noteId, noteContent },
+    });
+  };
+
   // Sidebar state
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [draftDocs, setDraftDocs] = useState([]);
@@ -112,6 +119,7 @@ const AppContext = ({ children }) => {
         updateTitle,
         moveNoteUp,
         moveNoteDown,
+        updateDocument,
       }}
     >
       {children}

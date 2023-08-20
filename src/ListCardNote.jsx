@@ -6,11 +6,20 @@ import { useGlobalContext } from './context';
 const ListCardNote = ({ id, type, content }) => {
   const [frontContent, setFrontContent] = useState(content?.front || '');
   const [backContent, setBackContent] = useState(content?.back || []);
-  const { selectedDoc, moveNoteUp, moveNoteDown } = useGlobalContext();
+  const { selectedDoc, moveNoteUp, moveNoteDown, updateDocument } =
+    useGlobalContext();
   useEffect(() => {
     const frontInput = document.getElementById(id);
     frontInput.innerText = frontContent;
-    console.log(backContent);
+
+    updateDocument(selectedDoc.id, id, {
+      id: id,
+      type: type,
+      content: {
+        front: frontContent,
+        back: backContent,
+      },
+    });
   }, [frontContent, backContent]);
 
   const handleMoveUp = (index) => {
@@ -21,6 +30,9 @@ const ListCardNote = ({ id, type, content }) => {
       newList[index] = previous;
       newList[index - 1] = current;
       setBackContent(newList);
+      setTimeout(() => {
+        document.getElementById(`${id}${index - 1}`)?.focus();
+      }, 90);
     }
   };
   const handleMoveDown = (index) => {
@@ -31,6 +43,9 @@ const ListCardNote = ({ id, type, content }) => {
       newList[index] = next;
       newList[index + 1] = current;
       setBackContent(newList);
+      setTimeout(() => {
+        document.getElementById(`${id}${index + 1}`)?.focus();
+      }, 90);
     }
   };
   return (
@@ -78,7 +93,7 @@ const ListCardNote = ({ id, type, content }) => {
           <ArrowDownward className="arrow" />
         </div>
       </div>
-      <div id={'back' + id} style={{ marginTop: '0.5rem' }}>
+      <div id={'back' + id} style={{ marginTop: '0.5rem' }} key={backContent}>
         <ul>
           {!backContent.length ? (
             <li>
