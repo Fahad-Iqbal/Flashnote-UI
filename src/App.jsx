@@ -1,75 +1,25 @@
 import { useState } from 'react';
 import './App.css';
-import Document from './Document';
-import Header from './Header';
-import Sidebar from './Sidebar/Sidebar';
-import { draftDocs, finishedDocs } from './data.js';
-import Modal from './Modal';
+import Home from './Home';
+import Login from './Login';
+import Landing from './Landing';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-const draft = draftDocs;
-const finished = finishedDocs;
+const getUserFromLocalStorage = () => {
+  const user = localStorage.getItem('user');
+  if (user) return JSON.parse(user);
+  else return null;
+};
 
 export default function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [draftDocs, setDraftDocs] = useState(draft);
-  const [finishedDocs, setFinishedDocs] = useState(finished);
-  const [selectedDoc, setSelectedDoc] = useState(null);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isAllDocsOpen, setIsAllDocsOpen] = useState(false);
-  const [isPracticeOpen, setIsPracticeOpen] = useState(false);
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [isUserOpen, setIsUserOpen] = useState(false);
-
-  const modals = [
-    { isModalOpen: isSearchOpen, modalType: 'Search', setFn: setIsSearchOpen },
-    {
-      isModalOpen: isAllDocsOpen,
-      modalType: 'All Documents',
-      setFn: setIsAllDocsOpen,
-    },
-    {
-      isModalOpen: isPracticeOpen,
-      modalType: 'Practice Flashcards',
-      setFn: setIsPracticeOpen,
-    },
-    {
-      isModalOpen: isCreateOpen,
-      modalType: 'Create Document',
-      setFn: setIsCreateOpen,
-    },
-    {
-      isModalOpen: isUserOpen,
-      modalType: 'User Options',
-      setFn: setIsUserOpen,
-    },
-  ];
-
+  const [user, setUser] = useState(getUserFromLocalStorage());
   return (
-    <main>
-      {modals.map((modal) => {
-        const { isModalOpen, modalType, setFn } = modal;
-        if (isModalOpen)
-          return <Modal key={modalType} modalType={modalType} setFn={setFn} />;
-      })}
-
-      <Sidebar
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
-        draftDocs={draftDocs}
-        finishedDocs={finishedDocs}
-        selectedDoc={selectedDoc}
-        setSelectedDoc={setSelectedDoc}
-        setIsSearchOpen={setIsSearchOpen}
-        setIsUserOpen={setIsUserOpen}
-        setIsPracticeOpen={setIsPracticeOpen}
-        setIsAllDocsOpen={setIsAllDocsOpen}
-        setIsCreateOpen={setIsCreateOpen}
-      />
-
-      <div className="main-container">
-        <Header />
-        <Document document={selectedDoc} />
-      </div>
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home user={user} setUser={setUser} />} />
+        <Route path="login" element={<Login user={user} setUser={setUser} />} />
+        <Route path="landing" element={<Landing user={user} />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

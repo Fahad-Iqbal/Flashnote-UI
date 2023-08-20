@@ -2,8 +2,10 @@ import { useState } from 'react';
 import DocsListContainer from './DocsListContainer';
 import HamburgerButton from './HamburgerButton';
 import './sidebar.css';
+import { Link } from 'react-router-dom';
 
 const Sidebar = ({
+  user,
   isSidebarOpen,
   setIsSidebarOpen,
   draftDocs,
@@ -39,7 +41,7 @@ const Sidebar = ({
                 src="https://res.cloudinary.com/drbpsxnln/image/upload/v1675047823/Vector_aibzke.svg"
                 alt="User"
               />
-              <p className="user-name">fahad_i</p>
+              <p className="user-name">{user.name}</p>
             </div>
             <img
               className="user-options-icon"
