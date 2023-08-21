@@ -19,6 +19,9 @@ const Document = () => {
             </li>
           );
         })}
+        <li>
+          <Note id={'bottom-selection-bar'} type="selection-bar" />
+        </li>
       </ul>
     </Wrapper>
   );

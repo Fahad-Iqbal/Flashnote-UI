@@ -1,5 +1,4 @@
 import React from 'react';
-import PlainNote from './PlainNote';
 import styled from 'styled-components';
 import SpeedDialPlain from '../SpeedDialPlain';
 import SectionHeading from './SectionHeading';
@@ -7,6 +6,7 @@ import BasicCardNote from './BasicCardNote';
 import ListCardNote from './ListCardNote';
 import ClozeDeletionNote from './ClozeDeletionNote';
 import { useGlobalContext } from '../context';
+import NoteSelectionBar from './NoteSelectionBar';
 
 const Note = ({ id, type, content }) => {
   if (type === 'basic')
@@ -42,6 +42,13 @@ const Note = ({ id, type, content }) => {
       <Wrapper style={{ marginLeft: '1rem' }}>
         <SectionHeading id={id} heading={content} />
         <SpeedDialPlain id={id} type={type} />
+      </Wrapper>
+    );
+
+  if (type === 'selection-bar')
+    return (
+      <Wrapper>
+        <NoteSelectionBar id={id} />
       </Wrapper>
     );
 };
