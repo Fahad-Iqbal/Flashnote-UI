@@ -11,6 +11,8 @@ const SectionHeading = ({ id, heading }) => {
     handleArrowUp,
     isCaretAtEnd,
     updateDocument,
+    removeNote,
+    focusOnPreviousNote,
   } = useGlobalContext();
 
   useEffect(() => {
@@ -36,6 +38,13 @@ const SectionHeading = ({ id, heading }) => {
             handleArrowUp(id);
           }
           return;
+        }
+        if (
+          e.key === 'Backspace' &&
+          (e.target.innerText.length === 0 || e.target.innerHTML === '<br>')
+        ) {
+          focusOnPreviousNote(id);
+          removeNote(selectedDoc.id, id);
         }
         if (
           e.key === 'ArrowDown' ||

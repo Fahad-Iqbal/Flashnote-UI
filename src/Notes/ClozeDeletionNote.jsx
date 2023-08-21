@@ -16,6 +16,8 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
     handleArrowDown,
     isCaretAtEnd,
     isCaretAtBeginning,
+    removeNote,
+    focusOnPreviousNote,
   } = useGlobalContext();
 
   const addSpanTags = (text) => {
@@ -133,6 +135,14 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
         id={id}
         contentEditable={!selectedDoc.finished}
         onKeyDown={(e) => {
+          if (
+            e.key === 'Backspace' &&
+            (e.target.innerText.length === 0 || e.target.innerHTML === '<br>')
+          ) {
+            focusOnPreviousNote(id);
+            removeNote(selectedDoc.id, id);
+          }
+
           if (e.key === 'Enter') e.preventDefault();
 
           if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {

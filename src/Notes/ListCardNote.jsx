@@ -1,4 +1,4 @@
-import { ArrowBack, ArrowDownward, ArrowForward } from '@mui/icons-material';
+import { ArrowDownward } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import PlainNote from './PlainNote';
 import { useGlobalContext } from '../context';
@@ -13,6 +13,8 @@ const ListCardNote = ({ id, type, content }) => {
     updateDocument,
     handleArrowUp,
     isCaretAtEnd,
+    removeNote,
+    focusOnPreviousNote,
   } = useGlobalContext();
   useEffect(() => {
     const frontInput = document.getElementById(id);
@@ -60,6 +62,18 @@ const ListCardNote = ({ id, type, content }) => {
     newList[index] = noteContent;
     setBackContent(newList);
   };
+
+  const handleRemove = (index) => {
+    const newList = [...backContent];
+    newList.splice(index, 1);
+    console.log('newList', newList);
+    setBackContent(newList);
+
+    if (index === 0) {
+      document.getElementById(id)?.focus();
+    }
+  };
+
   return (
     <div className="list-note">
       <div className="list-front-container basic-note">
@@ -72,6 +86,16 @@ const ListCardNote = ({ id, type, content }) => {
 
           contentEditable={!selectedDoc.finished}
           onKeyDown={(e) => {
+            if (
+              e.key === 'Backspace' &&
+              !e.target.innerText.length &&
+              (!backContent.length ||
+                (backContent.length === 1 && !backContent[0].length))
+            ) {
+              removeNote(selectedDoc.id, id);
+              focusOnPreviousNote(id);
+            }
+
             if (e.key === 'Enter') {
               e.preventDefault();
               setFrontContent(e.target.innerText);
@@ -86,19 +110,19 @@ const ListCardNote = ({ id, type, content }) => {
               }
               return;
             }
-            if (e.key === 'ArrowDown') {
-              if (e.altKey) {
+            if (e.altKey) {
+              if (e.key === 'ArrowDown') {
                 moveNoteDown(selectedDoc.id, id);
               }
-            }
-
-            if (
+              return;
+            } else if (
               isCaretAtEnd() &&
               !e.altKey &&
               !e.shiftKey &&
               (e.key === 'ArrowDown' || e.key === 'ArrowRight')
             ) {
               document.getElementById(`${id}0`)?.focus();
+              return;
             }
             e.target.classList.remove('empty-front');
           }}
@@ -132,6 +156,9 @@ const ListCardNote = ({ id, type, content }) => {
                 handleMoveDown={handleMoveDown}
                 handleUpdate={handleUpdate}
                 parentId={id}
+                handleRemove={handleRemove}
+                setBackContent={setBackContent}
+                backContent={backContent}
               />
             </li>
           ) : (
@@ -146,7 +173,10 @@ const ListCardNote = ({ id, type, content }) => {
                     handleMoveUp={handleMoveUp}
                     handleMoveDown={handleMoveDown}
                     handleUpdate={handleUpdate}
+                    handleRemove={handleRemove}
                     parentId={id}
+                    setBackContent={setBackContent}
+                    backContent={backContent}
                   />
                 </li>
               );

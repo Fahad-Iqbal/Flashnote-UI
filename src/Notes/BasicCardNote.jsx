@@ -16,6 +16,7 @@ const BasicCardNote = ({ id, type, content }) => {
     handleArrowUp,
     isCaretAtEnd,
     isCaretAtBeginning,
+    removeNote,
   } = useGlobalContext();
   useEffect(() => {
     const frontInput = document.getElementById('front' + id);
@@ -42,6 +43,13 @@ const BasicCardNote = ({ id, type, content }) => {
         // ref={frontInput}
         contentEditable={!selectedDoc.finished}
         onKeyDown={(e) => {
+          if (e.key === 'Backspace') {
+            if (!e.target.innerText && !backContent) {
+              removeNote(selectedDoc.id, id);
+              focusOnPreviousNote(id);
+            }
+          }
+
           if (
             e.key === 'Enter' ||
             (isCaretAtEnd() && e.key === 'ArrowDown') ||
@@ -95,6 +103,19 @@ const BasicCardNote = ({ id, type, content }) => {
         // ref={backInput}
         contentEditable={!selectedDoc.finished}
         onKeyDown={(e) => {
+          if (e.key === 'Backspace') {
+            if (!e.target.innerText && !frontContent) {
+              removeNote(selectedDoc.id, id);
+              focusOnPreviousNote(id);
+            } else if (!e.target.innerText && frontContent) {
+              e.target.previousElementSibling.previousElementSibling.focus();
+              window
+                .getSelection()
+                .modify('move', 'forward', 'paragraphboundary');
+            }
+            return;
+          }
+
           if (e.key === 'Enter') {
             e.preventDefault();
             setBackContent(e.target.innerText);
@@ -105,6 +126,9 @@ const BasicCardNote = ({ id, type, content }) => {
             (e.key === 'ArrowUp' || e.key === 'ArrowLeft')
           ) {
             e.target.previousElementSibling.previousElementSibling.focus();
+            window
+              .getSelection()
+              .modify('move', 'forward', 'paragraphboundary');
             return;
           }
           if (e.key === 'ArrowUp') {

@@ -62,7 +62,7 @@ const AppContext = ({ children }) => {
   };
 
   const focusOnNote = (noteId) => {
-    const note = selectedDoc.notes.find((note) => note.id === noteId);
+    const note = selectedDoc.notes?.find((note) => note.id === noteId);
     if (!note) {
       return;
     }
@@ -71,7 +71,8 @@ const AppContext = ({ children }) => {
     } else if (
       note.type === 'cloze' ||
       note.type === 'list' ||
-      note.type === 'section-heading'
+      note.type === 'section-heading' ||
+      note.type === 'plain'
     ) {
       document.getElementById(noteId)?.focus();
     }
@@ -90,6 +91,7 @@ const AppContext = ({ children }) => {
     const notes = selectedDoc.notes;
     const index = notes.findIndex((note) => note.id === noteId);
     if (index === 0) {
+      focusOnNote(notes[index + 1]?.id);
       return;
     }
     focusOnNote(notes[index - 1].id);

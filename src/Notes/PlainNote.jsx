@@ -10,19 +10,43 @@ const PlainNote = ({
   handleMoveDown,
   handleUpdate,
   parentId,
+  handleRemove,
+  backContent,
+  setBackContent,
 }) => {
   const [content, setContent] = useState(noteContent || '');
-  const { selectedDoc, isCaretAtBeginning, focusOnNextNote, isCaretAtEnd } =
-    useGlobalContext();
+  const {
+    selectedDoc,
+    isCaretAtBeginning,
+    focusOnNextNote,
+    isCaretAtEnd,
+    focusOnNote,
+  } = useGlobalContext();
   useEffect(() => {
     const input = document.getElementById(id);
     input.innerText = content;
   }, [content]);
+
   return (
     <div
       id={id}
       contentEditable={!selectedDoc.finished}
       onKeyDown={(e) => {
+        if (e.key === 'Backspace') {
+          if (!e.target.innerText.length) {
+            const newList = backContent.filter((_, i) => i !== index);
+            setBackContent(newList);
+            setTimeout(() => {
+              const previousListItem = document.getElementById(
+                `${parentId}${index - 1}`
+              );
+              if (previousListItem) {
+                previousListItem.focus();
+              }
+              if (index === 0) document.getElementById(parentId).focus();
+            }, 90);
+          }
+        }
         if (e.key === 'Enter') e.preventDefault();
         if (e.key === 'ArrowUp') {
           if (e.altKey) {
