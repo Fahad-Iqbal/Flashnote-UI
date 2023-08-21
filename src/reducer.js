@@ -82,6 +82,18 @@ const reducer = (state, action) => {
     };
   }
 
+  if (action.type === 'INSERT_NOTE') {
+    const { documentId, index, noteContent } = action.payload;
+
+    const newNotes = [...state[documentId].notes];
+    newNotes.splice(index, 0, noteContent);
+
+    return {
+      ...state,
+      [documentId]: { ...state[documentId], notes: newNotes },
+    };
+  }
+
   throw new Error(`No matching "${action.type}" - action type`);
 };
 

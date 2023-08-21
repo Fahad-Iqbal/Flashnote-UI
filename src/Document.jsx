@@ -20,7 +20,11 @@ const Document = () => {
           );
         })}
         <li>
-          <Note id={'bottom-selection-bar'} type="selection-bar" />
+          <Note
+            id={'bottom-selection-bar'}
+            type="selection-bar"
+            index={selectedDoc.notes.length}
+          />
         </li>
       </ul>
     </Wrapper>

@@ -61,6 +61,14 @@ const AppContext = ({ children }) => {
     });
   };
 
+  const insertNote = (documentId, index, noteContent) => {
+    console.log(`Insert note at position ${index}`);
+    dispatch({
+      type: 'INSERT_NOTE',
+      payload: { documentId, index, noteContent },
+    });
+  };
+
   const focusOnNote = (noteId) => {
     const note = selectedDoc.notes?.find((note) => note.id === noteId);
     if (!note) {
@@ -199,6 +207,7 @@ const AppContext = ({ children }) => {
         handleArrowUp,
         isCaretAtBeginning,
         isCaretAtEnd,
+        insertNote,
       }}
     >
       {children}

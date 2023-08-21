@@ -8,7 +8,7 @@ import ClozeDeletionNote from './ClozeDeletionNote';
 import { useGlobalContext } from '../context';
 import NoteSelectionBar from './NoteSelectionBar';
 
-const Note = ({ id, type, content }) => {
+const Note = ({ id, type, content, index }) => {
   if (type === 'basic')
     return (
       <Wrapper>
@@ -48,7 +48,7 @@ const Note = ({ id, type, content }) => {
   if (type === 'selection-bar')
     return (
       <Wrapper>
-        <NoteSelectionBar id={id} />
+        <NoteSelectionBar id={id} index={index} />
       </Wrapper>
     );
 };
@@ -183,6 +183,12 @@ const Wrapper = styled.div`
       text-decoration: underline;
       cursor: pointer;
     }
+  }
+
+  .selection-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 `;
 
