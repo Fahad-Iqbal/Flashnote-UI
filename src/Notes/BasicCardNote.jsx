@@ -1,5 +1,5 @@
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGlobalContext } from '../context';
 
 const BasicCardNote = ({ id, type, content }) => {
@@ -167,4 +167,4 @@ const BasicCardNote = ({ id, type, content }) => {
   );
 };
 
-export default BasicCardNote;
+export default React.memo(BasicCardNote);

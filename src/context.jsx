@@ -62,7 +62,6 @@ const AppContext = ({ children }) => {
   };
 
   const insertNote = (documentId, index, noteContent) => {
-    console.log(`Insert note at position ${index}`);
     dispatch({
       type: 'INSERT_NOTE',
       payload: { documentId, index, noteContent },
@@ -70,20 +69,10 @@ const AppContext = ({ children }) => {
   };
 
   const focusOnNote = (noteId) => {
-    const note = selectedDoc.notes?.find((note) => note.id === noteId);
-    if (!note) {
-      return;
-    }
-    if (note.type === 'basic' || note.type === 'reversible') {
-      document.getElementById(`front${noteId}`)?.focus();
-    } else if (
-      note.type === 'cloze' ||
-      note.type === 'list' ||
-      note.type === 'section-heading' ||
-      note.type === 'plain'
-    ) {
-      document.getElementById(noteId)?.focus();
-    }
+    dispatch({
+      type: 'FOCUS_ON_NOTE',
+      payload: { documentId: selectedDoc.id, noteId },
+    });
   };
 
   const focusOnNextNote = (noteId) => {

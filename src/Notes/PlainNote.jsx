@@ -95,4 +95,4 @@ const PlainNote = ({
   );
 };
 
-export default PlainNote;
+export default React.memo(PlainNote);

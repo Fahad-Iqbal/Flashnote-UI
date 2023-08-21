@@ -12,35 +12,40 @@ const Note = ({ id, type, content, index }) => {
   if (type === 'basic')
     return (
       <Wrapper>
-        <BasicCardNote id={id} type={type} content={content} />
+        <BasicCardNote id={id} type={type} content={content} index={index} />
         <SpeedDialPlain id={id} type={type} />
       </Wrapper>
     );
   if (type === 'reversible')
     return (
       <Wrapper>
-        <BasicCardNote id={id} type={type} content={content} />
+        <BasicCardNote id={id} type={type} content={content} index={index} />
         <SpeedDialPlain id={id} type={type} />
       </Wrapper>
     );
   if (type === 'cloze')
     return (
       <Wrapper>
-        <ClozeDeletionNote id={id} type={type} content={content} />
+        <ClozeDeletionNote
+          id={id}
+          type={type}
+          content={content}
+          index={index}
+        />
         <SpeedDialPlain id={id} type={type} />
       </Wrapper>
     );
   if (type === 'list')
     return (
       <Wrapper>
-        <ListCardNote id={id} type={type} content={content} />
+        <ListCardNote id={id} type={type} content={content} index={index} />
         <SpeedDialPlain id={id} type={type} />
       </Wrapper>
     );
   if (type === 'section-heading')
     return (
       <Wrapper style={{ marginLeft: '1rem' }}>
-        <SectionHeading id={id} heading={content} />
+        <SectionHeading id={id} heading={content} index={index} />
         <SpeedDialPlain id={id} type={type} />
       </Wrapper>
     );
@@ -70,6 +75,7 @@ const Wrapper = styled.div`
     /* outline: 1px solid var(--footer-box-shadow); */
     box-shadow: 1px 1px 5px 4px var(--footer-box-shadow);
   }
+
   .plain,
   .cloze {
     padding-left: 1rem;
@@ -189,6 +195,9 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
+  }
+  &:has(.selection-bar) {
+    margin-bottom: 4rem;
   }
 `;
 

@@ -2,8 +2,8 @@ import { Button } from '@mui/material';
 import { useGlobalContext } from '../context';
 import { nanoid } from 'nanoid';
 
-const NoteSelectionBar = ({ index }) => {
-  const { selectedDoc, insertNote } = useGlobalContext();
+const NoteSelectionBar = ({ id, index }) => {
+  const { selectedDoc, insertNote, focusOnNote } = useGlobalContext();
 
   const buttons = [
     {
@@ -59,7 +59,7 @@ const NoteSelectionBar = ({ index }) => {
   ];
 
   return (
-    <div className="selection-bar">
+    <div className="selection-bar" id={id}>
       <Button style={{ color: 'var(--note-text-color)' }} disabled={true}>
         Insert:
       </Button>
@@ -77,6 +77,13 @@ const NoteSelectionBar = ({ index }) => {
             variant="outlined"
             onClick={() => {
               insertNote(selectedDoc.id, index, noteContent);
+              if (id === 'bottom-selection-bar') {
+                setTimeout(() => {
+                  const bar = document.getElementById(id);
+                  bar.scrollIntoView();
+                  focusOnNote(noteContent.id);
+                }, 90);
+              }
             }}
           >
             {buttonText}

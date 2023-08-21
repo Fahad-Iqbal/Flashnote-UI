@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Popover } from '@mui/material';
 import { useGlobalContext } from '../context';
 
@@ -194,4 +194,4 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
   );
 };
 
-export default ClozeDeletionNote;
+export default React.memo(ClozeDeletionNote);

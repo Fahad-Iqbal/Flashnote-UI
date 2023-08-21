@@ -55,7 +55,7 @@ const theme = createTheme({
   },
 });
 
-export default function SpeedDialPlain({ type, id }) {
+function SpeedDialPlain({ type, id }) {
   const [enabled, setEnabled] = useState(true);
   const { selectedDoc, removeNote, moveNoteUp, moveNoteDown } =
     useGlobalContext();
@@ -107,3 +107,5 @@ export default function SpeedDialPlain({ type, id }) {
     </ThemeProvider>
   );
 }
+
+export default React.memo(SpeedDialPlain);

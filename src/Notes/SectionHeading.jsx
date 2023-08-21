@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGlobalContext } from '../context';
 
 const SectionHeading = ({ id, heading }) => {
@@ -65,9 +65,9 @@ const SectionHeading = ({ id, heading }) => {
         }
         setContent(`${e.target.innerText}`);
       }}
-      className="section-heading"
+      className="section-heading "
     ></div>
   );
 };
 
-export default SectionHeading;
+export default React.memo(SectionHeading);

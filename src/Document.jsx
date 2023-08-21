@@ -15,10 +15,11 @@ const Document = () => {
           const { type, content } = note;
           return (
             <li key={note.id}>
-              <Note id={note.id} type={type} content={content} />
+              <Note id={note.id} index={index} type={type} content={content} />
             </li>
           );
         })}
+        <hr />
         <li>
           <Note
             id={'bottom-selection-bar'}

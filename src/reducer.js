@@ -94,6 +94,26 @@ const reducer = (state, action) => {
     };
   }
 
+  if (action.type === 'FOCUS_ON_NOTE') {
+    const { documentId, noteId } = action.payload;
+    const selectedDoc = state[documentId];
+    const note = selectedDoc.notes?.find((note) => note.id === noteId);
+    if (!note) {
+      return;
+    }
+    if (note.type === 'basic' || note.type === 'reversible') {
+      document.getElementById(`front${noteId}`)?.focus();
+    } else if (
+      note.type === 'cloze' ||
+      note.type === 'list' ||
+      note.type === 'section-heading' ||
+      note.type === 'plain'
+    ) {
+      document.getElementById(noteId)?.focus();
+    }
+    return state;
+  }
+
   throw new Error(`No matching "${action.type}" - action type`);
 };
 
