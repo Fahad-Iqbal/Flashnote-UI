@@ -2,10 +2,12 @@ import { ArrowDownward } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import PlainNote from './PlainNote';
 import { useGlobalContext } from '../context';
+import Note from './Note';
 
-const ListCardNote = ({ id, type, content }) => {
+const ListCardNote = ({ id, type, content, index }) => {
   const [frontContent, setFrontContent] = useState(content?.front || '');
   const [backContent, setBackContent] = useState(content?.back || []);
+  const [showSelectionBar, setShowSelectionBar] = useState(false);
   const {
     selectedDoc,
     moveNoteUp,
@@ -15,6 +17,8 @@ const ListCardNote = ({ id, type, content }) => {
     isCaretAtEnd,
     removeNote,
     focusOnPreviousNote,
+    duplicateNote,
+    insertEmptyNoteOfType,
   } = useGlobalContext();
   useEffect(() => {
     const frontInput = document.getElementById(id);
@@ -98,9 +102,13 @@ const ListCardNote = ({ id, type, content }) => {
 
             if (e.key === 'Enter') {
               e.preventDefault();
-              setFrontContent(e.target.innerText);
-              document.getElementById(`${id}0`)?.focus();
-              return;
+              if (!e.altKey) {
+                setShowSelectionBar(true);
+              } else if (e.altKey && !e.shiftKey) {
+                insertEmptyNoteOfType(selectedDoc.id, index + 1, type);
+              } else if (e.altKey && e.shiftKey) {
+                duplicateNote(selectedDoc.id, index + 1, id);
+              }
             }
             if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
               if (e.altKey) {
@@ -131,6 +139,9 @@ const ListCardNote = ({ id, type, content }) => {
             if (!frontContent) {
               e.target.classList.add('empty-front');
             }
+            setTimeout(() => {
+              setShowSelectionBar(false);
+            }, 100);
           }}
           onPaste={(e) => {
             if (e.clipboardData.items[0].type !== 'text/plain') {
@@ -184,6 +195,7 @@ const ListCardNote = ({ id, type, content }) => {
           )}
         </ul>
       </div>
+      {showSelectionBar && <Note type={'selection-bar'} index={index + 1} />}
     </div>
   );
 };

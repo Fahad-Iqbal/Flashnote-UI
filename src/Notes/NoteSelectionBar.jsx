@@ -82,8 +82,11 @@ const NoteSelectionBar = ({ id, index }) => {
                   const bar = document.getElementById(id);
                   bar.scrollIntoView();
                   focusOnNote(noteContent.id);
-                }, 90);
+                }, 0);
               }
+              setTimeout(() => {
+                focusOnNote(noteContent.id);
+              }, 0);
             }}
           >
             {buttonText}

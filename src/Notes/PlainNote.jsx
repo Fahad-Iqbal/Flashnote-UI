@@ -47,7 +47,29 @@ const PlainNote = ({
             }, 90);
           }
         }
-        if (e.key === 'Enter') e.preventDefault();
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const newList = [...backContent];
+          if (!e.altKey && !e.shiftKey) {
+            if (!newList.length) {
+              setBackContent(['', '']);
+            } else if (newList.length) {
+              newList.splice(index + 1, 0, '');
+              setBackContent(newList);
+            }
+          } else if (e.altKey && e.shiftKey) {
+            newList.splice(index + 1, 0, `${e.target.innerText}`);
+            setBackContent(newList);
+          }
+          setTimeout(() => {
+            const nextListItem = document.getElementById(
+              `${parentId}${index + 1}`
+            );
+            if (nextListItem) {
+              nextListItem.focus();
+            }
+          }, 10);
+        }
         if (e.key === 'ArrowUp') {
           if (e.altKey) {
             handleMoveUp(index);

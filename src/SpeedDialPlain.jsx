@@ -31,8 +31,8 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 
 const actions = [
   { icon: <Delete sx={{ color: '#720000' }} />, name: 'Remove' },
-  { icon: <KeyboardDoubleArrowDown />, name: 'Insert Note Below' },
-  { icon: <KeyboardDoubleArrowUp />, name: 'Insert Note Above' },
+  // { icon: <KeyboardDoubleArrowDown />, name: 'Insert Note Below' },
+  // { icon: <KeyboardDoubleArrowUp />, name: 'Insert Note Above' },
   { icon: <KeyboardArrowDown />, name: 'Move Down' },
   { icon: <KeyboardArrowUp />, name: 'Move Up' },
 ];

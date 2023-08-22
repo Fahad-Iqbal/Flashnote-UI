@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Popover } from '@mui/material';
 import { useGlobalContext } from '../context';
+import Note from './Note';
 
-const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
+const ClozeDeletionNote = ({ id, type, content: noteContent, index }) => {
   const [content, setContent] = useState(noteContent || '');
   const [isSelected, setIsSelected] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [showSelectionBar, setShowSelectionBar] = useState(false);
+
   const [isSpanClicked, setIsSpanClicked] = useState(false);
   const {
     selectedDoc,
@@ -18,6 +21,8 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
     isCaretAtBeginning,
     removeNote,
     focusOnPreviousNote,
+    duplicateNote,
+    insertEmptyNoteOfType,
   } = useGlobalContext();
 
   const addSpanTags = (text) => {
@@ -143,7 +148,16 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
             removeNote(selectedDoc.id, id);
           }
 
-          if (e.key === 'Enter') e.preventDefault();
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            if (!e.altKey) {
+              setShowSelectionBar(true);
+            } else if (e.altKey && !e.shiftKey) {
+              insertEmptyNoteOfType(selectedDoc.id, index + 1, type);
+            } else if (e.altKey && e.shiftKey) {
+              duplicateNote(selectedDoc.id, index + 1, id);
+            }
+          }
 
           if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
             if (e.altKey) {
@@ -165,6 +179,9 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
         }}
         onBlur={(e) => {
           setContent(e.target.innerHTML);
+          setTimeout(() => {
+            setShowSelectionBar(false);
+          }, 100);
         }}
         onSelect={(e) => {
           if (window.getSelection().toString()) {
@@ -190,6 +207,7 @@ const ClozeDeletionNote = ({ id, type, content: noteContent }) => {
         }}
         className={type}
       ></div>
+      {showSelectionBar && <Note type={'selection-bar'} index={index + 1} />}
     </>
   );
 };

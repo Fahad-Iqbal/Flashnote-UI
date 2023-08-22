@@ -7,6 +7,7 @@ import {
 } from 'react';
 import { docs } from './data.js';
 import reducer from './reducer.js';
+import { nanoid } from 'nanoid';
 
 // Global context hook
 const GlobalContext = createContext();
@@ -66,6 +67,61 @@ const AppContext = ({ children }) => {
       type: 'INSERT_NOTE',
       payload: { documentId, index, noteContent },
     });
+    setTimeout(() => {
+      focusOnNote(noteContent.id);
+    }, 100);
+  };
+
+  const insertEmptyNoteOfType = (documentId, index, noteType) => {
+    const notes = {
+      basic: {
+        id: nanoid(),
+        type: 'basic',
+        content: {
+          front: '',
+          back: '',
+        },
+      },
+
+      reversible: {
+        id: nanoid(),
+        type: 'reversible',
+        content: {
+          front: '',
+          back: '',
+        },
+      },
+
+      list: {
+        id: nanoid(),
+        type: 'list',
+        content: {
+          front: '',
+          back: [],
+        },
+      },
+
+      cloze: {
+        id: nanoid(),
+        type: 'cloze',
+        content: '',
+      },
+
+      'section-heading': {
+        id: nanoid(),
+        type: 'section-heading',
+        content: '',
+      },
+    };
+    insertNote(documentId, index, notes[noteType]);
+  };
+
+  const duplicateNote = (documentId, index, noteId) => {
+    const note = selectedDoc.notes?.find((note) => note.id === noteId);
+    if (!note) {
+      return;
+    }
+    insertNote(documentId, index, { ...note, id: nanoid() });
   };
 
   const focusOnNote = (noteId) => {
@@ -117,7 +173,7 @@ const AppContext = ({ children }) => {
   };
 
   const handleArrowUp = (noteId) => {
-    if (!isCaretAtBeginning()) {
+    if (!isCaretAtBeginning() || selectedDoc.notes[0]?.id === noteId) {
       return;
     } else {
       focusOnPreviousNote(noteId);
@@ -197,6 +253,8 @@ const AppContext = ({ children }) => {
         isCaretAtBeginning,
         isCaretAtEnd,
         insertNote,
+        duplicateNote,
+        insertEmptyNoteOfType,
       }}
     >
       {children}
