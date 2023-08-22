@@ -1,6 +1,28 @@
 import React from 'react';
+import { useGlobalContext } from './context';
+import Practice from './Practice';
+import Create from './Create';
+import Search from './Search';
+import AllDocs from './AllDocs';
+import User from './User';
 
-const Modal = ({ modalType, setFn }) => {
+const Modal = ({ modalType }) => {
+  const {
+    setIsSearchOpen,
+    setIsAllDocsOpen,
+    setIsPracticeOpen,
+    setIsCreateOpen,
+    setIsUserOpen,
+  } = useGlobalContext();
+  const setFunctions = {
+    all: setIsAllDocsOpen,
+    search: setIsSearchOpen,
+    practice: setIsPracticeOpen,
+    create: setIsCreateOpen,
+    user: setIsUserOpen,
+  };
+
+  const setFn = setFunctions[modalType];
   return (
     <div
       className="overlay"
@@ -23,32 +45,17 @@ const Modal = ({ modalType, setFn }) => {
         className="modal"
         style={{
           width: '70%',
-          height: '80%',
+          maxWidth: '120rem',
           display: 'flex',
-          alignItems: 'center',
           justifyContent: 'center',
-          flexDirection: 'column',
           minWidth: '500px',
-          backgroundColor: 'var(--color-background)',
-          color: 'var(--note-text-color)',
-          borderRadius: '1rem',
         }}
       >
-        <h1 style={{ fontSize: '4rem' }}>{modalType} Modal</h1>
-        <br />
-        <h3 style={{ fontSize: '2rem' }}>
-          Click the button or click outside the modal to exit
-        </h3>
-        <br />
-        <br />
-        <button
-          className="btn"
-          onClick={() => {
-            setFn(false);
-          }}
-        >
-          Exit
-        </button>
+        {modalType === 'practice' && <Practice />}
+        {modalType === 'create' && <Create />}
+        {modalType === 'search' && <Search />}
+        {modalType === 'all' && <AllDocs />}
+        {modalType === 'user' && <User />}
       </div>
     </div>
   );

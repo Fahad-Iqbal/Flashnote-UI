@@ -21,11 +21,13 @@ const Document = () => {
         })}
         <hr />
         <li>
-          <Note
-            id={'bottom-selection-bar'}
-            type="selection-bar"
-            index={selectedDoc.notes.length}
-          />
+          {!selectedDoc.finished && (
+            <Note
+              id={'bottom-selection-bar'}
+              type="selection-bar"
+              index={selectedDoc.notes.length}
+            />
+          )}
         </li>
       </ul>
     </Wrapper>

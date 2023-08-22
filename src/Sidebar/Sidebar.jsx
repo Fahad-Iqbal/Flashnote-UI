@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import DocsListContainer from './DocsListContainer';
 import HamburgerButton from './HamburgerButton';
 import './sidebar.css';
-import { Link } from 'react-router-dom';
 import { useGlobalContext } from '../context';
 
 const Sidebar = () => {
   const [isFinishedOpen, setIsFinishedOpen] = useState(false);
   const [isDraftOpen, setIsDraftOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(
+    document.querySelector('html').classList.contains('darkmode')
+  );
 
   const {
     user,
@@ -137,15 +139,12 @@ const Sidebar = () => {
         <div className="sidebar-bottom">
           <button
             className="darkmode btn secondary"
-            onClick={() =>
-              document.querySelector('html').classList.toggle('darkmode')
-            }
+            onClick={() => {
+              setDarkMode((prev) => !prev);
+              document.querySelector('html').classList.toggle('darkmode');
+            }}
           >
-            <p>
-              {document.querySelector('html').classList.contains('darkmode')
-                ? 'Light Mode'
-                : 'Dark Mode'}
-            </p>
+            <p>{darkMode ? 'Light Mode' : 'Dark Mode'}</p>
           </button>
           <button
             className="create btn primary"

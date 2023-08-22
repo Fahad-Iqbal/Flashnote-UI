@@ -8,41 +8,31 @@ import { useGlobalContext } from './context';
 const Home = () => {
   const {
     user,
-    setUser,
     selectedDoc,
     isSearchOpen,
-    setIsSearchOpen,
     isAllDocsOpen,
-    setIsAllDocsOpen,
     isPracticeOpen,
-    setIsPracticeOpen,
     isCreateOpen,
-    setIsCreateOpen,
     isUserOpen,
-    setIsUserOpen,
   } = useGlobalContext();
 
   const modals = [
-    { isModalOpen: isSearchOpen, modalType: 'Search', setFn: setIsSearchOpen },
+    { isModalOpen: isSearchOpen, modalType: 'search' },
     {
       isModalOpen: isAllDocsOpen,
-      modalType: 'All Documents',
-      setFn: setIsAllDocsOpen,
+      modalType: 'all',
     },
     {
       isModalOpen: isPracticeOpen,
-      modalType: 'Practice Flashcards',
-      setFn: setIsPracticeOpen,
+      modalType: 'practice',
     },
     {
       isModalOpen: isCreateOpen,
-      modalType: 'Create Document',
-      setFn: setIsCreateOpen,
+      modalType: 'create',
     },
     {
       isModalOpen: isUserOpen,
-      modalType: 'User Options',
-      setFn: setIsUserOpen,
+      modalType: 'user',
     },
   ];
 
@@ -50,9 +40,8 @@ const Home = () => {
   return (
     <main>
       {modals.map((modal) => {
-        const { isModalOpen, modalType, setFn } = modal;
-        if (isModalOpen)
-          return <Modal key={modalType} modalType={modalType} setFn={setFn} />;
+        const { isModalOpen, modalType } = modal;
+        if (isModalOpen) return <Modal key={modalType} modalType={modalType} />;
       })}
 
       <Sidebar />
