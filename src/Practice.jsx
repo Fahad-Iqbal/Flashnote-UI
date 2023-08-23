@@ -3,33 +3,30 @@ import styled from 'styled-components';
 import BasicSelect from './BasicSelect';
 import Note from './Notes/Note';
 import { useGlobalContext } from './context';
-
+import { Button } from '@mui/material';
 const Practice = () => {
-  const { showAnswer, setShowAnswer, flashcards } = useGlobalContext();
+  const { showAnswer, setShowAnswer, flashcards, setIsPracticeOpen } =
+    useGlobalContext();
   const [selectedFlashcard, setSelectedFlashcard] = useState(0);
   const [note, setNote] = useState({});
-  // const numFlashcards = flashcards.length;
 
   useEffect(() => {
     setNote(flashcards[selectedFlashcard]);
-    console.log(note);
   }, [selectedFlashcard]);
-  console.log(flashcards);
-
   if (selectedFlashcard >= flashcards.length)
     return (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'var(--color-background)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <h3>You've reviewed all flashcards</h3>
-      </div>
+      <Wrapper>
+        <div className="practice-end">
+          <h2>You've reviewed all flashcards</h2>
+          <Button
+            onClick={() => {
+              setIsPracticeOpen(false);
+            }}
+          >
+            Close
+          </Button>
+        </div>
+      </Wrapper>
     );
   return (
     <Wrapper>
@@ -51,6 +48,7 @@ const Practice = () => {
           type={note.type}
           content={note.content}
           practice={true}
+          reversible={note.reversible}
         />
       </div>
       {!showAnswer && (
@@ -192,5 +190,17 @@ const Wrapper = styled.div`
     justify-content: center;
     flex-grow: 1;
     width: 100%;
+  }
+
+  .practice-end {
+    width: 90%;
+    height: clamp(50rem, 75vh, 100rem);
+    background-color: var(--color-background);
+    flex-direction: column;
+    gap: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
   }
 `;

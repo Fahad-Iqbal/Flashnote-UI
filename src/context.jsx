@@ -27,10 +27,6 @@ const AppContext = ({ children }) => {
   // User Information Context
 
   const [user, setUser] = useState(getUserFromLocalStorage());
-  // useEffect(() => {
-  //   setUser(getUserFromLocalStorage());
-  // }, []);
-
   // documents state
   const [state, dispatch] = useReducer(reducer, getDocsFromLocalStorage());
 
@@ -78,13 +74,13 @@ const AppContext = ({ children }) => {
       if (note.type === 'section-heading') {
         sectionHeading = note.content;
       }
-      if (note.type !== 'section-heading' && !note.flashcardDisabled) {
+      if (note.type !== 'section-heading' && isValidFlashCard(note)) {
         if (note.type === 'reversible') {
           const front = note.content.front;
           const back = note.content.back;
           flashcardArray.push({
             ...note,
-            id: nanoid(),
+            id: 'reverse' + note.id,
             practice: true,
             sectionHeading: sectionHeading,
             content: { front: back, back: front },
@@ -92,7 +88,6 @@ const AppContext = ({ children }) => {
         }
         flashcardArray.push({
           ...note,
-          id: nanoid(),
           sectionHeading: sectionHeading,
           practice: true,
         });
@@ -100,6 +95,37 @@ const AppContext = ({ children }) => {
     });
 
     return flashcardArray;
+  };
+
+  const isValidFlashCard = (note) => {
+    if (note.flashcardDisabled) {
+      return false;
+    }
+    if (
+      note.type === 'cloze' &&
+      !note.content.includes('<span>') &&
+      !note.content.includes('</span>')
+    ) {
+      return false;
+    }
+    if (
+      note.type === 'basic' ||
+      note.type === 'reversible' ||
+      note.type === 'list'
+    ) {
+      if (!note.content.front.length || !note.content.back.length) {
+        return false;
+      }
+    }
+    if (note.type === 'list' && note.content.back.length) {
+      for (let item of note.content.back) {
+        if (item.length) {
+          return true;
+        }
+      }
+      return false;
+    }
+    return true;
   };
 
   // document functions
