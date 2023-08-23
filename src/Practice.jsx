@@ -1,39 +1,57 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import BasicSelect from './BasicSelect';
-import ClozeDeletionNote from './Notes/ClozeDeletionNote';
-import { nanoid } from 'nanoid';
 import Note from './Notes/Note';
 import { useGlobalContext } from './context';
 
 const Practice = () => {
-  const { showAnswer, setShowAnswer } = useGlobalContext();
-  const numFlashcards = 22;
-  const note = {
-    id: nanoid(),
-    type: 'list',
-    content: {
-      front: 'How to tie a tie?',
-      back: [
-        'Step 1... is to a purchase a tie that you like ',
-        'Step 2... is to stand in front of a mirror',
-        'Step 3... is to tie a knot and then another knot until the tie looks good',
-      ],
-    },
-  };
+  const { showAnswer, setShowAnswer, flashcards } = useGlobalContext();
+  const [selectedFlashcard, setSelectedFlashcard] = useState(0);
+  const [note, setNote] = useState({});
+  // const numFlashcards = flashcards.length;
+
+  useEffect(() => {
+    setNote(flashcards[selectedFlashcard]);
+    console.log(note);
+  }, [selectedFlashcard]);
+  console.log(flashcards);
+
+  if (selectedFlashcard >= flashcards.length)
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'var(--color-background)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <h3>You've reviewed all flashcards</h3>
+      </div>
+    );
   return (
     <Wrapper>
       <div className="practice-header">
-        <p>{`${numFlashcards} cards in `}</p>
+        <p>{`${flashcards.length} cards in `}</p>
         <BasicSelect />
       </div>
       <ul>
         <li>Biology</li>
 
-        <li className="sect-heading">Structure and function of cells</li>
+        {note.sectionHeading && (
+          <li className="sect-heading">{note.sectionHeading}</li>
+        )}
       </ul>
       <div className="question-area">
-        <Note id={note.id} type={note.type} content={note.content} />
+        <Note
+          key={id}
+          id={note.id}
+          type={note.type}
+          content={note.content}
+          practice={true}
+        />
       </div>
       {!showAnswer && (
         <div className="show-button-container">
@@ -52,6 +70,7 @@ const Practice = () => {
           <button
             onClick={() => {
               setShowAnswer(false);
+              setSelectedFlashcard(selectedFlashcard + 1);
             }}
           >
             <p className="icon">😰</p> <p>Forgot</p> <span>1 min</span>{' '}

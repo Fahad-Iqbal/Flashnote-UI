@@ -8,9 +8,8 @@ import ClozeDeletionNote from './ClozeDeletionNote';
 import { useGlobalContext } from '../context';
 import NoteSelectionBar from './NoteSelectionBar';
 
-const Note = ({ id, type, content, index }) => {
+const Note = ({ id, type, content, index, practice }) => {
   const { isPracticeOpen, showAnswer } = useGlobalContext();
-  console.log(showAnswer);
   if (type === 'section-heading')
     return (
       <Wrapper style={{ marginLeft: '1rem' }}>
@@ -36,10 +35,12 @@ const Note = ({ id, type, content, index }) => {
               className={
                 showAnswer ? 'show-answer-basic' : 'show-question-basic'
               }
+              key={id}
               id={id}
               type={type}
               content={content}
               index={index}
+              practice={practice}
             />
           )}
           {type === 'reversible' && (
@@ -47,10 +48,12 @@ const Note = ({ id, type, content, index }) => {
               className={
                 showAnswer ? 'show-answer-basic' : 'show-question-basic'
               }
+              key={id}
               id={id}
               type={type}
               content={content}
               index={index}
+              practice={practice}
             />
           )}
           {type === 'cloze' && (
@@ -58,19 +61,23 @@ const Note = ({ id, type, content, index }) => {
               className={
                 showAnswer ? 'show-answer-cloze' : 'show-question-cloze'
               }
+              key={id}
               id={id}
               type={type}
               content={content}
               index={index}
+              practice={practice}
             />
           )}
           {type === 'list' && (
             <ListCardNote
               className={showAnswer ? 'show-answer-list' : 'show-question-list'}
+              key={id}
               id={id}
               type={type}
               content={content}
               index={index}
+              practice={practice}
             />
           )}
 
@@ -291,7 +298,6 @@ const QuestionWrapper = styled.div`
     li {
       padding: 0;
       margin-top: -1rem;
-      /* border: solid 1px red; */
     }
   }
 `;

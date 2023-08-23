@@ -3,7 +3,13 @@ import { Button, Popover } from '@mui/material';
 import { useGlobalContext } from '../context';
 import Note from './Note';
 
-const ClozeDeletionNote = ({ id, type, content: noteContent, index }) => {
+const ClozeDeletionNote = ({
+  id,
+  type,
+  content: noteContent,
+  index,
+  practice,
+}) => {
   const [content, setContent] = useState(noteContent || '');
   const [isSelected, setIsSelected] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -49,11 +55,13 @@ const ClozeDeletionNote = ({ id, type, content: noteContent, index }) => {
     const input = document.getElementById(id);
     input.innerHTML = `${content}`;
 
-    updateDocument(selectedDoc.id, id, {
-      id: id,
-      type: 'cloze',
-      content: content,
-    });
+    if (!practice) {
+      updateDocument(selectedDoc.id, id, {
+        id: id,
+        type: 'cloze',
+        content: content,
+      });
+    }
   }, [content]);
 
   return (

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useGlobalContext } from '../context';
 import Note from './Note';
 
-const SectionHeading = ({ id, heading, index, type }) => {
+const SectionHeading = ({ id, heading, index, type, practice }) => {
   const [content, setContent] = useState(heading || '');
   const [showSelectionBar, setShowSelectionBar] = useState(false);
   const {
@@ -22,11 +22,14 @@ const SectionHeading = ({ id, heading, index, type }) => {
   useEffect(() => {
     const input = document.getElementById(id);
     input.innerText = content;
-    updateDocument(selectedDoc.id, id, {
-      id: id,
-      type: 'section-heading',
-      content: content,
-    });
+
+    if (!practice) {
+      updateDocument(selectedDoc.id, id, {
+        id: id,
+        type: 'section-heading',
+        content: content,
+      });
+    }
   }, [content]);
 
   return (

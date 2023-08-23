@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useGlobalContext } from '../context';
 import Note from './Note';
 
-const BasicCardNote = ({ id, type, content, index }) => {
+const BasicCardNote = ({ id, type, content, index, practice }) => {
   const [frontContent, setFrontContent] = useState(content?.front || '');
   const [backContent, setBackContent] = useState(content?.back || '');
   const [showSelectionBar, setShowSelectionBar] = useState(false);
@@ -31,15 +31,16 @@ const BasicCardNote = ({ id, type, content, index }) => {
     const backInput = document.getElementById('back' + id);
 
     backInput.innerText = backContent;
-
-    updateDocument(selectedDoc.id, id, {
-      id: id,
-      type: type,
-      content: {
-        front: frontContent,
-        back: backContent,
-      },
-    });
+    if (!practice) {
+      updateDocument(selectedDoc.id, id, {
+        id: id,
+        type: type,
+        content: {
+          front: frontContent,
+          back: backContent,
+        },
+      });
+    }
   }, [frontContent, backContent]);
   return (
     <>

@@ -50,6 +50,7 @@ const AppContext = ({ children }) => {
   useEffect(() => {
     const finished = [];
     const draft = [];
+    let flashcardArray = [];
     for (let key in state) {
       if (state[key].finished) {
         finished.push(state[key]);
@@ -59,11 +60,47 @@ const AppContext = ({ children }) => {
       if (key === `${selectedDoc.id}`) {
         setSelectedDoc(state[key]);
       }
+      if (!state[key].flashcardsDisabled) {
+        const newFlashcardList = getFlashcards(state[key].notes);
+        flashcardArray = flashcardArray.concat(newFlashcardList);
+      }
     }
     setDraftDocs(draft);
     setFinishedDocs(finished);
+    setFlashCards(flashcardArray);
     localStorage.setItem('documents', JSON.stringify(state));
   }, [state]);
+
+  const getFlashcards = (notes) => {
+    const flashcardArray = [];
+    let sectionHeading = '';
+    notes.forEach((note) => {
+      if (note.type === 'section-heading') {
+        sectionHeading = note.content;
+      }
+      if (note.type !== 'section-heading' && !note.flashcardDisabled) {
+        if (note.type === 'reversible') {
+          const front = note.content.front;
+          const back = note.content.back;
+          flashcardArray.push({
+            ...note,
+            id: nanoid(),
+            practice: true,
+            sectionHeading: sectionHeading,
+            content: { front: back, back: front },
+          });
+        }
+        flashcardArray.push({
+          ...note,
+          id: nanoid(),
+          sectionHeading: sectionHeading,
+          practice: true,
+        });
+      }
+    });
+
+    return flashcardArray;
+  };
 
   // document functions
   const removeNote = (documentId, noteId) => {

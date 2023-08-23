@@ -4,6 +4,7 @@ import Sidebar from './Sidebar/Sidebar';
 import Modal from './Modal';
 import { Navigate } from 'react-router-dom';
 import { useGlobalContext } from './context';
+import React from 'react';
 
 const Home = () => {
   const {
@@ -54,4 +55,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default React.memo(Home);
