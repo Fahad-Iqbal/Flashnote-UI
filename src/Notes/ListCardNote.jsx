@@ -19,6 +19,7 @@ const ListCardNote = ({ id, type, content, index }) => {
     focusOnPreviousNote,
     duplicateNote,
     insertEmptyNoteOfType,
+    isPracticeOpen,
   } = useGlobalContext();
   useEffect(() => {
     const frontInput = document.getElementById(id);
@@ -88,7 +89,7 @@ const ListCardNote = ({ id, type, content, index }) => {
           }
           // ref={frontInput}
 
-          contentEditable={!selectedDoc.finished}
+          contentEditable={!(selectedDoc.finished || isPracticeOpen)}
           onKeyDown={(e) => {
             if (
               e.key === 'Backspace' &&
@@ -154,7 +155,12 @@ const ListCardNote = ({ id, type, content, index }) => {
           <ArrowDownward className="arrow" />
         </div>
       </div>
-      <div id={'back' + id} style={{ marginTop: '0.5rem' }} key={backContent}>
+      <div
+        id={'back' + id}
+        style={{ marginTop: '0.5rem' }}
+        key={backContent}
+        className="list-back"
+      >
         <ul>
           {!backContent.length ? (
             <li>

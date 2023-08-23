@@ -53,10 +53,7 @@ const SectionHeading = ({ id, heading, index, type }) => {
             }
             return;
           }
-          if (
-            e.key === 'Backspace' &&
-            (e.target.innerText.length === 0 || e.target.innerHTML === '<br>')
-          ) {
+          if (e.key === 'Backspace' && e.target.innerText.length === 0) {
             focusOnPreviousNote(id);
             removeNote(selectedDoc.id, id);
           }

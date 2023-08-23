@@ -26,13 +26,44 @@ const getDocsFromLocalStorage = () => {
 const AppContext = ({ children }) => {
   // User Information Context
 
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    setUser(getUserFromLocalStorage());
-  }, []);
+  const [user, setUser] = useState(getUserFromLocalStorage());
+  // useEffect(() => {
+  //   setUser(getUserFromLocalStorage());
+  // }, []);
 
   // documents state
   const [state, dispatch] = useReducer(reducer, getDocsFromLocalStorage());
+
+  // Sidebar state
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [draftDocs, setDraftDocs] = useState([]);
+  const [finishedDocs, setFinishedDocs] = useState([]);
+  const [selectedDoc, setSelectedDoc] = useState({ ...docs[0] });
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isAllDocsOpen, setIsAllDocsOpen] = useState(false);
+  const [isPracticeOpen, setIsPracticeOpen] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isUserOpen, setIsUserOpen] = useState(false);
+  const [flashcards, setFlashCards] = useState([]);
+  const [showAnswer, setShowAnswer] = useState(false);
+
+  useEffect(() => {
+    const finished = [];
+    const draft = [];
+    for (let key in state) {
+      if (state[key].finished) {
+        finished.push(state[key]);
+      } else if (!state[key].finished) {
+        draft.push(state[key]);
+      }
+      if (key === `${selectedDoc.id}`) {
+        setSelectedDoc(state[key]);
+      }
+    }
+    setDraftDocs(draft);
+    setFinishedDocs(finished);
+    localStorage.setItem('documents', JSON.stringify(state));
+  }, [state]);
 
   // document functions
   const removeNote = (documentId, noteId) => {
@@ -125,6 +156,7 @@ const AppContext = ({ children }) => {
   };
 
   const focusOnNote = (noteId) => {
+    if (!noteId) return;
     dispatch({
       type: 'FOCUS_ON_NOTE',
       payload: { documentId: selectedDoc.id, noteId },
@@ -187,36 +219,6 @@ const AppContext = ({ children }) => {
     }
   };
 
-  // Sidebar state
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [draftDocs, setDraftDocs] = useState([]);
-  const [finishedDocs, setFinishedDocs] = useState([]);
-  const [selectedDoc, setSelectedDoc] = useState({ ...docs[0] });
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isAllDocsOpen, setIsAllDocsOpen] = useState(false);
-  const [isPracticeOpen, setIsPracticeOpen] = useState(false);
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [isUserOpen, setIsUserOpen] = useState(false);
-  // const [focusedNoteId, setFocusedNoteId] = useState(null);
-
-  useEffect(() => {
-    const finished = [];
-    const draft = [];
-    for (let key in state) {
-      if (state[key].finished) {
-        finished.push(state[key]);
-      } else if (!state[key].finished) {
-        draft.push(state[key]);
-      }
-      if (key === `${selectedDoc.id}`) {
-        setSelectedDoc(state[key]);
-      }
-    }
-    setDraftDocs(draft);
-    setFinishedDocs(finished);
-    localStorage.setItem('documents', JSON.stringify(state));
-  }, [state]);
-
   return (
     <GlobalContext.Provider
       value={{
@@ -255,6 +257,9 @@ const AppContext = ({ children }) => {
         insertNote,
         duplicateNote,
         insertEmptyNoteOfType,
+        flashcards,
+        showAnswer,
+        setShowAnswer,
       }}
     >
       {children}

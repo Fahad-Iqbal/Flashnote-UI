@@ -21,6 +21,7 @@ const PlainNote = ({
     focusOnNextNote,
     isCaretAtEnd,
     focusOnNote,
+    isPracticeOpen,
   } = useGlobalContext();
   useEffect(() => {
     const input = document.getElementById(id);
@@ -30,7 +31,7 @@ const PlainNote = ({
   return (
     <div
       id={id}
-      contentEditable={!selectedDoc.finished}
+      contentEditable={!(selectedDoc.finished || isPracticeOpen)}
       onKeyDown={(e) => {
         if (e.key === 'Backspace') {
           if (!e.target.innerText.length) {

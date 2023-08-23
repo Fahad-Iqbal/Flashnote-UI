@@ -22,6 +22,7 @@ const BasicCardNote = ({ id, type, content, index }) => {
     removeNote,
     duplicateNote,
     insertEmptyNoteOfType,
+    isPracticeOpen,
   } = useGlobalContext();
   useEffect(() => {
     const frontInput = document.getElementById('front' + id);
@@ -49,7 +50,7 @@ const BasicCardNote = ({ id, type, content, index }) => {
             frontContent ? 'front-of-card' : 'front-of-card empty-front'
           }
           // ref={frontInput}
-          contentEditable={!selectedDoc.finished}
+          contentEditable={!(selectedDoc.finished || isPracticeOpen)}
           onKeyDown={(e) => {
             if (e.key === 'Backspace') {
               if (!e.target.innerText && !backContent) {
@@ -112,7 +113,7 @@ const BasicCardNote = ({ id, type, content, index }) => {
           id={'back' + id}
           className={backContent ? 'back-of-card' : 'back-of-card empty-back'}
           // ref={backInput}
-          contentEditable={!selectedDoc.finished}
+          contentEditable={!(selectedDoc.finished || isPracticeOpen)}
           onKeyDown={(e) => {
             if (e.key === 'Backspace') {
               if (!e.target.innerText && !frontContent) {

@@ -9,39 +9,8 @@ import { useGlobalContext } from '../context';
 import NoteSelectionBar from './NoteSelectionBar';
 
 const Note = ({ id, type, content, index }) => {
-  if (type === 'basic')
-    return (
-      <Wrapper>
-        <BasicCardNote id={id} type={type} content={content} index={index} />
-        <SpeedDialPlain id={id} type={type} />
-      </Wrapper>
-    );
-  if (type === 'reversible')
-    return (
-      <Wrapper>
-        <BasicCardNote id={id} type={type} content={content} index={index} />
-        <SpeedDialPlain id={id} type={type} />
-      </Wrapper>
-    );
-  if (type === 'cloze')
-    return (
-      <Wrapper>
-        <ClozeDeletionNote
-          id={id}
-          type={type}
-          content={content}
-          index={index}
-        />
-        <SpeedDialPlain id={id} type={type} />
-      </Wrapper>
-    );
-  if (type === 'list')
-    return (
-      <Wrapper>
-        <ListCardNote id={id} type={type} content={content} index={index} />
-        <SpeedDialPlain id={id} type={type} />
-      </Wrapper>
-    );
+  const { isPracticeOpen, showAnswer } = useGlobalContext();
+  console.log(showAnswer);
   if (type === 'section-heading')
     return (
       <Wrapper style={{ marginLeft: '1rem' }}>
@@ -50,12 +19,89 @@ const Note = ({ id, type, content, index }) => {
       </Wrapper>
     );
 
-  if (type === 'selection-bar')
+  if (type === 'selection-bar') {
     return (
       <Wrapper>
         <NoteSelectionBar id={id} index={index} />
       </Wrapper>
     );
+  }
+
+  if (isPracticeOpen) {
+    return (
+      <QuestionWrapper>
+        <Wrapper className={showAnswer ? 'answer-note' : 'question-note'}>
+          {type === 'basic' && (
+            <BasicCardNote
+              className={
+                showAnswer ? 'show-answer-basic' : 'show-question-basic'
+              }
+              id={id}
+              type={type}
+              content={content}
+              index={index}
+            />
+          )}
+          {type === 'reversible' && (
+            <BasicCardNote
+              className={
+                showAnswer ? 'show-answer-basic' : 'show-question-basic'
+              }
+              id={id}
+              type={type}
+              content={content}
+              index={index}
+            />
+          )}
+          {type === 'cloze' && (
+            <ClozeDeletionNote
+              className={
+                showAnswer ? 'show-answer-cloze' : 'show-question-cloze'
+              }
+              id={id}
+              type={type}
+              content={content}
+              index={index}
+            />
+          )}
+          {type === 'list' && (
+            <ListCardNote
+              className={showAnswer ? 'show-answer-list' : 'show-question-list'}
+              id={id}
+              type={type}
+              content={content}
+              index={index}
+            />
+          )}
+
+          {!isPracticeOpen && <SpeedDialPlain id={id} type={type} />}
+        </Wrapper>
+      </QuestionWrapper>
+    );
+  } else if (!isPracticeOpen) {
+    return (
+      <Wrapper className={showAnswer ? 'answer-note' : 'question-note'}>
+        {type === 'basic' && (
+          <BasicCardNote id={id} type={type} content={content} index={index} />
+        )}
+        {type === 'reversible' && (
+          <BasicCardNote id={id} type={type} content={content} index={index} />
+        )}
+        {type === 'cloze' && (
+          <ClozeDeletionNote
+            id={id}
+            type={type}
+            content={content}
+            index={index}
+          />
+        )}
+        {type === 'list' && (
+          <ListCardNote id={id} type={type} content={content} index={index} />
+        )}
+        <SpeedDialPlain id={id} type={type} />
+      </Wrapper>
+    );
+  }
 };
 
 const Wrapper = styled.div`
@@ -72,8 +118,7 @@ const Wrapper = styled.div`
   border-radius: 0.2rem;
   div:focus {
     outline: none;
-    /* outline: 1px solid var(--footer-box-shadow); */
-    box-shadow: 1px 1px 5px 4px var(--footer-box-shadow);
+    box-shadow: 1px 1px 5px 1px var(--footer-box-shadow);
   }
 
   .plain,
@@ -201,4 +246,53 @@ const Wrapper = styled.div`
   }
 `;
 
+const QuestionWrapper = styled.div`
+  .question-note,
+  .answer-note {
+    margin: auto;
+    box-shadow: none;
+  }
+  .question-note {
+    span {
+      display: inline-block;
+      color: transparent;
+      background-color: transparent;
+      border-bottom: 2px solid var(--note-text-color);
+      /* margin-bottom: -0.5rem; */
+      line-height: 0.8;
+      padding: 0;
+      user-select: none;
+    }
+
+    .back-of-card {
+      color: transparent;
+      user-select: none;
+    }
+
+    .list-back {
+      color: transparent;
+      user-select: none;
+    }
+  }
+
+  .answer-note {
+    span {
+      color: var(--note-text-color);
+      line-height: normal;
+      border-bottom: none;
+      background-color: transparent;
+    }
+  }
+
+  .list-back {
+    ul {
+      margin-top: -3rem;
+    }
+    li {
+      padding: 0;
+      margin-top: -1rem;
+      /* border: solid 1px red; */
+    }
+  }
+`;
 export default React.memo(Note);
