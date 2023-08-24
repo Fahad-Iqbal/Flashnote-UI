@@ -4,6 +4,7 @@ import BasicSelect from './BasicSelect';
 import Note from './Notes/Note';
 import { useGlobalContext } from './context';
 import { Button } from '@mui/material';
+import CloseButton from './CloseButton';
 const Practice = () => {
   const { showAnswer, setShowAnswer, flashcards, setIsPracticeOpen } =
     useGlobalContext();
@@ -30,6 +31,11 @@ const Practice = () => {
     );
   return (
     <Wrapper>
+      <CloseButton
+        clickFn={() => {
+          setIsPracticeOpen(false);
+        }}
+      />
       <div className="practice-header">
         <p>{`${flashcards.length} cards in `}</p>
         <BasicSelect />
@@ -106,6 +112,7 @@ const Practice = () => {
 export default Practice;
 
 const Wrapper = styled.div`
+  position: relative;
   width: 90%;
   min-width: 50rem;
   background-color: var(--color-background);

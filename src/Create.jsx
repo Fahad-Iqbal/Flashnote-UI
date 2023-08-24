@@ -2,20 +2,26 @@ import React, { useRef } from 'react';
 import { styled } from 'styled-components';
 import { useGlobalContext } from './context';
 import CloseIcon from '@mui/icons-material/Close';
+import CloseButton from './CloseButton';
 
 const Create = () => {
   const { setIsCreateOpen, createNewDocument } = useGlobalContext();
   const createInput = useRef('');
   return (
     <Wrapper>
-      <button
+      <CloseButton
+        clickFn={() => {
+          setIsCreateOpen(false);
+        }}
+      />
+      {/* <button
         className="close-button"
         onClick={() => {
           setIsCreateOpen(false);
         }}
       >
         <CloseIcon />
-      </button>
+      </button> */}
       <div>
         <h1>Create New Document</h1>
       </div>
@@ -90,19 +96,6 @@ const Wrapper = styled.div`
     box-shadow: -1px -1px 3px var(--secondary-button-shadow-top),
       1px 1px 3px var(--secondary-button-shadow-bottom);
     background-color: transparent;
-    color: var(--note-text-color);
-  }
-
-  .close-button {
-    border: none;
-    background-color: transparent;
-    position: absolute;
-    top: 2rem;
-    left: 2rem;
-    cursor: pointer;
-  }
-
-  .close-button svg {
     color: var(--note-text-color);
   }
 `;
