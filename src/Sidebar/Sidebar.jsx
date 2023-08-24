@@ -16,7 +16,7 @@ const Sidebar = () => {
     isSidebarOpen,
     draftDocs,
     finishedDocs,
-
+    flashcards,
     setIsSearchOpen,
     setIsUserOpen,
     setIsCreateOpen,
@@ -79,6 +79,7 @@ const Sidebar = () => {
             <p>
               Practice <span>F</span>lashcards
             </p>
+            <p className="flashcards-number">{flashcards.length}</p>
           </button>
           <button
             className="all btn secondary"
