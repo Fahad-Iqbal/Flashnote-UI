@@ -11,7 +11,7 @@ const Document = () => {
     <Wrapper>
       <DocumentTitle title={title} />
       <ul>
-        {notes.map((note, index) => {
+        {notes?.map((note, index) => {
           const { type, content } = note;
           return (
             <li key={note.id}>

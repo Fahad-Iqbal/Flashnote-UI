@@ -132,6 +132,15 @@ const reducer = (state, action) => {
     };
   }
 
+  if (action.type === 'CREATE_NEW_DOCUMENT') {
+    const { id, documentTitle } = action.payload;
+
+    return {
+      ...state,
+      [id]: { id: id, finished: false, title: documentTitle, notes: [] },
+    };
+  }
+
   throw new Error(`No matching "${action.type}" - action type`);
 };
 

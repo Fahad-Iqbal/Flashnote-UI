@@ -42,6 +42,10 @@ const AppContext = ({ children }) => {
   const [isUserOpen, setIsUserOpen] = useState(false);
   const [flashcards, setFlashcards] = useState([]);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [newDocCreated, setNewDocCreated] = useState({
+    created: false,
+    id: '',
+  });
 
   useEffect(() => {
     const finished = [];
@@ -61,6 +65,14 @@ const AppContext = ({ children }) => {
         flashcardArray = flashcardArray.concat(newFlashcardList);
       }
     }
+
+    if (newDocCreated.created) {
+      if (state[newDocCreated.id]) {
+        setSelectedDoc(state[newDocCreated.id]);
+        setNewDocCreated({ created: false, id: '' });
+      }
+    }
+
     setDraftDocs(draft);
     setFinishedDocs(finished);
     setFlashcards(flashcardArray);
@@ -93,7 +105,6 @@ const AppContext = ({ children }) => {
         });
       }
     });
-    if (flashcardArray.length) console.log(flashcardArray);
     return flashcardArray;
   };
 
@@ -304,6 +315,15 @@ const AppContext = ({ children }) => {
     }
   };
 
+  const createNewDocument = (documentTitle) => {
+    if (!documentTitle) return;
+    const newId = nanoid();
+    dispatch({
+      type: 'CREATE_NEW_DOCUMENT',
+      payload: { id: newId, documentTitle },
+    });
+    setNewDocCreated({ created: true, id: newId });
+  };
   return (
     <GlobalContext.Provider
       value={{
@@ -347,6 +367,7 @@ const AppContext = ({ children }) => {
         setShowAnswer,
         toggleFlashcardDisabled,
         getFlashcardDisabled,
+        createNewDocument,
       }}
     >
       {children}

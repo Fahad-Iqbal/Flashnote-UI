@@ -63,13 +63,10 @@ function SpeedDialPlain({ type, id }) {
     moveNoteDown,
     toggleFlashcardDisabled,
     getFlashcardDisabled,
-    state,
   } = useGlobalContext();
   const [enabled, setEnabled] = useState(true);
 
   useEffect(() => {
-    console.log(getFlashcardDisabled(id));
-    console.log(id);
     setEnabled(!getFlashcardDisabled(id));
   }, []);
 
