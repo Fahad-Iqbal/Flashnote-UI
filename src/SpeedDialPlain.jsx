@@ -62,6 +62,8 @@ function SpeedDialPlain({ type, id }) {
   return (
     <ThemeProvider theme={theme}>
       <StyledSpeedDial
+        sx={{ '& .MuiFab-primary': { width: 40, height: 40 } }}
+        className="speed-dial"
         ariaLabel="SpeedDial playground example"
         icon={<SpeedDialIcon />}
         direction={'left'}
@@ -87,16 +89,10 @@ function SpeedDialPlain({ type, id }) {
         ))}
         {type !== 'section-heading' && type !== 'plain' && (
           <SpeedDialAction
-            key={
-              enabled
-                ? 'Disable Flashcards From This Note'
-                : 'Enable Flashcards From This Note'
-            }
+            key={enabled}
             icon={enabled ? <WebAssetOff /> : <WebAsset />}
             tooltipTitle={
-              enabled
-                ? 'Disable Flashcards From This Note'
-                : 'Enable Flashcards From This Note'
+              enabled ? 'Flashcard: Disabled' : 'Flashcard: Enabled'
             }
             onClick={() => {
               setEnabled((prev) => !prev);

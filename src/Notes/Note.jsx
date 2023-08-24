@@ -147,19 +147,17 @@ const Wrapper = styled.div`
     font-weight: 600;
     letter-spacing: 1px;
   }
-  .css-1x3g5n7-MuiButtonBase-root-MuiFab-root-MuiSpeedDial-fab {
-    width: 4rem;
-    height: 4rem;
+  .speed-dial {
+    /* width: 4rem;
+    height: 4rem;*/
     opacity: 0;
     transition: all 0.25s linear !important;
     transform: translateY(2.8rem) !important;
-
-    /* pointer-events: none; */
   }
 
-  &:hover .css-1x3g5n7-MuiButtonBase-root-MuiFab-root-MuiSpeedDial-fab,
-  &:focus .css-1x3g5n7-MuiButtonBase-root-MuiFab-root-MuiSpeedDial-fab,
-  .css-1x3g5n7-MuiButtonBase-root-MuiFab-root-MuiSpeedDial-fab:focus {
+  &:hover .speed-dial,
+  &:focus .speed-dial,
+  .speed-dial:focus {
     opacity: 1;
     transform: translateY(-0.4rem) !important;
   }
