@@ -8,22 +8,30 @@ export const docs = {
     notes: [
       {
         id: nanoid(),
+        flashcardDisabled: true,
+
         type: 'section-heading',
         content: 'Structure and function of the cell',
       },
       {
         id: nanoid(),
+        flashcardDisabled: true,
+
         type: 'cloze',
         content: 'This is a plain note with no flashcards associated with it.',
       },
       {
         id: nanoid(),
+        flashcardDisabled: true,
+
         type: 'cloze',
         content:
           'Plain notes are useful for jotting down information that is good for reference, but not something that you need to remember.',
       },
       {
         id: nanoid(),
+        flashcardDisabled: true,
+
         type: 'basic',
         content: {
           front: 'Where is the DNA stored in eukaryotic cells?',
@@ -32,6 +40,8 @@ export const docs = {
       },
       {
         id: nanoid(),
+        flashcardDisabled: false,
+
         type: 'reversible',
         content: {
           front: 'Nucleus:',
@@ -40,11 +50,15 @@ export const docs = {
       },
       {
         id: nanoid(),
+        flashcardDisabled: false,
+
         type: 'cloze',
         content: 'Fill in the <span>blank</span>',
       },
       {
         id: nanoid(),
+        flashcardDisabled: false,
+
         type: 'list',
         content: {
           front: 'How to tie a tie?',
@@ -53,6 +67,8 @@ export const docs = {
       },
       {
         id: nanoid(),
+        flashcardDisabled: false,
+
         type: 'list',
         content: {
           front: 'How to tie a tie?',

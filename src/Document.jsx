@@ -15,7 +15,13 @@ const Document = () => {
           const { type, content } = note;
           return (
             <li key={note.id}>
-              <Note id={note.id} index={index} type={type} content={content} />
+              <Note
+                id={note.id}
+                index={index}
+                type={type}
+                content={content}
+                flashcardDisabled={!!note.flashcardDisabled}
+              />
             </li>
           );
         })}

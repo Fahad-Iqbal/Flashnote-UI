@@ -3,7 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { useGlobalContext } from '../context';
 import Note from './Note';
 
-const BasicCardNote = ({ id, type, content, index, practice }) => {
+const BasicCardNote = ({
+  id,
+  type,
+  content,
+  index,
+  practice,
+  flashcardDisabled,
+}) => {
   const [frontContent, setFrontContent] = useState(content?.front || '');
   const [backContent, setBackContent] = useState(content?.back || '');
   const [showSelectionBar, setShowSelectionBar] = useState(false);
@@ -35,6 +42,7 @@ const BasicCardNote = ({ id, type, content, index, practice }) => {
       updateDocument(selectedDoc.id, id, {
         id: id,
         type: type,
+        flashcardDisabled: flashcardDisabled,
         content: {
           front: frontContent,
           back: backContent,

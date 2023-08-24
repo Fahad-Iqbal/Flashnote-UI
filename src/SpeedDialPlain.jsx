@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
 
 import SpeedDial from '@mui/material/SpeedDial';
@@ -9,8 +9,8 @@ import {
   Delete,
   KeyboardArrowDown,
   KeyboardArrowUp,
-  KeyboardDoubleArrowDown,
-  KeyboardDoubleArrowUp,
+  // KeyboardDoubleArrowDown,
+  // KeyboardDoubleArrowUp,
   WebAsset,
   WebAssetOff,
 } from '@mui/icons-material';
@@ -56,9 +56,23 @@ const theme = createTheme({
 });
 
 function SpeedDialPlain({ type, id }) {
+  const {
+    selectedDoc,
+    removeNote,
+    moveNoteUp,
+    moveNoteDown,
+    toggleFlashcardDisabled,
+    getFlashcardDisabled,
+    state,
+  } = useGlobalContext();
   const [enabled, setEnabled] = useState(true);
-  const { selectedDoc, removeNote, moveNoteUp, moveNoteDown } =
-    useGlobalContext();
+
+  useEffect(() => {
+    console.log(getFlashcardDisabled(id));
+    console.log(id);
+    setEnabled(!getFlashcardDisabled(id));
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <StyledSpeedDial
@@ -89,13 +103,18 @@ function SpeedDialPlain({ type, id }) {
         ))}
         {type !== 'section-heading' && type !== 'plain' && (
           <SpeedDialAction
-            key={enabled}
-            icon={enabled ? <WebAssetOff /> : <WebAsset />}
+            sx={
+              enabled
+                ? { border: '0.05rem solid #00748e55' }
+                : { border: '0.05rem solid #7200005c' }
+            }
+            icon={enabled ? <WebAsset /> : <WebAssetOff />}
             tooltipTitle={
-              enabled ? 'Flashcard: Disabled' : 'Flashcard: Enabled'
+              enabled ? 'Flashcard: Enabled' : 'Flashcard: Disabled'
             }
             onClick={() => {
               setEnabled((prev) => !prev);
+              toggleFlashcardDisabled(id);
             }}
           />
         )}

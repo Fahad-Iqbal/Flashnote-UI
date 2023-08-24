@@ -8,7 +8,7 @@ import ClozeDeletionNote from './ClozeDeletionNote';
 import { useGlobalContext } from '../context';
 import NoteSelectionBar from './NoteSelectionBar';
 
-const Note = ({ id, type, content, index, practice }) => {
+const Note = ({ id, type, content, index, practice, flashcardDisabled }) => {
   const { isPracticeOpen, showAnswer } = useGlobalContext();
   if (type === 'section-heading')
     return (
@@ -41,6 +41,7 @@ const Note = ({ id, type, content, index, practice }) => {
               content={content}
               index={index}
               practice={practice}
+              flashcardDisabled={flashcardDisabled}
             />
           )}
           {type === 'reversible' && (
@@ -54,6 +55,7 @@ const Note = ({ id, type, content, index, practice }) => {
               content={content}
               index={index}
               practice={practice}
+              flashcardDisabled={flashcardDisabled}
             />
           )}
           {type === 'cloze' && (
@@ -67,6 +69,7 @@ const Note = ({ id, type, content, index, practice }) => {
               content={content}
               index={index}
               practice={practice}
+              flashcardDisabled={flashcardDisabled}
             />
           )}
           {type === 'list' && (
@@ -78,6 +81,7 @@ const Note = ({ id, type, content, index, practice }) => {
               content={content}
               index={index}
               practice={practice}
+              flashcardDisabled={flashcardDisabled}
             />
           )}
 
@@ -89,10 +93,22 @@ const Note = ({ id, type, content, index, practice }) => {
     return (
       <Wrapper className={showAnswer ? 'answer-note' : 'question-note'}>
         {type === 'basic' && (
-          <BasicCardNote id={id} type={type} content={content} index={index} />
+          <BasicCardNote
+            id={id}
+            type={type}
+            content={content}
+            index={index}
+            flashcardDisabled={flashcardDisabled}
+          />
         )}
         {type === 'reversible' && (
-          <BasicCardNote id={id} type={type} content={content} index={index} />
+          <BasicCardNote
+            id={id}
+            type={type}
+            content={content}
+            index={index}
+            flashcardDisabled={flashcardDisabled}
+          />
         )}
         {type === 'cloze' && (
           <ClozeDeletionNote
@@ -100,10 +116,17 @@ const Note = ({ id, type, content, index, practice }) => {
             type={type}
             content={content}
             index={index}
+            flashcardDisabled={flashcardDisabled}
           />
         )}
         {type === 'list' && (
-          <ListCardNote id={id} type={type} content={content} index={index} />
+          <ListCardNote
+            id={id}
+            type={type}
+            content={content}
+            index={index}
+            flashcardDisabled={flashcardDisabled}
+          />
         )}
         <SpeedDialPlain id={id} type={type} />
       </Wrapper>

@@ -99,7 +99,7 @@ const reducer = (state, action) => {
     const selectedDoc = state[documentId];
     const note = selectedDoc.notes?.find((note) => note.id === noteId);
     if (!note) {
-      return;
+      return state;
     }
     if (note.type === 'basic' || note.type === 'reversible') {
       document.getElementById(`front${noteId}`)?.focus();
@@ -112,6 +112,24 @@ const reducer = (state, action) => {
       document.getElementById(noteId)?.focus();
     }
     return state;
+  }
+
+  if (action.type === 'TOGGLE_FLASHCARD_DISABLED') {
+    const { documentId, noteId } = action.payload;
+    const newNotes = [
+      ...state[documentId].notes.map((note) => {
+        if (note.id === noteId) {
+          const disabled = !note.flashcardDisabled;
+          return { ...note, flashcardDisabled: disabled };
+        }
+        return { ...note };
+      }),
+    ];
+
+    return {
+      ...state,
+      [documentId]: { ...state[documentId], notes: newNotes },
+    };
   }
 
   throw new Error(`No matching "${action.type}" - action type`);

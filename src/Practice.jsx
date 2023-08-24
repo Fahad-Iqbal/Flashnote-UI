@@ -8,12 +8,12 @@ const Practice = () => {
   const { showAnswer, setShowAnswer, flashcards, setIsPracticeOpen } =
     useGlobalContext();
   const [selectedFlashcard, setSelectedFlashcard] = useState(0);
-  const [note, setNote] = useState({});
+  const [note, setNote] = useState(null);
 
   useEffect(() => {
-    setNote(flashcards[selectedFlashcard]);
+    if (flashcards.length) setNote(flashcards[selectedFlashcard]);
   }, [selectedFlashcard]);
-  if (selectedFlashcard >= flashcards.length)
+  if (selectedFlashcard >= flashcards.length || !flashcards.length || !note)
     return (
       <Wrapper>
         <div className="practice-end">
@@ -37,13 +37,13 @@ const Practice = () => {
       <ul>
         <li>Biology</li>
 
-        {note.sectionHeading && (
+        {note?.sectionHeading && (
           <li className="sect-heading">{note.sectionHeading}</li>
         )}
       </ul>
       <div className="question-area">
         <Note
-          key={id}
+          key={note.id}
           id={note.id}
           type={note.type}
           content={note.content}
@@ -193,7 +193,7 @@ const Wrapper = styled.div`
   }
 
   .practice-end {
-    width: 90%;
+    width: 100%;
     height: clamp(50rem, 75vh, 100rem);
     background-color: var(--color-background);
     flex-direction: column;

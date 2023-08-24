@@ -9,6 +9,7 @@ const ClozeDeletionNote = ({
   content: noteContent,
   index,
   practice,
+  flashcardDisabled,
 }) => {
   const [content, setContent] = useState(noteContent || '');
   const [isSelected, setIsSelected] = useState(false);
@@ -58,6 +59,8 @@ const ClozeDeletionNote = ({
     if (!practice) {
       updateDocument(selectedDoc.id, id, {
         id: id,
+        flashcardDisabled: flashcardDisabled,
+
         type: 'cloze',
         content: content,
       });

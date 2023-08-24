@@ -40,7 +40,7 @@ const AppContext = ({ children }) => {
   const [isPracticeOpen, setIsPracticeOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isUserOpen, setIsUserOpen] = useState(false);
-  const [flashcards, setFlashCards] = useState([]);
+  const [flashcards, setFlashcards] = useState([]);
   const [showAnswer, setShowAnswer] = useState(false);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const AppContext = ({ children }) => {
     }
     setDraftDocs(draft);
     setFinishedDocs(finished);
-    setFlashCards(flashcardArray);
+    setFlashcards(flashcardArray);
     localStorage.setItem('documents', JSON.stringify(state));
   }, [state]);
 
@@ -93,7 +93,7 @@ const AppContext = ({ children }) => {
         });
       }
     });
-
+    if (flashcardArray.length) console.log(flashcardArray);
     return flashcardArray;
   };
 
@@ -156,6 +156,19 @@ const AppContext = ({ children }) => {
     });
   };
 
+  const toggleFlashcardDisabled = (noteId) => {
+    dispatch({
+      type: 'TOGGLE_FLASHCARD_DISABLED',
+      payload: { documentId: selectedDoc.id, noteId },
+    });
+  };
+
+  const getFlashcardDisabled = (noteId) => {
+    const targetNote = selectedDoc.notes.find((note) => noteId === note.id);
+    const disabled = targetNote?.flashcardDisabled;
+    return !!disabled;
+  };
+
   const insertNote = (documentId, index, noteContent) => {
     dispatch({
       type: 'INSERT_NOTE',
@@ -170,6 +183,7 @@ const AppContext = ({ children }) => {
     const notes = {
       basic: {
         id: nanoid(),
+        flashcardDisabled: false,
         type: 'basic',
         content: {
           front: '',
@@ -179,6 +193,8 @@ const AppContext = ({ children }) => {
 
       reversible: {
         id: nanoid(),
+        flashcardDisabled: false,
+
         type: 'reversible',
         content: {
           front: '',
@@ -188,6 +204,8 @@ const AppContext = ({ children }) => {
 
       list: {
         id: nanoid(),
+        flashcardDisabled: false,
+
         type: 'list',
         content: {
           front: '',
@@ -197,12 +215,16 @@ const AppContext = ({ children }) => {
 
       cloze: {
         id: nanoid(),
+        flashcardDisabled: false,
+
         type: 'cloze',
         content: '',
       },
 
       'section-heading': {
         id: nanoid(),
+        flashcardDisabled: false,
+
         type: 'section-heading',
         content: '',
       },
@@ -323,6 +345,8 @@ const AppContext = ({ children }) => {
         flashcards,
         showAnswer,
         setShowAnswer,
+        toggleFlashcardDisabled,
+        getFlashcardDisabled,
       }}
     >
       {children}

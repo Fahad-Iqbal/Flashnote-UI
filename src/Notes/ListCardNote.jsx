@@ -4,7 +4,15 @@ import PlainNote from './PlainNote';
 import { useGlobalContext } from '../context';
 import Note from './Note';
 
-const ListCardNote = ({ id, type, content, index, practice }) => {
+const ListCardNote = ({
+  id,
+  type,
+  content,
+  index,
+  practice,
+
+  flashcardDisabled,
+}) => {
   const [frontContent, setFrontContent] = useState(content?.front || '');
   const [backContent, setBackContent] = useState(content?.back || []);
   const [showSelectionBar, setShowSelectionBar] = useState(false);
@@ -27,6 +35,8 @@ const ListCardNote = ({ id, type, content, index, practice }) => {
     if (!practice) {
       updateDocument(selectedDoc.id, id, {
         id: id,
+        flashcardDisabled: flashcardDisabled,
+
         type: type,
         content: {
           front: frontContent,
