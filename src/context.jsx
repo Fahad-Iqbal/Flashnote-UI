@@ -97,23 +97,37 @@ const AppContext = ({ children }) => {
         if (note.type === 'reversible') {
           const front = note.content.front;
           const back = note.content.back;
+          const reverseCardTime = note.flashcardInfo?.reverse?.timeOfNextReview;
+          if (reverseCardTime && Date.now() > reverseCardTime) {
+            flashcardArray.push({
+              ...note,
+              documentId,
+              documentTitle,
+              id: 'reverse' + note.id,
+              practice: true,
+              sectionHeading: sectionHeading,
+              content: { front: back, back: front },
+            });
+          }
+          const forwardCardTime = note.flashcardInfo?.timeOfNextReview;
+          if (forwardCardTime && Date.now() > forwardCardTime) {
+            flashcardArray.push({
+              ...note,
+              documentId,
+              documentTitle,
+              sectionHeading: sectionHeading,
+              practice: true,
+            });
+          }
+        } else if (note.type !== 'reversible') {
           flashcardArray.push({
             ...note,
             documentId,
             documentTitle,
-            id: 'reverse' + note.id,
-            practice: true,
             sectionHeading: sectionHeading,
-            content: { front: back, back: front },
+            practice: true,
           });
         }
-        flashcardArray.push({
-          ...note,
-          documentId,
-          documentTitle,
-          sectionHeading: sectionHeading,
-          practice: true,
-        });
       }
     });
     return flashcardArray;
@@ -124,6 +138,17 @@ const AppContext = ({ children }) => {
       return false;
     }
     if (
+      note.type === 'reversible' &&
+      note.flashcardInfo &&
+      Date.now() < note.flashcardInfo.timeOfNextReview &&
+      note?.flashcardInfo?.reverse &&
+      Date.now() < note.flashcardInfo.reverse.timeOfNextReview
+    ) {
+      return false;
+    }
+
+    if (
+      note.type !== 'reversible' &&
       note.flashcardInfo &&
       Date.now() < note.flashcardInfo.timeOfNextReview
     ) {
@@ -347,20 +372,28 @@ const AppContext = ({ children }) => {
     setNewDocCreated({ created: true, id: newId });
   };
 
-  const updateFlashcardInfo = (
-    documentId,
-    noteId,
-    newEaseFactor,
-    newReps,
-    newTime
-  ) => {
-    const noteContent = {
-      flashcardInfo: {
-        easeFactor: newEaseFactor,
-        repetitions: newReps,
-        timeOfNextReview: Date.now() + newTime,
-      },
-    };
+  const updateFlashcardInfo = (note, newEaseFactor, newReps, newTime) => {
+    const noteId = note.id;
+    const documentId = note.documentId;
+    const noteContent = noteId.includes('reverse')
+      ? {
+          flashcardInfo: {
+            ...note.flashcardInfo,
+            reverse: {
+              easeFactor: newEaseFactor,
+              repetitions: newReps,
+              timeOfNextReview: Date.now() + newTime,
+            },
+          },
+        }
+      : {
+          flashcardInfo: {
+            ...note.flashcardInfo,
+            easeFactor: newEaseFactor,
+            repetitions: newReps,
+            timeOfNextReview: Date.now() + newTime,
+          },
+        };
     updateDocument(documentId, noteId.replace('reverse', ''), noteContent);
   };
   return (

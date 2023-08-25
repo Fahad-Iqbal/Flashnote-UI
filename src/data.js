@@ -52,6 +52,12 @@ export const docs = {
           easeFactor: 4,
           repetitions: 600,
           timeOfNextReview: Date.now() - 86400000,
+
+          reverse: {
+            easeFactor: 4,
+            repetitions: 600,
+            timeOfNextReview: Date.now() - 86400000,
+          },
         },
       },
       {

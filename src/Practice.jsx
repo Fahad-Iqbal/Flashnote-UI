@@ -71,13 +71,7 @@ const Practice = () => {
     } else {
       reps += 1;
     }
-    updateFlashcardInfo(
-      note.documentId,
-      note.id,
-      easeFactor,
-      reps,
-      times[easeFactor]
-    );
+    updateFlashcardInfo(note, easeFactor, reps, times[easeFactor]);
   };
 
   useEffect(() => {
