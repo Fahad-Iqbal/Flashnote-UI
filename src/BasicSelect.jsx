@@ -6,21 +6,25 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useGlobalContext } from './context';
 
-export default function BasicSelect() {
-  const [docId, setDocId] = useState('All');
+export default function BasicSelect({ docIdFilter, setDocIdFilter }) {
   const [docList, setDocList] = useState([]);
-  const { state } = useGlobalContext();
+  const { state, flashcards } = useGlobalContext();
 
   const handleChange = (event) => {
-    setDocId(event.target.value);
+    setDocIdFilter(event.target.value);
     console.log(event.target.value);
   };
 
   useEffect(() => {
     const list = [];
-    for (let key in state) {
-      list.push({ id: state[key].id, title: state[key].title });
+    const uniqueList = new Set();
+    for (let flashcard of flashcards) {
+      if (!uniqueList.has(flashcard.documentId)) {
+        uniqueList.add(flashcard.documentId);
+        list.push({ id: flashcard.documentId, title: flashcard.documentTitle });
+      }
     }
+
     setDocList(list);
   }, []);
 
@@ -32,7 +36,7 @@ export default function BasicSelect() {
           className="select"
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={docId}
+          value={docIdFilter}
           onChange={handleChange}
           size="small"
         >

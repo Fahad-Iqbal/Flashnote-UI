@@ -74,7 +74,11 @@ const reducer = (state, action) => {
     );
     if (noteIndex === -1) return state;
     const newNotes = [...state[documentId].notes];
-    newNotes[noteIndex] = noteContent;
+    const newNote = { ...state[documentId].notes[noteIndex] };
+    for (let key in noteContent) {
+      newNote[key] = noteContent[key];
+    }
+    newNotes[noteIndex] = newNote;
 
     return {
       ...state,

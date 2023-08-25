@@ -69,7 +69,7 @@ const ClozeDeletionNote = ({
 
   return (
     <>
-      {isSelected && (
+      {isSelected && !practice && (
         <Popover
           className="add-cloze"
           open={isSelected}
@@ -100,7 +100,7 @@ const ClozeDeletionNote = ({
           </Button>
         </Popover>
       )}
-      {isSpanClicked && !selectedDoc.finished && (
+      {isSpanClicked && !selectedDoc.finished && !practice && (
         <Popover
           className="remove-cloze"
           open={isSpanClicked}

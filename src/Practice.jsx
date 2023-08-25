@@ -8,13 +8,35 @@ import CloseButton from './CloseButton';
 const Practice = () => {
   const { showAnswer, setShowAnswer, flashcards, setIsPracticeOpen } =
     useGlobalContext();
+  const [filteredFlashcards, setFilteredFlashcards] = useState(flashcards);
   const [selectedFlashcard, setSelectedFlashcard] = useState(0);
   const [note, setNote] = useState(null);
+  const [times, setTimes] = useState({
+    1: 60000,
+    2: 120000,
+    3: 600000,
+    4: 900000,
+  });
+  const [docIdFilter, setDocIdFilter] = useState('All');
 
   useEffect(() => {
-    if (flashcards.length) setNote(flashcards[selectedFlashcard]);
-  }, [selectedFlashcard]);
-  if (selectedFlashcard >= flashcards.length || !flashcards.length || !note)
+    if (docIdFilter !== 'All') {
+      const filteredList = flashcards.filter(
+        (flashcard) => flashcard.documentId === docIdFilter
+      );
+      setFilteredFlashcards(filteredList);
+    } else if (docIdFilter === 'All') {
+      setFilteredFlashcards(flashcards);
+    }
+    setSelectedFlashcard(0);
+  }, [docIdFilter, flashcards]);
+
+  useEffect(() => {
+    if (filteredFlashcards.length)
+      setNote(filteredFlashcards[selectedFlashcard]);
+    console.log(note);
+  }, [selectedFlashcard, filteredFlashcards]);
+  if (!flashcards.length || !note)
     return (
       <Wrapper>
         <div className="practice-end">
@@ -37,11 +59,14 @@ const Practice = () => {
         }}
       />
       <div className="practice-header">
-        <p>{`${flashcards.length} cards in `}</p>
-        <BasicSelect />
+        <p>{`${filteredFlashcards.length} cards in `}</p>
+        <BasicSelect
+          docIdFilter={docIdFilter}
+          setDocIdFilter={setDocIdFilter}
+        />
       </div>
       <ul>
-        <li>Biology</li>
+        <li>{note.documentTitle}</li>
 
         {note?.sectionHeading && (
           <li className="sect-heading">{note.sectionHeading}</li>

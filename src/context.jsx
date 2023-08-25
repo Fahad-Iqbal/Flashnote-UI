@@ -61,7 +61,11 @@ const AppContext = ({ children }) => {
         setSelectedDoc(state[key]);
       }
       if (!state[key].flashcardsDisabled) {
-        const newFlashcardList = getFlashcards(state[key].notes);
+        const newFlashcardList = getFlashcards(
+          state[key].notes,
+          key,
+          state[key].title
+        );
         flashcardArray = flashcardArray.concat(newFlashcardList);
       }
     }
@@ -79,7 +83,7 @@ const AppContext = ({ children }) => {
     localStorage.setItem('documents', JSON.stringify(state));
   }, [state]);
 
-  const getFlashcards = (notes) => {
+  const getFlashcards = (notes, documentId, documentTitle) => {
     const flashcardArray = [];
     let sectionHeading = '';
     notes.forEach((note) => {
@@ -92,6 +96,8 @@ const AppContext = ({ children }) => {
           const back = note.content.back;
           flashcardArray.push({
             ...note,
+            documentId,
+            documentTitle,
             id: 'reverse' + note.id,
             practice: true,
             sectionHeading: sectionHeading,
@@ -100,6 +106,8 @@ const AppContext = ({ children }) => {
         }
         flashcardArray.push({
           ...note,
+          documentId,
+          documentTitle,
           sectionHeading: sectionHeading,
           practice: true,
         });
@@ -134,6 +142,12 @@ const AppContext = ({ children }) => {
           return true;
         }
       }
+      return false;
+    }
+    if (
+      note.flashcardInfo &&
+      Date.now() < note.flashcardInfo.timeOfNextReview
+    ) {
       return false;
     }
     return true;
@@ -324,6 +338,22 @@ const AppContext = ({ children }) => {
     });
     setNewDocCreated({ created: true, id: newId });
   };
+
+  const updateFlashcardInfo = (
+    documentId,
+    noteId,
+    newEaseFactor,
+    newReps,
+    newTime
+  ) => {
+    const noteContent = {
+      easeFactor: newEaseFactor,
+      repetitions: newReps,
+      timeOfNextReview: Date.now() + newTime,
+    };
+
+    updateDocument(documentId, noteId, noteContent);
+  };
   return (
     <GlobalContext.Provider
       value={{
@@ -368,6 +398,7 @@ const AppContext = ({ children }) => {
         toggleFlashcardDisabled,
         getFlashcardDisabled,
         createNewDocument,
+        updateFlashcardInfo,
       }}
     >
       {children}

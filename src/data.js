@@ -47,6 +47,12 @@ export const docs = {
           front: 'Nucleus:',
           back: 'A double membrane organelle that stores the DNA in eukaryotic cells',
         },
+
+        flashcardInfo: {
+          easeFactor: 4,
+          repetitions: 6,
+          timeOfNextReview: Date.now() - 86400000,
+        },
       },
       {
         id: nanoid(),
@@ -54,6 +60,12 @@ export const docs = {
 
         type: 'cloze',
         content: 'Fill in the <span>blank</span>',
+
+        flashcardInfo: {
+          easeFactor: 4,
+          repetitions: 6,
+          timeOfNextReview: Date.now() + 86400000,
+        },
       },
       {
         id: nanoid(),
