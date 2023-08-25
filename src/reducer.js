@@ -69,17 +69,17 @@ const reducer = (state, action) => {
   }
   if (action.type === 'UPDATE_DOCUMENT') {
     const { documentId, noteId, noteContent } = action.payload;
-    const noteIndex = state[documentId].notes.findIndex(
+    const noteIndex = state[documentId]?.notes?.findIndex(
       (note) => note.id === noteId
     );
-    if (noteIndex === -1) return state;
+    if (noteIndex === -1 || !state[documentId]) return state;
     const newNotes = [...state[documentId].notes];
     const newNote = { ...state[documentId].notes[noteIndex] };
+
     for (let key in noteContent) {
       newNote[key] = noteContent[key];
     }
     newNotes[noteIndex] = newNote;
-
     return {
       ...state,
       [documentId]: { ...state[documentId], notes: newNotes },
@@ -143,6 +143,13 @@ const reducer = (state, action) => {
       ...state,
       [id]: { id: id, finished: false, title: documentTitle, notes: [] },
     };
+  }
+
+  if (action.type === 'DELETE_DOCUMENT') {
+    console.log(action.payload);
+    const newState = { ...state };
+    delete newState[action.payload.documentId];
+    return { ...newState };
   }
 
   throw new Error(`No matching "${action.type}" - action type`);

@@ -76,6 +76,9 @@ const AppContext = ({ children }) => {
         setNewDocCreated({ created: false, id: '' });
       }
     }
+    // if (!state[selectedDoc?.id]) {
+    //   setSelectedDoc(state[0]);
+    // }
 
     setDraftDocs(draft);
     setFinishedDocs(finished);
@@ -121,6 +124,12 @@ const AppContext = ({ children }) => {
       return false;
     }
     if (
+      note.flashcardInfo &&
+      Date.now() < note.flashcardInfo.timeOfNextReview
+    ) {
+      return false;
+    }
+    if (
       note.type === 'cloze' &&
       !note.content.includes('<span>') &&
       !note.content.includes('</span>')
@@ -142,12 +151,6 @@ const AppContext = ({ children }) => {
           return true;
         }
       }
-      return false;
-    }
-    if (
-      note.flashcardInfo &&
-      Date.now() < note.flashcardInfo.timeOfNextReview
-    ) {
       return false;
     }
     return true;
@@ -186,6 +189,10 @@ const AppContext = ({ children }) => {
       type: 'TOGGLE_FLASHCARD_DISABLED',
       payload: { documentId: selectedDoc.id, noteId },
     });
+  };
+
+  const deleteDocument = (documentId) => {
+    dispatch({ type: 'DELETE_DOCUMENT', payload: { documentId } });
   };
 
   const getFlashcardDisabled = (noteId) => {
@@ -258,10 +265,11 @@ const AppContext = ({ children }) => {
   };
 
   const duplicateNote = (documentId, index, noteId) => {
-    const note = selectedDoc.notes?.find((note) => note.id === noteId);
+    const note = { ...selectedDoc.notes?.find((note) => note.id === noteId) };
     if (!note) {
       return;
     }
+    delete note.flashcardInfo;
     insertNote(documentId, index, { ...note, id: nanoid() });
   };
 
@@ -347,12 +355,13 @@ const AppContext = ({ children }) => {
     newTime
   ) => {
     const noteContent = {
-      easeFactor: newEaseFactor,
-      repetitions: newReps,
-      timeOfNextReview: Date.now() + newTime,
+      flashcardInfo: {
+        easeFactor: newEaseFactor,
+        repetitions: newReps,
+        timeOfNextReview: Date.now() + newTime,
+      },
     };
-
-    updateDocument(documentId, noteId, noteContent);
+    updateDocument(documentId, noteId.replace('reverse', ''), noteContent);
   };
   return (
     <GlobalContext.Provider
@@ -399,6 +408,7 @@ const AppContext = ({ children }) => {
         getFlashcardDisabled,
         createNewDocument,
         updateFlashcardInfo,
+        deleteDocument,
       }}
     >
       {children}

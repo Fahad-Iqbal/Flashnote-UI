@@ -50,7 +50,7 @@ export const docs = {
 
         flashcardInfo: {
           easeFactor: 4,
-          repetitions: 6,
+          repetitions: 600,
           timeOfNextReview: Date.now() - 86400000,
         },
       },

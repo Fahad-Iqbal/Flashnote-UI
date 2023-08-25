@@ -6,10 +6,15 @@ import { useGlobalContext } from './context';
 import { Button } from '@mui/material';
 import CloseButton from './CloseButton';
 const Practice = () => {
-  const { showAnswer, setShowAnswer, flashcards, setIsPracticeOpen } =
-    useGlobalContext();
+  const {
+    showAnswer,
+    setShowAnswer,
+    flashcards,
+    setIsPracticeOpen,
+    updateFlashcardInfo,
+    state,
+  } = useGlobalContext();
   const [filteredFlashcards, setFilteredFlashcards] = useState(flashcards);
-  const [selectedFlashcard, setSelectedFlashcard] = useState(0);
   const [note, setNote] = useState(null);
   const [times, setTimes] = useState({
     1: 60000,
@@ -20,6 +25,62 @@ const Practice = () => {
   const [docIdFilter, setDocIdFilter] = useState('All');
 
   useEffect(() => {
+    const reps = note?.flashcardInfo?.repetitions;
+    if (!reps) {
+      setTimes({
+        1: 60000,
+        2: 120000,
+        3: 600000,
+        4: 900000,
+      });
+    } else {
+      setTimes({
+        1: 60000,
+        2: 120000 * reps,
+        3: reps <= 7 ? 600000 * reps : 18000000 * reps,
+        4: reps <= 7 ? 900000 * reps : (36000000 + reps) * reps,
+      });
+    }
+  }, [note]);
+
+  const getTimeString = (time) => {
+    const hour = 3600000;
+    if (time < hour) {
+      const timeNumber = Math.ceil(time / 60000);
+      return `${timeNumber} min`;
+    } else if (time < 48 * hour) {
+      const timeNumber = Math.ceil(time / hour);
+      return `${timeNumber} ${timeNumber === 1 ? 'hour' : 'hours'}`;
+    } else if (time < 24 * hour * 30) {
+      const timeNumber = Math.ceil(time / (24 * hour));
+      return `${timeNumber} ${timeNumber === 1 ? 'day' : 'days'}`;
+    } else {
+      const timeNumber = Math.ceil(time / (24 * hour * 30));
+      return `${timeNumber} ${timeNumber === 1 ? 'month' : 'months'}`;
+    }
+  };
+
+  const handleClick = (easeFactor) => {
+    let reps = note?.flashcardInfo?.repetitions;
+    if (!reps) {
+      reps = 1;
+    } else if (easeFactor === 1 && note.flashcardInfo.repetitions >= 5) {
+      reps = 5;
+    } else if (easeFactor === 2 && note.flashcardInfo.repetitions > 7) {
+      reps = 7;
+    } else {
+      reps += 1;
+    }
+    updateFlashcardInfo(
+      note.documentId,
+      note.id,
+      easeFactor,
+      reps,
+      times[easeFactor]
+    );
+  };
+
+  useEffect(() => {
     if (docIdFilter !== 'All') {
       const filteredList = flashcards.filter(
         (flashcard) => flashcard.documentId === docIdFilter
@@ -28,17 +89,26 @@ const Practice = () => {
     } else if (docIdFilter === 'All') {
       setFilteredFlashcards(flashcards);
     }
-    setSelectedFlashcard(0);
   }, [docIdFilter, flashcards]);
 
   useEffect(() => {
-    if (filteredFlashcards.length)
-      setNote(filteredFlashcards[selectedFlashcard]);
-    console.log(note);
-  }, [selectedFlashcard, filteredFlashcards]);
-  if (!flashcards.length || !note)
+    if (filteredFlashcards.length) {
+      setNote(filteredFlashcards[0]);
+    } else {
+      setNote(null);
+    }
+  }, [filteredFlashcards]);
+
+  if (!filteredFlashcards.length || !note)
     return (
       <Wrapper>
+        <div className="practice-header">
+          <p>{`${filteredFlashcards.length} cards in `}</p>
+          <BasicSelect
+            docIdFilter={docIdFilter}
+            setDocIdFilter={setDocIdFilter}
+          />
+        </div>
         <div className="practice-end">
           <h2>You've reviewed all flashcards</h2>
           <Button
@@ -56,6 +126,7 @@ const Practice = () => {
       <CloseButton
         clickFn={() => {
           setIsPracticeOpen(false);
+          setShowAnswer(false);
         }}
       />
       <div className="practice-header">
@@ -65,6 +136,7 @@ const Practice = () => {
           setDocIdFilter={setDocIdFilter}
         />
       </div>
+
       <ul>
         <li>{note.documentTitle}</li>
 
@@ -72,6 +144,7 @@ const Practice = () => {
           <li className="sect-heading">{note.sectionHeading}</li>
         )}
       </ul>
+
       <div className="question-area">
         <Note
           key={note.id}
@@ -99,34 +172,38 @@ const Practice = () => {
           <button
             onClick={() => {
               setShowAnswer(false);
-              setSelectedFlashcard(selectedFlashcard + 1);
+              handleClick(1);
             }}
           >
-            <p className="icon">😰</p> <p>Forgot</p> <span>1 min</span>{' '}
+            <p className="icon">😰</p> <p>Forgot</p>{' '}
+            <span>{getTimeString(times[1])}</span>{' '}
           </button>
           <button
             onClick={() => {
               setShowAnswer(false);
+              handleClick(2);
             }}
           >
             <p className="icon">😬</p> <p>Partially Recalled</p>{' '}
-            <span>10 min</span>{' '}
+            <span>{getTimeString(times[2])}</span>{' '}
           </button>
           <button
             onClick={() => {
               setShowAnswer(false);
+              handleClick(3);
             }}
           >
             <p className="icon">😐</p> <p>Recalled With Effort</p>{' '}
-            <span>30 min</span>{' '}
+            <span>{getTimeString(times[3])}</span>{' '}
           </button>
           <button
             onClick={() => {
               setShowAnswer(false);
+              handleClick(4);
             }}
           >
             <p className="icon">😃</p> <p>Recalled Easily</p>{' '}
-            <span>1 hour</span>{' '}
+            <span>{getTimeString(times[4])}</span>{' '}
           </button>
         </div>
       )}
@@ -189,7 +266,7 @@ const Wrapper = styled.div`
       display: block;
       width: 100%;
       margin: 0.5rem;
-      height: 6.5rem;
+      height: 7.5rem;
       border-bottom-left-radius: 0.6rem;
       border-bottom-right-radius: 0.6rem;
       font-size: 2rem;
@@ -213,7 +290,7 @@ const Wrapper = styled.div`
     color: var(--note-text-color);
   }
   .icon {
-    font-size: 2rem;
+    font-size: 3rem;
   }
 
   .question-area {

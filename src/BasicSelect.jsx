@@ -12,7 +12,6 @@ export default function BasicSelect({ docIdFilter, setDocIdFilter }) {
 
   const handleChange = (event) => {
     setDocIdFilter(event.target.value);
-    console.log(event.target.value);
   };
 
   useEffect(() => {

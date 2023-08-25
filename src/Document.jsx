@@ -5,6 +5,15 @@ import { useGlobalContext } from './context';
 import React from 'react';
 const Document = () => {
   const { selectedDoc } = useGlobalContext();
+  if (!selectedDoc) {
+    return (
+      <Wrapper>
+        <div className="empty-document">
+          <h1>No document to show. Create or select a document.</h1>
+        </div>
+      </Wrapper>
+    );
+  }
   const { id, title, notes } = selectedDoc;
 
   return (
@@ -45,4 +54,14 @@ export default React.memo(Document);
 const Wrapper = styled.article`
   height: 93vh;
   overflow: auto;
+  .empty-document {
+    color: var(--note-text-color);
+    display: flex;
+    justify-content: center;
+    font-size: 1.6rem;
+    width: 100%;
+    margin: 5rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
 `;

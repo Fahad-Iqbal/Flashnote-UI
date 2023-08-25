@@ -13,11 +13,15 @@ const Modal = ({ modalType }) => {
     setIsPracticeOpen,
     setIsCreateOpen,
     setIsUserOpen,
+    setShowAnswer,
   } = useGlobalContext();
   const setFunctions = {
     all: setIsAllDocsOpen,
     search: setIsSearchOpen,
-    practice: setIsPracticeOpen,
+    practice: (val) => {
+      setIsPracticeOpen(val);
+      setShowAnswer(val);
+    },
     create: setIsCreateOpen,
     user: setIsUserOpen,
   };
