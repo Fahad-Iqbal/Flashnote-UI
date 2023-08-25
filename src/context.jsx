@@ -98,7 +98,10 @@ const AppContext = ({ children }) => {
           const front = note.content.front;
           const back = note.content.back;
           const reverseCardTime = note.flashcardInfo?.reverse?.timeOfNextReview;
-          if (reverseCardTime && Date.now() > reverseCardTime) {
+          if (
+            !reverseCardTime ||
+            (reverseCardTime && Date.now() > reverseCardTime)
+          ) {
             flashcardArray.push({
               ...note,
               documentId,
@@ -110,7 +113,10 @@ const AppContext = ({ children }) => {
             });
           }
           const forwardCardTime = note.flashcardInfo?.timeOfNextReview;
-          if (forwardCardTime && Date.now() > forwardCardTime) {
+          if (
+            !forwardCardTime ||
+            (forwardCardTime && Date.now() > forwardCardTime)
+          ) {
             flashcardArray.push({
               ...note,
               documentId,
@@ -177,6 +183,12 @@ const AppContext = ({ children }) => {
         }
       }
       return false;
+    }
+    if (
+      note.type === 'reversible' &&
+      (!note.flashcardInfo || !note.flashcardInfo?.reverse)
+    ) {
+      return true;
     }
     return true;
   };
