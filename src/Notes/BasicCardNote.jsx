@@ -53,7 +53,7 @@ const BasicCardNote = ({
   }, [frontContent, backContent]);
   return (
     <>
-      <div className="basic-note" id="id">
+      <div className="basic-note" id={id}>
         <div
           id={'front' + id}
           className={

@@ -41,7 +41,6 @@ const ClozeDeletionNote = ({
     }
   };
   const removeSpanTags = (text) => {
-    console.log('remove called');
     if (content.includes(text.outerHTML)) {
       const newInnerHTML = content.replace(text.outerHTML, text.innerText);
       setContent(newInnerHTML);

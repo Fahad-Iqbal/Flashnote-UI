@@ -34,7 +34,7 @@ const AppContext = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [draftDocs, setDraftDocs] = useState([]);
   const [finishedDocs, setFinishedDocs] = useState([]);
-  const [selectedDoc, setSelectedDoc] = useState(null);
+  const [selectedDoc, setSelectedDoc] = useState(state[0] || null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAllDocsOpen, setIsAllDocsOpen] = useState(false);
   const [isPracticeOpen, setIsPracticeOpen] = useState(false);

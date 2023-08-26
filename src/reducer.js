@@ -87,7 +87,6 @@ const reducer = (state, action) => {
   }
 
   if (action.type === 'INSERT_NOTE') {
-    console.log('insert');
     const { documentId, index, noteContent } = action.payload;
 
     const newNotes = [...state[documentId].notes];

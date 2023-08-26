@@ -53,6 +53,9 @@ const PlainNote = ({
         }
         if (e.key === 'Enter') {
           e.preventDefault();
+          setContent(e.target.innerText);
+          handleUpdate(index, e.target.innerText);
+
           const newList = [...backContent];
           if (!e.altKey && !e.shiftKey) {
             if (!newList.length) {
