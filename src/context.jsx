@@ -76,18 +76,15 @@ const AppContext = ({ children }) => {
         })
       );
     }
+    if (state[selectedDoc?.id]) {
+      setSelectedDoc(state[selectedDoc.id]);
+    }
 
     if (newDocCreated.created) {
       if (state[newDocCreated.id]) {
         setSelectedDoc(state[newDocCreated.id]);
         setNewDocCreated({ created: false, id: '' });
       }
-    }
-    // if (!state[selectedDoc?.id]) {
-    //   setSelectedDoc(state[0]);
-    // }
-    if (state[selectedDoc?.id]) {
-      setSelectedDoc(state[selectedDoc.id]);
     }
 
     setDraftDocs(draft);
