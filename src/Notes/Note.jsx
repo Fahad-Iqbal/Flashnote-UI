@@ -169,12 +169,15 @@ export const Wrapper = styled.div`
     padding-top: 1rem;
     padding-bottom: 1rem;
     margin-right: 7rem;
+    transition: all 0.3s linear;
   }
 
   &:has(.section-heading) {
     background-color: var(--highlight-color);
   }
   .section-heading {
+    display: flex;
+
     width: 100%;
     height: 100%;
     padding: 0.7rem;
@@ -198,6 +201,8 @@ export const Wrapper = styled.div`
   }
 
   .basic-note {
+    transition: all 0.3s linear;
+
     display: flex;
     gap: 1rem;
 
@@ -210,6 +215,7 @@ export const Wrapper = styled.div`
 
     .front-of-card,
     .back-of-card {
+      transition: all 0.3s linear;
       padding-left: 1rem;
       padding-right: 1rem;
     }
@@ -251,15 +257,29 @@ export const Wrapper = styled.div`
 
   .list-front-container {
     display: flex;
-    gap: 1rem;
+
+    transition: all 0.3s linear;
+    margin-bottom: -1rem;
+  }
+  .list-back {
+    transition: all 0.3s linear;
+  }
+  .list-note {
+    transition: all 0.3s linear;
+    display: flex;
+    flex-direction: column;
   }
 
+  .question-note {
+    transition: all 0.3s linear;
+  }
   .search-list-note {
     display: flex;
     flex-direction: column;
     gap: 2rem;
   }
   .list-item {
+    margin-top: 0.2rem;
     margin-left: 2rem;
     margin-right: 7rem;
     padding: 0.5rem 1rem;
@@ -295,13 +315,17 @@ export const Wrapper = styled.div`
   }
 
   .searched-note {
+    transition: all 0.3s linear;
+
+    margin: 2rem 0;
+    border-radius: 0.9rem;
     border: 3px solid transparent;
     animation: borderAnimation 2s ease-out 1;
   }
 
   @keyframes borderAnimation {
     0% {
-      border: 3px solid #720000;
+      border: 3px solid var(--color-arrow);
     }
     100% {
       border: 3px solid transparent;

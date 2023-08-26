@@ -274,7 +274,63 @@ export const docs = {
       },
     ],
   },
-  1: { id: 1, finished: true, title: 'Chemistry', notes: [] },
+  1: {
+    id: 1,
+    finished: true,
+    title: 'Chemistry',
+    notes: [
+      {
+        id: 'xx8eQcpNILUopemjA4d2c',
+        type: 'section-heading',
+        content: 'Basic Chemistry',
+      },
+      {
+        id: 'n6Uodv2RxY2nQQ2V47HLy',
+        type: 'basic',
+        content: {
+          front: 'Matter',
+          back: 'Anything that has mass and takes up space',
+        },
+        flashcardDisabled: false,
+        flashcardInfo: {
+          easeFactor: 2,
+          repetitions: 2,
+          timeOfNextReview: 1693030246469,
+        },
+      },
+      {
+        id: 'Oa-SKgASEmHkc-hwn3cxW',
+        type: 'reversible',
+        content: {
+          front: 'Solubility',
+          back: 'The ability to dissolve in a solvent',
+        },
+        flashcardDisabled: false,
+        flashcardInfo: {
+          reverse: {
+            easeFactor: 2,
+            repetitions: 2,
+            timeOfNextReview: 1693030251492,
+          },
+          easeFactor: 2,
+          repetitions: 2,
+          timeOfNextReview: 1693030254004,
+        },
+      },
+      {
+        id: 'eHFqzQroGX3hhhsF1xbaU',
+        type: 'cloze',
+        content:
+          '<span></span>The mass of a substance divided by its volume is called <span>density</span>.',
+        flashcardDisabled: false,
+        flashcardInfo: {
+          easeFactor: 2,
+          repetitions: 1,
+          timeOfNextReview: 1693030255196,
+        },
+      },
+    ],
+  },
 
   3: {
     id: 3,
@@ -355,5 +411,37 @@ export const docs = {
   8: { id: 8, finished: false, title: 'Linear Algebra', notes: [] },
   9: { id: 9, finished: false, title: 'Essay project', notes: [] },
   10: { id: 10, finished: false, title: 'Final project ideas', notes: [] },
-  11: { id: 11, finished: false, title: 'Physics 1', notes: [] },
+  11: {
+    id: 11,
+    finished: false,
+    title: 'Physics 1',
+    notes: [
+      {
+        id: 'G6qsPMamWC6yDNxj3b7oe',
+        type: 'cloze',
+        content:
+          '<span></span><span>Net force</span> is the combination of all forces on an object',
+        flashcardDisabled: false,
+        flashcardInfo: {
+          easeFactor: 2,
+          repetitions: 1,
+          timeOfNextReview: 1693030271116,
+        },
+      },
+      {
+        id: 'LWtf8VwuIS8gcSZOH28mw',
+        type: 'basic',
+        content: {
+          front: 'Mechanical equilibrium',
+          back: 'A state where no physical changes occur',
+        },
+        flashcardDisabled: false,
+        flashcardInfo: {
+          easeFactor: 2,
+          repetitions: 1,
+          timeOfNextReview: 1693030274332,
+        },
+      },
+    ],
+  },
 };
