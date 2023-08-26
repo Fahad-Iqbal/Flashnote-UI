@@ -36,7 +36,13 @@ const Create = () => {
           createNewDocument(createInput.current.value);
         }}
       >
-        <input ref={createInput} type="text" name="" id="" />
+        <input
+          ref={createInput}
+          placeholder="Document Title"
+          type="text"
+          name=""
+          id="document-title"
+        />
         <button
           className="create btn primary"
           // onClick={() => {

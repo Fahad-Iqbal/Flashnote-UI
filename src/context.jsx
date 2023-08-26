@@ -34,7 +34,7 @@ const AppContext = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [draftDocs, setDraftDocs] = useState([]);
   const [finishedDocs, setFinishedDocs] = useState([]);
-  const [selectedDoc, setSelectedDoc] = useState({ ...docs[0] });
+  const [selectedDoc, setSelectedDoc] = useState(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAllDocsOpen, setIsAllDocsOpen] = useState(false);
   const [isPracticeOpen, setIsPracticeOpen] = useState(false);
@@ -46,10 +46,12 @@ const AppContext = ({ children }) => {
     created: false,
     id: '',
   });
+  const [allNotes, setAllNotes] = useState([]);
 
   useEffect(() => {
     const finished = [];
     const draft = [];
+    let notesArray = [];
     let flashcardArray = [];
     for (let key in state) {
       if (state[key].finished) {
@@ -57,9 +59,9 @@ const AppContext = ({ children }) => {
       } else if (!state[key].finished) {
         draft.push(state[key]);
       }
-      if (key === `${selectedDoc.id}`) {
-        setSelectedDoc(state[key]);
-      }
+      // if (key === `${selectedDoc.id}`) {
+      //   setSelectedDoc(state[key]);
+      // }
       if (!state[key].flashcardsDisabled) {
         const newFlashcardList = getFlashcards(
           state[key].notes,
@@ -68,6 +70,11 @@ const AppContext = ({ children }) => {
         );
         flashcardArray = flashcardArray.concat(newFlashcardList);
       }
+      notesArray = notesArray.concat(
+        state[key].notes.map((note) => {
+          return { ...note, documentId: key };
+        })
+      );
     }
 
     if (newDocCreated.created) {
@@ -79,10 +86,14 @@ const AppContext = ({ children }) => {
     // if (!state[selectedDoc?.id]) {
     //   setSelectedDoc(state[0]);
     // }
+    if (state[selectedDoc?.id]) {
+      setSelectedDoc(state[selectedDoc.id]);
+    }
 
     setDraftDocs(draft);
     setFinishedDocs(finished);
     setFlashcards(flashcardArray);
+    setAllNotes(notesArray);
     localStorage.setItem('documents', JSON.stringify(state));
   }, [state]);
 
@@ -454,6 +465,7 @@ const AppContext = ({ children }) => {
         createNewDocument,
         updateFlashcardInfo,
         deleteDocument,
+        allNotes,
       }}
     >
       {children}

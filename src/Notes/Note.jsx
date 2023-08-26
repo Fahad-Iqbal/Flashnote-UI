@@ -9,12 +9,12 @@ import { useGlobalContext } from '../context';
 import NoteSelectionBar from './NoteSelectionBar';
 
 const Note = ({ id, type, content, index, practice, flashcardDisabled }) => {
-  const { isPracticeOpen, showAnswer } = useGlobalContext();
+  const { isPracticeOpen, showAnswer, isSearchOpen } = useGlobalContext();
   if (type === 'section-heading')
     return (
       <Wrapper style={{ marginLeft: '1rem' }}>
         <SectionHeading id={id} heading={content} type={type} index={index} />
-        <SpeedDialPlain id={id} type={type} />
+        {!isSearchOpen && <SpeedDialPlain id={id} type={type} />}
       </Wrapper>
     );
 
@@ -26,14 +26,20 @@ const Note = ({ id, type, content, index, practice, flashcardDisabled }) => {
     );
   }
 
-  if (isPracticeOpen) {
+  if (isPracticeOpen || isSearchOpen) {
     return (
       <QuestionWrapper>
-        <Wrapper className={showAnswer ? 'answer-note' : 'question-note'}>
+        <Wrapper
+          className={
+            showAnswer || isSearchOpen ? 'answer-note' : 'question-note'
+          }
+        >
           {type === 'basic' && (
             <BasicCardNote
               className={
-                showAnswer ? 'show-answer-basic' : 'show-question-basic'
+                showAnswer || isSearchOpen
+                  ? 'show-answer-basic'
+                  : 'show-question-basic'
               }
               key={id}
               id={id}
@@ -47,7 +53,9 @@ const Note = ({ id, type, content, index, practice, flashcardDisabled }) => {
           {type === 'reversible' && (
             <BasicCardNote
               className={
-                showAnswer ? 'show-answer-basic' : 'show-question-basic'
+                showAnswer || isSearchOpen
+                  ? 'show-answer-basic'
+                  : 'show-question-basic'
               }
               key={id}
               id={id}
@@ -61,7 +69,9 @@ const Note = ({ id, type, content, index, practice, flashcardDisabled }) => {
           {type === 'cloze' && (
             <ClozeDeletionNote
               className={
-                showAnswer ? 'show-answer-cloze' : 'show-question-cloze'
+                showAnswer || isSearchOpen
+                  ? 'show-answer-cloze'
+                  : 'show-question-cloze'
               }
               key={id}
               id={id}
@@ -74,7 +84,11 @@ const Note = ({ id, type, content, index, practice, flashcardDisabled }) => {
           )}
           {type === 'list' && (
             <ListCardNote
-              className={showAnswer ? 'show-answer-list' : 'show-question-list'}
+              className={
+                showAnswer || isSearchOpen
+                  ? 'show-answer-list'
+                  : 'show-question-list'
+              }
               key={id}
               id={id}
               type={type}
@@ -84,8 +98,6 @@ const Note = ({ id, type, content, index, practice, flashcardDisabled }) => {
               flashcardDisabled={flashcardDisabled}
             />
           )}
-
-          {!isPracticeOpen && <SpeedDialPlain id={id} type={type} />}
         </Wrapper>
       </QuestionWrapper>
     );
@@ -134,7 +146,7 @@ const Note = ({ id, type, content, index, practice, flashcardDisabled }) => {
   }
 };
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   position: relative;
   margin: 1rem;
   margin-left: 3rem;
@@ -242,6 +254,11 @@ const Wrapper = styled.div`
     gap: 1rem;
   }
 
+  .search-list-note {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
   .list-item {
     margin-left: 2rem;
     margin-right: 7rem;
@@ -272,9 +289,27 @@ const Wrapper = styled.div`
   &:has(.selection-bar) {
     margin-bottom: 4rem;
   }
+
+  .search-list-back {
+    margin-top: 2rem;
+  }
+
+  .searched-note {
+    border: 3px solid transparent;
+    animation: borderAnimation 2s ease-out 1;
+  }
+
+  @keyframes borderAnimation {
+    0% {
+      border: 3px solid #720000;
+    }
+    100% {
+      border: 3px solid transparent;
+    }
+  }
 `;
 
-const QuestionWrapper = styled.div`
+export const QuestionWrapper = styled.div`
   .question-note,
   .answer-note {
     margin: auto;

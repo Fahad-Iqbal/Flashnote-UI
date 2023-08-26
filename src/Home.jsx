@@ -17,6 +17,10 @@ const Home = () => {
     isUserOpen,
   } = useGlobalContext();
 
+  if (isSearchOpen) {
+    return <Modal modalType={'search'} />;
+  }
+
   const modals = [
     { isModalOpen: isSearchOpen, modalType: 'search' },
     {

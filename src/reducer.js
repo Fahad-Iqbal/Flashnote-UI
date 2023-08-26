@@ -87,6 +87,7 @@ const reducer = (state, action) => {
   }
 
   if (action.type === 'INSERT_NOTE') {
+    console.log('insert');
     const { documentId, index, noteContent } = action.payload;
 
     const newNotes = [...state[documentId].notes];
@@ -146,7 +147,6 @@ const reducer = (state, action) => {
   }
 
   if (action.type === 'DELETE_DOCUMENT') {
-    console.log(action.payload);
     const newState = { ...state };
     delete newState[action.payload.documentId];
     return { ...newState };

@@ -17,6 +17,7 @@ const SectionHeading = ({ id, heading, index, type, practice }) => {
     focusOnPreviousNote,
     duplicateNote,
     insertEmptyNoteOfType,
+    isSearchOpen,
   } = useGlobalContext();
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const SectionHeading = ({ id, heading, index, type, practice }) => {
     <>
       <div
         id={id}
-        contentEditable={!selectedDoc.finished}
+        contentEditable={!selectedDoc?.finished || isSearchOpen}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             e.preventDefault();
@@ -82,7 +83,7 @@ const SectionHeading = ({ id, heading, index, type, practice }) => {
           }
           setContent(`${e.target.innerText}`);
         }}
-        className="section-heading "
+        className="section-heading"
       ></div>
       {showSelectionBar && <Note type={'selection-bar'} index={index + 1} />}
     </>

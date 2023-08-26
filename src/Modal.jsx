@@ -42,7 +42,11 @@ const Modal = ({ modalType }) => {
         alignItems: 'center',
       }}
       onClick={(e) => {
-        if (e.target.classList.contains('overlay')) setFn(false);
+        if (
+          e.target.classList.contains('overlay') ||
+          e.target.classList.contains('modal')
+        )
+          setFn(false);
       }}
     >
       <div

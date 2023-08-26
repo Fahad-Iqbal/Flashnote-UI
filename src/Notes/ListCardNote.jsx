@@ -28,6 +28,7 @@ const ListCardNote = ({
     duplicateNote,
     insertEmptyNoteOfType,
     isPracticeOpen,
+    isSearchOpen,
   } = useGlobalContext();
   useEffect(() => {
     const frontInput = document.getElementById(id);
@@ -91,7 +92,7 @@ const ListCardNote = ({
   };
 
   return (
-    <div className="list-note">
+    <div className={isSearchOpen ? 'list-note search-list-note' : 'list-note'}>
       <div className="list-front-container basic-note">
         <div
           id={id}
@@ -100,7 +101,9 @@ const ListCardNote = ({
           }
           // ref={frontInput}
 
-          contentEditable={!(selectedDoc.finished || isPracticeOpen)}
+          contentEditable={
+            !(selectedDoc?.finished || isPracticeOpen || isSearchOpen)
+          }
           onKeyDown={(e) => {
             if (
               e.key === 'Backspace' &&
@@ -170,7 +173,7 @@ const ListCardNote = ({
         id={'back' + id}
         style={{ marginTop: '0.5rem' }}
         key={backContent}
-        className="list-back"
+        className={isSearchOpen ? 'list-back search-list-back' : 'list-back'}
       >
         <ul>
           {!backContent.length ? (

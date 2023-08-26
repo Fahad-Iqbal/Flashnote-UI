@@ -31,6 +31,7 @@ const ClozeDeletionNote = ({
     duplicateNote,
     insertEmptyNoteOfType,
     isPracticeOpen,
+    isSearchOpen,
   } = useGlobalContext();
 
   const addSpanTags = (text) => {
@@ -150,7 +151,9 @@ const ClozeDeletionNote = ({
       )}
       <div
         id={id}
-        contentEditable={!(selectedDoc.finished || isPracticeOpen)}
+        contentEditable={
+          !(selectedDoc?.finished || isPracticeOpen || isSearchOpen)
+        }
         onKeyDown={(e) => {
           if (
             e.key === 'Backspace' &&

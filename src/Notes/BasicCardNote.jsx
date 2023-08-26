@@ -21,7 +21,6 @@ const BasicCardNote = ({
     moveNoteUp,
     updateDocument,
     focusOnPreviousNote,
-    focusOnNextNote,
     handleArrowDown,
     handleArrowUp,
     isCaretAtEnd,
@@ -30,6 +29,7 @@ const BasicCardNote = ({
     duplicateNote,
     insertEmptyNoteOfType,
     isPracticeOpen,
+    isSearchOpen,
   } = useGlobalContext();
   useEffect(() => {
     const frontInput = document.getElementById('front' + id);
@@ -38,6 +38,7 @@ const BasicCardNote = ({
     const backInput = document.getElementById('back' + id);
 
     backInput.innerText = backContent;
+
     if (!practice) {
       updateDocument(selectedDoc.id, id, {
         id: id,
@@ -59,7 +60,9 @@ const BasicCardNote = ({
             frontContent ? 'front-of-card' : 'front-of-card empty-front'
           }
           // ref={frontInput}
-          contentEditable={!(selectedDoc.finished || isPracticeOpen)}
+          contentEditable={
+            !(selectedDoc?.finished || isPracticeOpen || isSearchOpen)
+          }
           onKeyDown={(e) => {
             if (e.key === 'Backspace') {
               if (!e.target.innerText && !backContent) {
@@ -122,7 +125,9 @@ const BasicCardNote = ({
           id={'back' + id}
           className={backContent ? 'back-of-card' : 'back-of-card empty-back'}
           // ref={backInput}
-          contentEditable={!(selectedDoc.finished || isPracticeOpen)}
+          contentEditable={
+            !(selectedDoc?.finished || isPracticeOpen || isSearchOpen)
+          }
           onKeyDown={(e) => {
             if (e.key === 'Backspace') {
               if (!e.target.innerText && !frontContent) {
