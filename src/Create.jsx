@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { styled } from 'styled-components';
 import { useGlobalContext } from './context';
-import CloseIcon from '@mui/icons-material/Close';
 import CloseButton from './CloseButton';
 
 const Create = () => {
@@ -14,14 +13,7 @@ const Create = () => {
           setIsCreateOpen(false);
         }}
       />
-      {/* <button
-        className="close-button"
-        onClick={() => {
-          setIsCreateOpen(false);
-        }}
-      >
-        <CloseIcon />
-      </button> */}
+
       <div>
         <h1>Create New Document</h1>
       </div>
@@ -34,6 +26,7 @@ const Create = () => {
           }
           setIsCreateOpen(false);
           createNewDocument(createInput.current.value);
+          console.log('test from inside create');
         }}
       >
         <input
