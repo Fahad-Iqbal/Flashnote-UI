@@ -26,7 +26,6 @@ const Create = () => {
           }
           setIsCreateOpen(false);
           createNewDocument(createInput.current.value);
-          console.log('test from inside create');
         }}
       >
         <input
