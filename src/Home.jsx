@@ -1,46 +1,43 @@
-import { useState } from 'react';
 import Document from './Document';
 import Header from './Header';
 import Sidebar from './Sidebar/Sidebar';
-import { draftDocs, finishedDocs } from './data.js';
 import Modal from './Modal';
 import { Navigate } from 'react-router-dom';
+import { useGlobalContext } from './context';
+import React from 'react';
 
-const draft = draftDocs;
-const finished = finishedDocs;
+const Home = () => {
+  const {
+    user,
+    selectedDoc,
+    isSearchOpen,
+    isAllDocsOpen,
+    isPracticeOpen,
+    isCreateOpen,
+    isUserOpen,
+  } = useGlobalContext();
 
-const Home = ({ user, setUser }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [draftDocs, setDraftDocs] = useState(draft);
-  const [finishedDocs, setFinishedDocs] = useState(finished);
-  const [selectedDoc, setSelectedDoc] = useState(null);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isAllDocsOpen, setIsAllDocsOpen] = useState(false);
-  const [isPracticeOpen, setIsPracticeOpen] = useState(false);
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [isUserOpen, setIsUserOpen] = useState(false);
+  if (isSearchOpen) {
+    return <Modal modalType={'search'} />;
+  }
 
   const modals = [
-    { isModalOpen: isSearchOpen, modalType: 'Search', setFn: setIsSearchOpen },
+    { isModalOpen: isSearchOpen, modalType: 'search' },
     {
       isModalOpen: isAllDocsOpen,
-      modalType: 'All Documents',
-      setFn: setIsAllDocsOpen,
+      modalType: 'all',
     },
     {
       isModalOpen: isPracticeOpen,
-      modalType: 'Practice Flashcards',
-      setFn: setIsPracticeOpen,
+      modalType: 'practice',
     },
     {
       isModalOpen: isCreateOpen,
-      modalType: 'Create Document',
-      setFn: setIsCreateOpen,
+      modalType: 'create',
     },
     {
       isModalOpen: isUserOpen,
-      modalType: 'User Options',
-      setFn: setIsUserOpen,
+      modalType: 'user',
     },
   ];
 
@@ -48,32 +45,18 @@ const Home = ({ user, setUser }) => {
   return (
     <main>
       {modals.map((modal) => {
-        const { isModalOpen, modalType, setFn } = modal;
-        if (isModalOpen)
-          return <Modal key={modalType} modalType={modalType} setFn={setFn} />;
+        const { isModalOpen, modalType } = modal;
+        if (isModalOpen) return <Modal key={modalType} modalType={modalType} />;
       })}
 
-      <Sidebar
-        user={user}
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
-        draftDocs={draftDocs}
-        finishedDocs={finishedDocs}
-        selectedDoc={selectedDoc}
-        setSelectedDoc={setSelectedDoc}
-        setIsSearchOpen={setIsSearchOpen}
-        setIsUserOpen={setIsUserOpen}
-        setIsPracticeOpen={setIsPracticeOpen}
-        setIsAllDocsOpen={setIsAllDocsOpen}
-        setIsCreateOpen={setIsCreateOpen}
-      />
+      <Sidebar />
 
       <div className="main-container">
-        <Header setUser={setUser} />
+        <Header />
         <Document document={selectedDoc} />
       </div>
     </main>
   );
 };
 
-export default Home;
+export default React.memo(Home);

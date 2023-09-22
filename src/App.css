@@ -36,10 +36,11 @@ html {
   --cloze-background: #c6cbe8;
   --mobile-footer-icons: black;
   --open-tab-color: #720000;
+  --highlight-color: #72000017;
 }
 
 html.darkmode {
-  --color-background: rgb(54, 66, 66);
+  --color-background: rgb(35, 43, 43);
   --color-header-box-shadow: #6ccbe285;
   --color-bullet: #97bcc5;
   --color-hamburger-lines: #9ecfda;
@@ -62,12 +63,14 @@ html.darkmode {
   --cloze-background: #c6cbe8;
   --mobile-footer-icons: rgb(255, 255, 255);
   --open-tab-color: #dddddd;
+  --highlight-color: #607b8171;
 }
 
 body {
   font-family: 'Inter', sans-serif;
   height: 100vh;
   transition: all 0.3s linear;
+  width: 100%;
 }
 
 main {

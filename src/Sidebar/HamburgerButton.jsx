@@ -1,4 +1,7 @@
-const HamburgerButton = ({ isSidebarOpen, setIsSidebarOpen }) => {
+import { useGlobalContext } from '../context';
+
+const HamburgerButton = () => {
+  const { isSidebarOpen, setIsSidebarOpen } = useGlobalContext();
   return (
     <button
       className={isSidebarOpen ? 'hamburger-button close' : 'hamburger-button'}

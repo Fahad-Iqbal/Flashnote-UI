@@ -1,12 +1,7 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import DocumentButton from './DocumentButton';
 
-const DocsListContainer = ({
-  isOpen,
-  documents,
-  selectedDoc,
-  setSelectedDoc,
-}) => {
+const DocsListContainer = ({ isOpen, documents }) => {
   const list = useRef();
 
   const height = list?.current?.getBoundingClientRect()?.height;
@@ -19,11 +14,7 @@ const DocsListContainer = ({
         {documents.map((document) => {
           return (
             <li key={document.id}>
-              <DocumentButton
-                document={document}
-                selectedDoc={selectedDoc}
-                setSelectedDoc={setSelectedDoc}
-              />
+              <DocumentButton document={document} />
             </li>
           );
         })}
@@ -32,4 +23,4 @@ const DocsListContainer = ({
   );
 };
 
-export default DocsListContainer;
+export default React.memo(DocsListContainer);

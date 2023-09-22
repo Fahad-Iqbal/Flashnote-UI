@@ -2,14 +2,16 @@ import React, { useEffect } from 'react';
 import heroImg from './hero.svg';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from './context';
 
-const Landing = ({ user }) => {
+const Landing = () => {
   const navigate = useNavigate();
+  const { user } = useGlobalContext();
   useEffect(() => {
     if (user) {
       navigate('/');
     }
-  }, []);
+  }, [user]);
 
   return (
     <Wrapper className="hero-section">

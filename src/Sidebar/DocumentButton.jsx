@@ -1,6 +1,8 @@
 import React from 'react';
+import { useGlobalContext } from '../context';
 
-const DocumentButton = ({ document, selectedDoc, setSelectedDoc }) => {
+const DocumentButton = ({ document }) => {
+  const { selectedDoc, setSelectedDoc } = useGlobalContext();
   const isSelected = document.id === selectedDoc?.id;
   return (
     <button

@@ -75,10 +75,10 @@ button.btn img {
   border-bottom: 0.1rem solid var(--primary-button-text);
 }
 
-.primary:hover,
+/* .primary:hover,
 .secondary:hover {
   transform: translateX(3px);
-}
+} */
 
 .secondary {
   align-items: center;
@@ -149,7 +149,8 @@ button.btn img {
 
 .hamburger-button {
   border: none;
-  background-color: var(--color-background);
+  /* background-color: var(--color-background); */
+  background-color: transparent;
   top: 1rem;
   left: 2rem;
   position: fixed;
@@ -247,6 +248,11 @@ button.btn img {
   background-color: var(--docs-selected-background);
 }
 
+.flashcards-number {
+  margin-left: auto;
+  margin-right: 1.6rem;
+}
+
 @media screen and (max-width: 1000px) {
   .sidebar-container:not(:has(.sidebar.close)) {
     position: absolute;
@@ -267,9 +273,9 @@ button.btn img {
 }
 
 @media screen and (max-width: 500px) {
-  .sidebar-container {
+  /* .sidebar-container {
     width: 100vw;
-  }
+  } */
 
   .sidebar {
     width: 100%;
