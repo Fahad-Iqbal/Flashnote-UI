@@ -44,7 +44,7 @@ const Sidebar = () => {
                 src="https://res.cloudinary.com/drbpsxnln/image/upload/v1675047823/Vector_aibzke.svg"
                 alt="User"
               />
-              <p className="user-name">{user.name}</p>
+              <p className="user-name">{user.username}</p>
             </div>
             <img
               className="user-options-icon"

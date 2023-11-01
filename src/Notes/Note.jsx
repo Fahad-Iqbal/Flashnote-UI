@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import SpeedDialPlain from '../SpeedDialPlain';
 import SectionHeading from './SectionHeading';
@@ -10,11 +10,20 @@ import NoteSelectionBar from './NoteSelectionBar';
 
 const Note = ({ id, type, content, index, practice, flashcardDisabled }) => {
   const { isPracticeOpen, showAnswer, isSearchOpen } = useGlobalContext();
+  const [hover, setHover] = useState(false);
   if (type === 'section-heading')
     return (
-      <Wrapper style={{ marginLeft: '1rem' }}>
+      <Wrapper
+        style={{ marginLeft: '1rem' }}
+        onMouseEnter={() => {
+          setHover(true);
+        }}
+        onMouseLeave={() => {
+          setHover(false);
+        }}
+      >
         <SectionHeading id={id} heading={content} type={type} index={index} />
-        {!isSearchOpen && <SpeedDialPlain id={id} type={type} />}
+        {!isSearchOpen && hover && <SpeedDialPlain id={id} type={type} />}
       </Wrapper>
     );
 
@@ -103,7 +112,15 @@ const Note = ({ id, type, content, index, practice, flashcardDisabled }) => {
     );
   } else if (!isPracticeOpen) {
     return (
-      <Wrapper className={showAnswer ? 'answer-note' : 'question-note'}>
+      <Wrapper
+        className={showAnswer ? 'answer-note' : 'question-note'}
+        onMouseEnter={() => {
+          setHover(true);
+        }}
+        onMouseLeave={() => {
+          setHover(false);
+        }}
+      >
         {type === 'basic' && (
           <BasicCardNote
             id={id}
@@ -140,7 +157,7 @@ const Note = ({ id, type, content, index, practice, flashcardDisabled }) => {
             flashcardDisabled={flashcardDisabled}
           />
         )}
-        <SpeedDialPlain id={id} type={type} />
+        {hover && <SpeedDialPlain id={id} type={type} />}
       </Wrapper>
     );
   }

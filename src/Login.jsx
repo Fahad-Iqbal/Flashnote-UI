@@ -3,39 +3,123 @@ import styled from 'styled-components';
 import { TextField, Button } from '@mui/material';
 import { Navigate } from 'react-router-dom';
 import { useGlobalContext } from './context';
+import { baseURL } from './data';
 
 const Login = () => {
   const { user, setUser } = useGlobalContext();
+  const [isFetching, setIsFetching] = useState(false);
 
-  const [inputs, setInputs] = useState({
-    name: '',
+  const initialInputs = {
+    username: '',
     email: '',
     password: '',
     isMember: true,
-  });
-
+    registerMsg: '',
+  };
+  const [inputs, setInputs] = useState({ ...initialInputs });
   const handleChange = (e) => {
     setInputs((previousState) => {
       return { ...previousState, [e.target.name]: e.target.value };
     });
   };
 
-  if (user) return <Navigate to={'/'} />;
+  const registerUser = async () => {
+    const url = baseURL + '/register';
+    setIsFetching(true);
+    try {
+      const response = await fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: inputs.username,
+          email: inputs.email,
+          password: inputs.password,
+        }), // body data type must match "Content-Type" header
+      });
+      const { msg } = await response.json();
+      if (msg) {
+        setInputs((previousState) => {
+          return { ...previousState, registerMsg: msg };
+        });
+      }
+      if (response.status === 201) {
+        setInputs((previousState) => {
+          return {
+            ...previousState,
+            username: '',
+            email: '',
+            password: '',
+            isMember: true,
+          };
+        });
+      }
+      setIsFetching(false);
+    } catch (error) {
+      console.log(error);
+      setIsFetching(false);
+    }
+  };
+  const loginUser = async () => {
+    setIsFetching(true);
+    const url = baseURL + '/login';
+    try {
+      const response = await fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: inputs.username,
+          password: inputs.password,
+        }), // body data type must match "Content-Type" header
+      });
+
+      const newUser = await response.json();
+      if (response.status === 200) {
+        setUser(newUser);
+        console.log(newUser);
+        setInputs((previousState) => {
+          return {
+            ...previousState,
+            username: '',
+            email: '',
+            password: '',
+            isMember: true,
+          };
+        });
+        localStorage.setItem('user', JSON.stringify(newUser));
+      } else if (response.status === 401) {
+        setInputs((previousState) => {
+          return { ...previousState, registerMsg: newUser.msg };
+        });
+      }
+      setIsFetching(false);
+    } catch (error) {
+      console.log(error);
+      setIsFetching(false);
+    }
+  };
+
+  if (user) {
+    return <Navigate to={'/'} />;
+  }
   return (
     <Wrapper className="login">
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          const newUser = {
-            name: inputs.name || 'user1234',
-            email: inputs.email,
-            token: 'token123456',
-          };
-          setUser(newUser);
-          localStorage.setItem('user', JSON.stringify(newUser));
+          if (!inputs.isMember) {
+            await registerUser();
+          } else if (inputs.isMember) {
+            await loginUser();
+          }
+          // localStorage.setItem('user', JSON.stringify(newUser));
         }}
       >
-        Note: No authorization set up yet
         <div className="logo-container">
           <img
             className="logo-icon"
@@ -48,32 +132,33 @@ const Login = () => {
             </div>
           </div>
         </div>
+        {inputs.registerMsg && <p>{inputs.registerMsg}</p>}
+        <TextField
+          required
+          inputProps={{ style: { fontSize: 16 } }}
+          InputLabelProps={{ style: { fontSize: 16 } }}
+          name="username"
+          value={inputs.username}
+          onChange={handleChange}
+          label="Username"
+          type="text"
+          placeholder="Username"
+          variant="standard"
+        />
         {!inputs.isMember && (
           <TextField
             required
             inputProps={{ style: { fontSize: 16 } }}
             InputLabelProps={{ style: { fontSize: 16 } }}
-            name="name"
-            value={inputs.name}
+            name="email"
+            value={inputs.email}
             onChange={handleChange}
-            label="Name"
-            type="text"
-            placeholder="Name"
+            label="Email"
+            type="email"
+            placeholder="Email"
             variant="standard"
           />
         )}
-        <TextField
-          required
-          inputProps={{ style: { fontSize: 16 } }}
-          InputLabelProps={{ style: { fontSize: 16 } }}
-          name="email"
-          value={inputs.email}
-          onChange={handleChange}
-          label="Email"
-          type="email"
-          placeholder="Email"
-          variant="standard"
-        />
         <TextField
           required
           inputProps={{ style: { fontSize: 16 } }}
@@ -86,7 +171,7 @@ const Login = () => {
           placeholder="Password"
           variant="standard"
         />
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={isFetching}>
           {inputs.isMember ? 'Sign In' : 'Sign Up'}
         </Button>
         <p>

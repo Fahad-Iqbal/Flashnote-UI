@@ -445,3 +445,5 @@ export const docs = {
     ],
   },
 };
+
+export const baseURL = 'http://localhost:5555'
