@@ -5,9 +5,10 @@ import {
   useReducer,
   useState,
 } from 'react';
-import { docs } from './data.js';
+import { baseURL, docs } from './data.js';
 import reducer from './reducer.js';
 import { nanoid } from 'nanoid';
+import { newDocumentId, deleteDocFromDb } from './utils';
 
 // Global context hook
 const GlobalContext = createContext();
@@ -21,20 +22,47 @@ const getUserFromLocalStorage = () => {
 const getDocsFromLocalStorage = () => {
   const documents = localStorage.getItem('documents');
   if (documents) return JSON.parse(documents);
-  else return docs;
+  else return {};
 };
+
+const getDocs = async (token, setInit, setIsLoading) => {
+  setIsLoading(true);
+  try {
+    const url = baseURL + '/documents';
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    });
+
+    if (response.ok) {
+      const docs = await response.json();
+      setInit(docs);
+    } else {
+      setInit({});
+    }
+    setIsLoading(false);
+  } catch (error) {
+    setInit({});
+    setIsLoading(false);
+  }
+};
+
 const AppContext = ({ children }) => {
   // User Information Context
 
   const [user, setUser] = useState(getUserFromLocalStorage());
+  const [init, setInit] = useState(getDocsFromLocalStorage());
+  const [isLoading, setIsLoading] = useState(true);
   // documents state
-  const [state, dispatch] = useReducer(reducer, getDocsFromLocalStorage());
+  const [state, dispatch] = useReducer(reducer, {});
 
   // Sidebar state
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [draftDocs, setDraftDocs] = useState([]);
   const [finishedDocs, setFinishedDocs] = useState([]);
-  const [selectedDoc, setSelectedDoc] = useState(state[0] || null);
+  const [selectedDoc, setSelectedDoc] = useState((state && state[0]) || null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAllDocsOpen, setIsAllDocsOpen] = useState(false);
   const [isPracticeOpen, setIsPracticeOpen] = useState(false);
@@ -49,49 +77,60 @@ const AppContext = ({ children }) => {
   const [allNotes, setAllNotes] = useState([]);
 
   useEffect(() => {
-    const finished = [];
-    const draft = [];
-    let notesArray = [];
-    let flashcardArray = [];
-    for (let key in state) {
-      if (state[key].finished) {
-        finished.push(state[key]);
-      } else if (!state[key].finished) {
-        draft.push(state[key]);
-      }
-      // if (key === `${selectedDoc.id}`) {
-      //   setSelectedDoc(state[key]);
-      // }
-      if (!state[key].flashcardsDisabled) {
-        const newFlashcardList = getFlashcards(
-          state[key].notes,
-          key,
-          state[key].title
+    if (user) {
+      getDocs(user.token, setInit, setIsLoading);
+    }
+  }, [user]);
+  useEffect(() => {
+    dispatch({ type: 'INITIALIZE_STATE', payload: init });
+  }, [init]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      const finished = [];
+      const draft = [];
+      let notesArray = [];
+      let flashcardArray = [];
+      for (let key in state) {
+        if (state[key].finished) {
+          finished.push(state[key]);
+        } else if (!state[key].finished) {
+          draft.push(state[key]);
+        }
+        // if (key === `${selectedDoc.id}`) {
+        //   setSelectedDoc(state[key]);
+        // }
+        if (!state[key].flashcardsDisabled) {
+          const newFlashcardList = getFlashcards(
+            state[key].notes,
+            key,
+            state[key].title
+          );
+          flashcardArray = flashcardArray.concat(newFlashcardList);
+        }
+        notesArray = notesArray.concat(
+          state[key].notes.map((note) => {
+            return { ...note, documentId: key };
+          })
         );
-        flashcardArray = flashcardArray.concat(newFlashcardList);
       }
-      notesArray = notesArray.concat(
-        state[key].notes.map((note) => {
-          return { ...note, documentId: key };
-        })
-      );
-    }
-    if (state[selectedDoc?.id]) {
-      setSelectedDoc(state[selectedDoc.id]);
-    }
-
-    if (newDocCreated.created) {
-      if (state[newDocCreated.id]) {
-        setSelectedDoc(state[newDocCreated.id]);
-        setNewDocCreated({ created: false, id: '' });
+      if (state[selectedDoc?.id]) {
+        setSelectedDoc(state[selectedDoc.id]);
       }
-    }
 
-    setDraftDocs(draft);
-    setFinishedDocs(finished);
-    setFlashcards(flashcardArray);
-    setAllNotes(notesArray);
-    localStorage.setItem('documents', JSON.stringify(state));
+      if (newDocCreated.created) {
+        if (state[newDocCreated.id]) {
+          setSelectedDoc(state[newDocCreated.id]);
+          setNewDocCreated({ created: false, id: '' });
+        }
+      }
+
+      setDraftDocs(draft);
+      setFinishedDocs(finished);
+      setFlashcards(flashcardArray);
+      setAllNotes(notesArray);
+      localStorage.setItem('documents', JSON.stringify(state));
+    }
   }, [state]);
 
   const getFlashcards = (notes, documentId, documentTitle) => {
@@ -236,7 +275,11 @@ const AppContext = ({ children }) => {
     });
   };
 
-  const deleteDocument = (documentId) => {
+  const deleteDocument = async (documentId) => {
+    const deleted = await deleteDocFromDb(user.token, documentId);
+    if (!deleted) {
+      return;
+    }
     dispatch({ type: 'DELETE_DOCUMENT', payload: { documentId } });
   };
 
@@ -382,9 +425,15 @@ const AppContext = ({ children }) => {
     }
   };
 
-  const createNewDocument = (documentTitle) => {
+  const createNewDocument = async (documentTitle) => {
     if (!documentTitle) return;
-    const newId = nanoid();
+
+    const newId = await newDocumentId(user.token, documentTitle);
+
+    if (!newId) {
+      return;
+    }
+
     dispatch({
       type: 'CREATE_NEW_DOCUMENT',
       payload: { id: newId, documentTitle },

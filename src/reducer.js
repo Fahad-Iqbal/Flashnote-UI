@@ -1,4 +1,7 @@
 const reducer = (state, action) => {
+  if (action.type === 'INITIALIZE_STATE') {
+    return action.payload;
+  }
   if (action.type === 'REMOVE_NOTE') {
     const { documentId, noteId } = action.payload;
     const newNotes = [...state[documentId].notes];

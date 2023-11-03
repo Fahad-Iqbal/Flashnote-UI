@@ -11,7 +11,6 @@ const logout = async (setUser, token) => {
     },
   });
   const msg = await response.json();
-  console.log(msg);
 };
 
 export default logout;

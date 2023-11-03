@@ -81,7 +81,6 @@ const Login = () => {
       const newUser = await response.json();
       if (response.status === 200) {
         setUser(newUser);
-        console.log(newUser);
         setInputs((previousState) => {
           return {
             ...previousState,
