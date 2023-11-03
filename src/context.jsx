@@ -153,7 +153,7 @@ const AppContext = ({ children }) => {
               ...note,
               documentId,
               documentTitle,
-              id: 'reverse' + note.id,
+              id: 'reverse' + `${note.id}`,
               practice: true,
               sectionHeading: sectionHeading,
               content: { front: back, back: front },
@@ -444,26 +444,33 @@ const AppContext = ({ children }) => {
   const updateFlashcardInfo = (note, newEaseFactor, newReps, newTime) => {
     const noteId = note.id;
     const documentId = note.documentId;
-    const noteContent = noteId.includes('reverse')
-      ? {
-          flashcardInfo: {
-            ...note.flashcardInfo,
-            reverse: {
+    const noteContent =
+      typeof noteId == 'string' && noteId.includes('reverse')
+        ? {
+            flashcardInfo: {
+              ...note.flashcardInfo,
+              reverse: {
+                easeFactor: newEaseFactor,
+                repetitions: newReps,
+                timeOfNextReview: Date.now() + newTime,
+              },
+            },
+          }
+        : {
+            flashcardInfo: {
+              ...note.flashcardInfo,
               easeFactor: newEaseFactor,
               repetitions: newReps,
               timeOfNextReview: Date.now() + newTime,
             },
-          },
-        }
-      : {
-          flashcardInfo: {
-            ...note.flashcardInfo,
-            easeFactor: newEaseFactor,
-            repetitions: newReps,
-            timeOfNextReview: Date.now() + newTime,
-          },
-        };
-    updateDocument(documentId, noteId.replace('reverse', ''), noteContent);
+          };
+    updateDocument(
+      documentId,
+      typeof noteId == 'string'
+        ? parseInt(noteId.replace('reverse', ''))
+        : noteId,
+      noteContent
+    );
   };
   return (
     <GlobalContext.Provider
