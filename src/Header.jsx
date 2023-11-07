@@ -1,8 +1,9 @@
 import React from 'react';
 import { useGlobalContext } from './context';
+import logout from './utils/logout';
 
 const Header = () => {
-  const { setUser } = useGlobalContext();
+  const { setUser, user } = useGlobalContext();
   return (
     // <!-- Header section -->
     <header className="header">
@@ -22,9 +23,8 @@ const Header = () => {
       {/* <!-- Log Out Button --> */}
       <button
         className="log-out"
-        onClick={() => {
-          setUser(null);
-          localStorage.removeItem('user');
+        onClick={async () => {
+          await logout(setUser, user.token);
         }}
       >
         Log out

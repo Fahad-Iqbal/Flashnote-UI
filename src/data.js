@@ -445,3 +445,5 @@ export const docs = {
     ],
   },
 };
+
+export const baseURL = 'https://flash-mr6g6krara-nn.a.run.app';

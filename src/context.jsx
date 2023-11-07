@@ -5,9 +5,10 @@ import {
   useReducer,
   useState,
 } from 'react';
-import { docs } from './data.js';
+import { baseURL, docs } from './data.js';
 import reducer from './reducer.js';
 import { nanoid } from 'nanoid';
+import { newDocumentId, deleteDocFromDb, updateDocInDb } from './utils';
 
 // Global context hook
 const GlobalContext = createContext();
@@ -21,20 +22,50 @@ const getUserFromLocalStorage = () => {
 const getDocsFromLocalStorage = () => {
   const documents = localStorage.getItem('documents');
   if (documents) return JSON.parse(documents);
-  else return docs;
+  else return {};
 };
+
+const getDocs = async (token, setInit, setIsLoading) => {
+  setIsLoading(true);
+  try {
+    const url = baseURL + '/documents';
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    });
+
+    if (response.ok) {
+      const docs = await response.json();
+      setInit(docs);
+    } else {
+      setInit({});
+      const docs = await response.json();
+      console.log(docs);
+    }
+    setIsLoading(false);
+  } catch (error) {
+    console.log(error);
+    setInit({});
+    setIsLoading(false);
+  }
+};
+
 const AppContext = ({ children }) => {
   // User Information Context
 
   const [user, setUser] = useState(getUserFromLocalStorage());
+  const [init, setInit] = useState(getDocsFromLocalStorage());
+  const [isLoading, setIsLoading] = useState(true);
   // documents state
-  const [state, dispatch] = useReducer(reducer, getDocsFromLocalStorage());
+  const [state, dispatch] = useReducer(reducer, null);
 
   // Sidebar state
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [draftDocs, setDraftDocs] = useState([]);
   const [finishedDocs, setFinishedDocs] = useState([]);
-  const [selectedDoc, setSelectedDoc] = useState(state[0] || null);
+  const [selectedDoc, setSelectedDoc] = useState((state && state[0]) || null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAllDocsOpen, setIsAllDocsOpen] = useState(false);
   const [isPracticeOpen, setIsPracticeOpen] = useState(false);
@@ -49,49 +80,69 @@ const AppContext = ({ children }) => {
   const [allNotes, setAllNotes] = useState([]);
 
   useEffect(() => {
-    const finished = [];
-    const draft = [];
-    let notesArray = [];
-    let flashcardArray = [];
-    for (let key in state) {
-      if (state[key].finished) {
-        finished.push(state[key]);
-      } else if (!state[key].finished) {
-        draft.push(state[key]);
-      }
-      // if (key === `${selectedDoc.id}`) {
-      //   setSelectedDoc(state[key]);
-      // }
-      if (!state[key].flashcardsDisabled) {
-        const newFlashcardList = getFlashcards(
-          state[key].notes,
-          key,
-          state[key].title
+    if (user) {
+      getDocs(user.token, setInit, setIsLoading);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    console.log('hit');
+    const newState = { ...init };
+    delete newState.lastActiveDocId;
+    dispatch({ type: 'INITIALIZE_STATE', payload: newState });
+  }, [init]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      const finished = [];
+      const draft = [];
+      let notesArray = [];
+      let flashcardArray = [];
+      for (let key in state) {
+        if (state[key].finished) {
+          finished.push(state[key]);
+        } else if (!state[key].finished) {
+          draft.push(state[key]);
+        }
+        // if (key === `${selectedDoc.id}`) {
+        //   setSelectedDoc(state[key]);
+        // }
+        if (!state[key].flashcardsDisabled) {
+          const newFlashcardList = getFlashcards(
+            state[key].notes,
+            key,
+            state[key].title
+          );
+          flashcardArray = flashcardArray.concat(newFlashcardList);
+        }
+        notesArray = notesArray.concat(
+          state[key].notes.map((note) => {
+            return { ...note, documentId: key };
+          })
         );
-        flashcardArray = flashcardArray.concat(newFlashcardList);
       }
-      notesArray = notesArray.concat(
-        state[key].notes.map((note) => {
-          return { ...note, documentId: key };
-        })
-      );
-    }
-    if (state[selectedDoc?.id]) {
-      setSelectedDoc(state[selectedDoc.id]);
-    }
-
-    if (newDocCreated.created) {
-      if (state[newDocCreated.id]) {
-        setSelectedDoc(state[newDocCreated.id]);
-        setNewDocCreated({ created: false, id: '' });
+      if (init.lastActiveDocId) {
+        setSelectedDoc(state[init.lastActiveDocId]);
+        setInit({ ...init, lastActiveDocId: null });
       }
-    }
 
-    setDraftDocs(draft);
-    setFinishedDocs(finished);
-    setFlashcards(flashcardArray);
-    setAllNotes(notesArray);
-    localStorage.setItem('documents', JSON.stringify(state));
+      if (state[selectedDoc?.id]) {
+        setSelectedDoc(state[selectedDoc.id]);
+      }
+
+      if (newDocCreated.created) {
+        if (state[newDocCreated.id]) {
+          setSelectedDoc(state[newDocCreated.id]);
+          setNewDocCreated({ created: false, id: '' });
+        }
+      }
+
+      setDraftDocs(draft);
+      setFinishedDocs(finished);
+      setFlashcards(flashcardArray);
+      setAllNotes(notesArray);
+      localStorage.setItem('documents', JSON.stringify(state));
+    }
   }, [state]);
 
   const getFlashcards = (notes, documentId, documentTitle) => {
@@ -114,7 +165,7 @@ const AppContext = ({ children }) => {
               ...note,
               documentId,
               documentTitle,
-              id: 'reverse' + note.id,
+              id: 'reverse' + `${note.id}`,
               practice: true,
               sectionHeading: sectionHeading,
               content: { front: back, back: front },
@@ -170,6 +221,7 @@ const AppContext = ({ children }) => {
     }
     if (
       note.type === 'cloze' &&
+      // typeof note.content === 'string' &&
       !note.content.includes('<span>') &&
       !note.content.includes('</span>')
     ) {
@@ -203,40 +255,74 @@ const AppContext = ({ children }) => {
 
   // document functions
   const removeNote = (documentId, noteId) => {
-    dispatch({ type: 'REMOVE_NOTE', payload: { documentId, noteId } });
+    dispatch({
+      type: 'REMOVE_NOTE',
+      payload: { documentId, noteId, token: user.token },
+    });
   };
 
-  const toggleFinished = (documentId) => {
-    dispatch({ type: 'TOGGLE_FINISHED', payload: { documentId } });
+  const toggleFinished = async (documentId) => {
+    const updatedDoc = await updateDocInDb(user.token, documentId, {
+      finished: !state[documentId].finished,
+    });
+    if (!updatedDoc) {
+      return;
+    }
+    dispatch({
+      type: 'TOGGLE_FINISHED',
+      payload: { documentId: updatedDoc.id, finished: updatedDoc.finished },
+    });
   };
 
-  const updateTitle = (documentId, title) => {
-    dispatch({ type: 'UPDATE_TITLE', payload: { documentId, title } });
+  const updateTitle = async (documentId, title) => {
+    const updatedDoc = await updateDocInDb(user.token, documentId, {
+      title: title,
+    });
+    if (!updatedDoc) {
+      return;
+    }
+    dispatch({
+      type: 'UPDATE_TITLE',
+      payload: { documentId, title: updatedDoc.title },
+    });
   };
 
   const moveNoteUp = (documentId, noteId) => {
-    dispatch({ type: 'MOVE_NOTE_UP', payload: { documentId, noteId } });
+    dispatch({
+      type: 'MOVE_NOTE_UP',
+      payload: { documentId, noteId, token: user.token },
+    });
   };
 
   const moveNoteDown = (documentId, noteId) => {
-    dispatch({ type: 'MOVE_NOTE_DOWN', payload: { documentId, noteId } });
+    dispatch({
+      type: 'MOVE_NOTE_DOWN',
+      payload: { documentId, noteId, token: user.token },
+    });
+    setTimeout(() => {
+      focusOnNote(noteId);
+    }, 100);
   };
 
   const updateDocument = (documentId, noteId, noteContent) => {
     dispatch({
       type: 'UPDATE_DOCUMENT',
-      payload: { documentId, noteId, noteContent },
+      payload: { documentId, noteId, noteContent, token: user.token },
     });
   };
 
   const toggleFlashcardDisabled = (noteId) => {
     dispatch({
       type: 'TOGGLE_FLASHCARD_DISABLED',
-      payload: { documentId: selectedDoc.id, noteId },
+      payload: { documentId: selectedDoc.id, noteId, token: user.token },
     });
   };
 
-  const deleteDocument = (documentId) => {
+  const deleteDocument = async (documentId) => {
+    const deleted = await deleteDocFromDb(user.token, documentId);
+    if (!deleted) {
+      return;
+    }
     dispatch({ type: 'DELETE_DOCUMENT', payload: { documentId } });
   };
 
@@ -249,8 +335,9 @@ const AppContext = ({ children }) => {
   const insertNote = (documentId, index, noteContent) => {
     dispatch({
       type: 'INSERT_NOTE',
-      payload: { documentId, index, noteContent },
+      payload: { documentId, index, noteContent, token: user.token },
     });
+    // insertNoteInDb(user.token, documentId, index, noteContent, state, dispatch);
     setTimeout(() => {
       focusOnNote(noteContent.id);
     }, 100);
@@ -382,9 +469,15 @@ const AppContext = ({ children }) => {
     }
   };
 
-  const createNewDocument = (documentTitle) => {
+  const createNewDocument = async (documentTitle) => {
     if (!documentTitle) return;
-    const newId = nanoid();
+
+    const newId = await newDocumentId(user.token, documentTitle);
+
+    if (!newId) {
+      return;
+    }
+
     dispatch({
       type: 'CREATE_NEW_DOCUMENT',
       payload: { id: newId, documentTitle },
@@ -414,6 +507,7 @@ const AppContext = ({ children }) => {
             timeOfNextReview: Date.now() + newTime,
           },
         };
+
     updateDocument(documentId, noteId.replace('reverse', ''), noteContent);
   };
   return (

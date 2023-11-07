@@ -1,9 +1,16 @@
+import { updateDocInDb } from './utils';
+
 const reducer = (state, action) => {
+  if (action.type === 'INITIALIZE_STATE') {
+    return action.payload;
+  }
+
   if (action.type === 'REMOVE_NOTE') {
-    const { documentId, noteId } = action.payload;
+    const { documentId, noteId, token } = action.payload;
     const newNotes = [...state[documentId].notes];
     const index = newNotes.findIndex((note) => note.id === noteId);
     newNotes.splice(index, 1);
+    updateDocInDb(token, documentId, { notes: newNotes });
     return {
       ...state,
       [documentId]: { ...state[documentId], notes: newNotes },
@@ -11,13 +18,13 @@ const reducer = (state, action) => {
   }
 
   if (action.type === 'TOGGLE_FINISHED') {
-    const { documentId } = action.payload;
+    const { documentId, finished } = action.payload;
 
     return {
       ...state,
       [documentId]: {
         ...state[documentId],
-        finished: !state[documentId].finished,
+        finished: finished,
       },
     };
   }
@@ -34,7 +41,7 @@ const reducer = (state, action) => {
     };
   }
   if (action.type === 'MOVE_NOTE_UP') {
-    const { documentId, noteId } = action.payload;
+    const { documentId, noteId, token } = action.payload;
     const noteIndex = state[documentId].notes.findIndex(
       (note) => note.id === noteId
     );
@@ -44,13 +51,15 @@ const reducer = (state, action) => {
     const newNotes = [...state[documentId].notes];
     newNotes[noteIndex - 1] = currentNote;
     newNotes[noteIndex] = previousNote;
+    updateDocInDb(token, documentId, { notes: newNotes });
+
     return {
       ...state,
       [documentId]: { ...state[documentId], notes: newNotes },
     };
   }
   if (action.type === 'MOVE_NOTE_DOWN') {
-    const { documentId, noteId } = action.payload;
+    const { documentId, noteId, token } = action.payload;
     const noteIndex = state[documentId].notes.findIndex(
       (note) => note.id === noteId
     );
@@ -61,6 +70,7 @@ const reducer = (state, action) => {
     const newNotes = [...state[documentId].notes];
     newNotes[noteIndex + 1] = currentNote;
     newNotes[noteIndex] = nextNote;
+    updateDocInDb(token, documentId, { notes: newNotes });
 
     return {
       ...state,
@@ -68,7 +78,7 @@ const reducer = (state, action) => {
     };
   }
   if (action.type === 'UPDATE_DOCUMENT') {
-    const { documentId, noteId, noteContent } = action.payload;
+    const { documentId, noteId, noteContent, token } = action.payload;
     const noteIndex = state[documentId]?.notes?.findIndex(
       (note) => note.id === noteId
     );
@@ -80,6 +90,7 @@ const reducer = (state, action) => {
       newNote[key] = noteContent[key];
     }
     newNotes[noteIndex] = newNote;
+    updateDocInDb(token, documentId, { notes: newNotes });
     return {
       ...state,
       [documentId]: { ...state[documentId], notes: newNotes },
@@ -87,10 +98,11 @@ const reducer = (state, action) => {
   }
 
   if (action.type === 'INSERT_NOTE') {
-    const { documentId, index, noteContent } = action.payload;
+    const { documentId, index, noteContent, token } = action.payload;
 
     const newNotes = [...state[documentId].notes];
     newNotes.splice(index, 0, noteContent);
+    updateDocInDb(token, documentId, { notes: newNotes });
 
     return {
       ...state,
@@ -101,7 +113,9 @@ const reducer = (state, action) => {
   if (action.type === 'FOCUS_ON_NOTE') {
     const { documentId, noteId } = action.payload;
     const selectedDoc = state[documentId];
-    const note = selectedDoc.notes?.find((note) => note.id === noteId);
+    const note =
+      selectedDoc.notes &&
+      selectedDoc.notes?.find((note) => note.id === noteId);
     if (!note) {
       return state;
     }
@@ -113,13 +127,15 @@ const reducer = (state, action) => {
       note.type === 'section-heading' ||
       note.type === 'plain'
     ) {
-      document.getElementById(noteId)?.focus();
+      const element = document.getElementById(noteId);
+      element?.focus();
+      element.scrollIntoView(false);
     }
     return state;
   }
 
   if (action.type === 'TOGGLE_FLASHCARD_DISABLED') {
-    const { documentId, noteId } = action.payload;
+    const { documentId, noteId, token } = action.payload;
     const newNotes = [
       ...state[documentId].notes.map((note) => {
         if (note.id === noteId) {
@@ -129,7 +145,7 @@ const reducer = (state, action) => {
         return { ...note };
       }),
     ];
-
+    updateDocInDb(token, documentId, { notes: newNotes });
     return {
       ...state,
       [documentId]: { ...state[documentId], notes: newNotes },

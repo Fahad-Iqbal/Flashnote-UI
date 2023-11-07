@@ -1,6 +1,7 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import { useGlobalContext } from './context';
+import logout from './utils/logout';
 
 const User = () => {
   const { user, setUser, setIsUserOpen } = useGlobalContext();
@@ -13,15 +14,14 @@ const User = () => {
           src="https://res.cloudinary.com/drbpsxnln/image/upload/v1675047823/Vector_aibzke.svg"
           alt="User"
         />
-        <p className="user-name">{user.name}</p>
+        <p className="user-name">{user.username}</p>
       </div>
       <button
         className="log-out"
         style={{ height: '3rem', fontSize: '1.6rem' }}
-        onClick={() => {
+        onClick={async () => {
           setIsUserOpen(false);
-          localStorage.removeItem('user');
-          setUser(null);
+          await logout(setUser, user.token);
         }}
       >
         Log out
