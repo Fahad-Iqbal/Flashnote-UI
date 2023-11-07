@@ -2,3 +2,8 @@
   from = "/landing"
   to = "/"
   status = 200
+
+[[redirects]]
+  from = "/login"
+  to = "/"
+  status = 200
