@@ -8,7 +8,12 @@ import {
 import { baseURL, docs } from './data.js';
 import reducer from './reducer.js';
 import { nanoid } from 'nanoid';
-import { newDocumentId, deleteDocFromDb } from './utils';
+import {
+  newDocumentId,
+  deleteDocFromDb,
+  updateDocInDb,
+  insertNoteInDb,
+} from './utils';
 
 // Global context hook
 const GlobalContext = createContext();
@@ -41,9 +46,12 @@ const getDocs = async (token, setInit, setIsLoading) => {
       setInit(docs);
     } else {
       setInit({});
+      const docs = await response.json();
+      console.log(docs);
     }
     setIsLoading(false);
   } catch (error) {
+    console.log(error);
     setInit({});
     setIsLoading(false);
   }
@@ -56,7 +64,7 @@ const AppContext = ({ children }) => {
   const [init, setInit] = useState(getDocsFromLocalStorage());
   const [isLoading, setIsLoading] = useState(true);
   // documents state
-  const [state, dispatch] = useReducer(reducer, {});
+  const [state, dispatch] = useReducer(reducer, null);
 
   // Sidebar state
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -81,8 +89,12 @@ const AppContext = ({ children }) => {
       getDocs(user.token, setInit, setIsLoading);
     }
   }, [user]);
+
   useEffect(() => {
-    dispatch({ type: 'INITIALIZE_STATE', payload: init });
+    console.log('hit');
+    const newState = { ...init };
+    delete newState.lastActiveDocId;
+    dispatch({ type: 'INITIALIZE_STATE', payload: newState });
   }, [init]);
 
   useEffect(() => {
@@ -114,6 +126,11 @@ const AppContext = ({ children }) => {
           })
         );
       }
+      if (init.lastActiveDocId) {
+        setSelectedDoc(state[init.lastActiveDocId]);
+        setInit({ ...init, lastActiveDocId: null });
+      }
+
       if (state[selectedDoc?.id]) {
         setSelectedDoc(state[selectedDoc.id]);
       }
@@ -209,6 +226,7 @@ const AppContext = ({ children }) => {
     }
     if (
       note.type === 'cloze' &&
+      // typeof note.content === 'string' &&
       !note.content.includes('<span>') &&
       !note.content.includes('</span>')
     ) {
@@ -242,36 +260,66 @@ const AppContext = ({ children }) => {
 
   // document functions
   const removeNote = (documentId, noteId) => {
-    dispatch({ type: 'REMOVE_NOTE', payload: { documentId, noteId } });
+    dispatch({
+      type: 'REMOVE_NOTE',
+      payload: { documentId, noteId, token: user.token },
+    });
   };
 
-  const toggleFinished = (documentId) => {
-    dispatch({ type: 'TOGGLE_FINISHED', payload: { documentId } });
+  const toggleFinished = async (documentId) => {
+    const updatedDoc = await updateDocInDb(user.token, documentId, {
+      finished: !state[documentId].finished,
+    });
+    if (!updatedDoc) {
+      return;
+    }
+    dispatch({
+      type: 'TOGGLE_FINISHED',
+      payload: { documentId: updatedDoc.id, finished: updatedDoc.finished },
+    });
   };
 
-  const updateTitle = (documentId, title) => {
-    dispatch({ type: 'UPDATE_TITLE', payload: { documentId, title } });
+  const updateTitle = async (documentId, title) => {
+    const updatedDoc = await updateDocInDb(user.token, documentId, {
+      title: title,
+    });
+    if (!updatedDoc) {
+      return;
+    }
+    dispatch({
+      type: 'UPDATE_TITLE',
+      payload: { documentId, title: updatedDoc.title },
+    });
   };
 
   const moveNoteUp = (documentId, noteId) => {
-    dispatch({ type: 'MOVE_NOTE_UP', payload: { documentId, noteId } });
+    dispatch({
+      type: 'MOVE_NOTE_UP',
+      payload: { documentId, noteId, token: user.token },
+    });
   };
 
   const moveNoteDown = (documentId, noteId) => {
-    dispatch({ type: 'MOVE_NOTE_DOWN', payload: { documentId, noteId } });
+    dispatch({
+      type: 'MOVE_NOTE_DOWN',
+      payload: { documentId, noteId, token: user.token },
+    });
+    setTimeout(() => {
+      focusOnNote(noteId);
+    }, 100);
   };
 
   const updateDocument = (documentId, noteId, noteContent) => {
     dispatch({
       type: 'UPDATE_DOCUMENT',
-      payload: { documentId, noteId, noteContent },
+      payload: { documentId, noteId, noteContent, token: user.token },
     });
   };
 
   const toggleFlashcardDisabled = (noteId) => {
     dispatch({
       type: 'TOGGLE_FLASHCARD_DISABLED',
-      payload: { documentId: selectedDoc.id, noteId },
+      payload: { documentId: selectedDoc.id, noteId, token: user.token },
     });
   };
 
@@ -292,8 +340,9 @@ const AppContext = ({ children }) => {
   const insertNote = (documentId, index, noteContent) => {
     dispatch({
       type: 'INSERT_NOTE',
-      payload: { documentId, index, noteContent },
+      payload: { documentId, index, noteContent, token: user.token },
     });
+    // insertNoteInDb(user.token, documentId, index, noteContent, state, dispatch);
     setTimeout(() => {
       focusOnNote(noteContent.id);
     }, 100);
