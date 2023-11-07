@@ -446,4 +446,4 @@ export const docs = {
   },
 };
 
-export const baseURL = 'http://localhost:5555'
+export const baseURL = 'https://flashnote-backend-cpnfhyv2qa-nn.a.run.app';
