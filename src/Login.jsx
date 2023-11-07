@@ -29,7 +29,8 @@ const Login = () => {
     try {
       const response = await fetch(url, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors',
+        mode: 'no-cors',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
