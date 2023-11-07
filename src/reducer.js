@@ -1,4 +1,4 @@
-import { deleteNoteFromDb, updateDocInDb } from './utils';
+import { updateDocInDb } from './utils';
 
 const reducer = (state, action) => {
   if (action.type === 'INITIALIZE_STATE') {

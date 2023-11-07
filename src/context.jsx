@@ -8,12 +8,7 @@ import {
 import { baseURL, docs } from './data.js';
 import reducer from './reducer.js';
 import { nanoid } from 'nanoid';
-import {
-  newDocumentId,
-  deleteDocFromDb,
-  updateDocInDb,
-  insertNoteInDb,
-} from './utils';
+import { newDocumentId, deleteDocFromDb, updateDocInDb } from './utils';
 
 // Global context hook
 const GlobalContext = createContext();
